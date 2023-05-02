@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/sessions_fragment">
+
+    <fragment
+        android:id="@+id/sessions_fragment"
+        android:name="it.unipd.dei.esp2023.sessions.SessionsFragment"
+        android:label="fragment_sessions"
+        tools:layout="@layout/fragment_sessions" />
+    <fragment
+        android:id="@+id/statistics_fragment"
+        android:name="it.unipd.dei.esp2023.statistics.StatisticsFragment"
+        android:label="fragment_statistics"
+        tools:layout="@layout/fragment_statistics" />
+    <fragment
+        android:id="@+id/settings_fragment"
+        android:name="it.unipd.dei.esp2023.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>

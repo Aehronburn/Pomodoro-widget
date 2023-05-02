@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/statistics_fragment"
         android:icon="@drawable/insert_chart_fill0_wght400_grad0_opsz48"
-        android:enabled="true"
         android:title="@string/menu_stats" />
     <item
+        android:id="@+id/sessions_fragment"
         android:icon="@drawable/home_fill0_wght400_grad0_opsz48"
-        android:enabled="true"
         android:title="@string/menu_home" />
     <item
+        android:id="@+id/settings_fragment"
         android:icon="@drawable/settings_fill0_wght400_grad0_opsz48"
-        android:enabled="true"
         android:title="@string/menu_settings" />
 </menu>
