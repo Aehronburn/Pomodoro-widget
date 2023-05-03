@@ -3,14 +3,14 @@
 
     <item
         android:id="@+id/statistics_fragment"
-        android:icon="@drawable/insert_chart_fill0_wght400_grad0_opsz48"
+        android:icon="@drawable/stats_selector"
         android:title="@string/menu_stats" />
     <item
         android:id="@+id/sessions_fragment"
-        android:icon="@drawable/home_fill0_wght400_grad0_opsz48"
+        android:icon="@drawable/home_selector"
         android:title="@string/menu_home" />
     <item
         android:id="@+id/settings_fragment"
-        android:icon="@drawable/settings_fill0_wght400_grad0_opsz48"
+        android:icon="@drawable/settings_selector"
         android:title="@string/menu_settings" />
 </menu>
