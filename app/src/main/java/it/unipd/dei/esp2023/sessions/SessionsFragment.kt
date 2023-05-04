@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.NestedScrollView
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import it.unipd.dei.esp2023.R
 
 class SessionsFragment : Fragment() {
@@ -17,7 +19,19 @@ class SessionsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this).get(SessionsViewModel::class.java)
-        return inflater.inflate(R.layout.fragment_sessions, container, false)
+
+        val view = inflater.inflate(R.layout.fragment_sessions, container, false)
+
+        val extendedFloatingActionButton = view.findViewById<ExtendedFloatingActionButton>(R.id.create_new_session_fab)
+        val nestedScrollView = view.findViewById<NestedScrollView>(R.id.sessions_scroll_view)
+        nestedScrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if(scrollY > oldScrollY) {
+                extendedFloatingActionButton.shrink()
+            } else {
+                extendedFloatingActionButton.extend()
+            }
+        }
+        return view
     }
 
 }

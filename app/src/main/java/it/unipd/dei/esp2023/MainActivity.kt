@@ -10,6 +10,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationBarView
 
 class MainActivity : AppCompatActivity() {
@@ -25,10 +26,15 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationBarView = findViewById<NavigationBarView>(R.id.bottomNavigationView)
         bottomNavigationBarView.setupWithNavController(navController)
 
-        setOnApplyWindowInsetsListener(findViewById(R.id.fragmentContainerView)) { view, insets ->
-            val windowInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.updatePaddingRelative(top = windowInsets.top, bottom = windowInsets.bottom)
-            WindowInsetsCompat.CONSUMED
+        val appBar = findViewById<MaterialToolbar>(R.id.app_bar)
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.statistics_fragment, R.id.sessions_fragment, R.id.settings_fragment))
+        appBar.setupWithNavController(navController, appBarConfiguration)
+        setSupportActionBar(appBar)
+
+        setOnApplyWindowInsetsListener(findViewById(R.id.app_bar_layout)) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePaddingRelative(top = insets.top, bottom = insets.bottom)
+            windowInsets
         }
     }
 }
