@@ -3,4 +3,18 @@
     <string name="menu_stats">Stats</string>
     <string name="menu_home">Home</string>
     <string name="menu_settings">Settings</string>
+
+    <string-array name="recycler_list">
+        <item>Item 0</item>
+        <item>Item 1</item>
+        <item>Item 2</item>
+        <item>Item 3</item>
+        <item>Item 4</item>
+        <item>Item 5</item>
+        <item>Item 6</item>
+        <item>Item 7</item>
+        <item>Item 8</item>
+        <item>Item 9</item>
+        <item>Item 10</item>
+    </string-array>
 </resources>
