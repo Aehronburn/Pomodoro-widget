@@ -10,6 +10,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import it.unipd.dei.esp2023.R
+import androidx.navigation.fragment.*
 
 class SessionsFragment : Fragment() {
 
@@ -24,6 +25,13 @@ class SessionsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_sessions, container, false)
 
         val extendedFloatingActionButton = view.findViewById<ExtendedFloatingActionButton>(R.id.create_new_session_fab)
+
+        extendedFloatingActionButton.setOnClickListener{
+            var dialog = SessionsDialogCreateNew()
+
+            dialog.show(parentFragmentManager, "Custom popup")
+        }
+
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_id)
         recyclerView.adapter =SessionsAdapter(context?.resources!!.getStringArray(R.array.recycler_list))
