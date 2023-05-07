@@ -3,6 +3,11 @@
     <string name="menu_stats">Stats</string>
     <string name="menu_home">Home</string>
     <string name="menu_settings">Settings</string>
+    <string name="new_session">New Session</string>
+    <string name="session_name">Session name</string>
+    <string name="cancel">Cancel</string>
+    <string name="submit">Submit</string>
+
 
     <string-array name="recycler_list">
         <item>Item 0</item>
