@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import it.unipd.dei.esp2023.R
@@ -25,8 +27,7 @@ class SessionsFragment : Fragment() {
         val extendedFloatingActionButton = view.findViewById<ExtendedFloatingActionButton>(R.id.create_new_session_fab)
 
         extendedFloatingActionButton.setOnClickListener{
-            val dialog = CreateNewSessionDialog()
-            dialog.show(parentFragmentManager, "Create new session")
+            CreateNewSessionDialog().show(parentFragmentManager, "CreateNewSessionDialog")
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_id)
