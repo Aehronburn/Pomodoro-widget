@@ -7,5 +7,5 @@ import androidx.room.Insert
 interface PomodoroDatabaseDao {
 
     @Insert
-    suspend fun insertSession(session: Session)
+    suspend fun insertSession(session: Session): Unit
 }
