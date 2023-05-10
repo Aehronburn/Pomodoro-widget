@@ -1,45 +1,38 @@
 package it.unipd.dei.esp2023.sessions
 
+import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
+import it.unipd.dei.esp2023.MainViewModel
 import it.unipd.dei.esp2023.R
 
 class CreateNewSessionDialog: DialogFragment() {
 
-    internal lateinit var listener: SessionDialogListener
+    private val viewModel: MainViewModel by activityViewModels()
 
     lateinit var dialogView : View
 
     var sessionName: String = ""
 
-    interface SessionDialogListener {
-        fun onDialogPositiveClick(sessionName: String)
-        fun onDialogNegativeClick(dialog: DialogFragment)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        listener = context as SessionDialogListener
-    }
-
+    @SuppressLint("UseGetLayoutInflater")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())
         dialogView = onCreateView(LayoutInflater.from(requireContext()), null, savedInstanceState)
         builder.setView(dialogView)
         builder.setTitle(R.string.create_new_session_title)
         builder.setPositiveButton(R.string.create_new_session_positive) { _, _ ->
-            listener.onDialogPositiveClick(sessionName)
+            viewModel.setNewSessionName(sessionName)
         }
         builder.setNegativeButton(R.string.create_new_session_negative
-        ) { _, _ -> listener.onDialogNegativeClick(this) }
+        ) { _, _ -> dismiss() }
         return builder.create()
     }
     override fun onCreateView(
