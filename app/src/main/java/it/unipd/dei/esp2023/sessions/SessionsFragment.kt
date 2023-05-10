@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.NestedScrollView
+import android.widget.Toast
+import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import it.unipd.dei.esp2023.R
 
@@ -23,13 +25,16 @@ class SessionsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_sessions, container, false)
 
         val extendedFloatingActionButton = view.findViewById<ExtendedFloatingActionButton>(R.id.create_new_session_fab)
-        val nestedScrollView = view.findViewById<NestedScrollView>(R.id.sessions_scroll_view)
-        nestedScrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if(scrollY > oldScrollY) {
-                extendedFloatingActionButton.shrink()
-            } else {
-                extendedFloatingActionButton.extend()
-            }
+
+        extendedFloatingActionButton.setOnClickListener{
+            CreateNewSessionDialog().show(parentFragmentManager, "CreateNewSessionDialog")
+        }
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_id)
+        recyclerView.adapter = SessionsAdapter(context?.resources!!.getStringArray(R.array.recycler_list))
+        recyclerView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if(scrollY > oldScrollY) extendedFloatingActionButton.shrink()
+            else extendedFloatingActionButton.extend()
         }
         return view
     }
