@@ -5,12 +5,16 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.*
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationBarView
+import it.unipd.dei.esp2023.database.PomodoroDatabase
+import it.unipd.dei.esp2023.database.PomodoroDatabaseDao
+import it.unipd.dei.esp2023.database.Session
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,5 +44,10 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(appBar)
 
         viewModel.newSessionName.observe(this) { name -> if(name.isNotEmpty()) Toast.makeText(this, name, Toast.LENGTH_LONG).show() }
+
+        val database: PomodoroDatabaseDao = PomodoroDatabase.getInstance(application).databaseDao
+
+        GlobalScope.launch {database.insertSession(Session(name = "i don't know"))
+        }
     }
 }
