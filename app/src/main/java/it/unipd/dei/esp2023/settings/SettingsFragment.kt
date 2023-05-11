@@ -36,4 +36,10 @@ class SettingsFragment : Fragment() {
         return binding.root
     }
 
+    companion object {
+        const val POMODORO_DURATION = "pomodoro_duration"
+        const val SHORT_BREAK_DURATION = "short_break_duration"
+        const val LONG_BREAK_DURATION = "long_break_duration"
+    }
+
 }

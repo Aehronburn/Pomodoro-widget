@@ -1,5 +1,6 @@
 package it.unipd.dei.esp2023
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -12,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationBarView
 import it.unipd.dei.esp2023.database.Session
+import it.unipd.dei.esp2023.settings.SettingsFragment
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -45,6 +47,11 @@ class MainActivity : AppCompatActivity() {
             name -> if(name.isNotEmpty()) Toast.makeText(this, name, Toast.LENGTH_LONG).show()
         }
 
+        val preferences = getPreferences(Context.MODE_PRIVATE)
+        viewModel.setPomodoroDuration(preferences.getInt(SettingsFragment.POMODORO_DURATION, 1))
+        viewModel.setShortBreakDuration(preferences.getInt(SettingsFragment.SHORT_BREAK_DURATION, 1))
+        viewModel.setLongBreakDuration(preferences.getInt(SettingsFragment.LONG_BREAK_DURATION, 1))
+
         //Prova
         lifecycleScope.launch {
             setDefault()
@@ -56,5 +63,27 @@ class MainActivity : AppCompatActivity() {
         //Insert one default Session
         val defaultSession: Session = Session(0L,"Hello", LocalDate.now().toString())
         viewModel.database.insertSession(defaultSession)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val preferencesEditor = getPreferences(Context.MODE_PRIVATE).edit()
+        viewModel.pomodoroDuration.value?.let {
+            preferencesEditor.putInt(
+                SettingsFragment.POMODORO_DURATION,
+                it
+            )
+        }
+        viewModel.shortBreakDuration.value?.let {
+            preferencesEditor.putInt(SettingsFragment.SHORT_BREAK_DURATION,
+                it
+            )
+        }
+        viewModel.longBreakDuration.value?.let {
+            preferencesEditor.putInt(SettingsFragment.LONG_BREAK_DURATION,
+                it
+            )
+        }
+        preferencesEditor.apply()
     }
 }
