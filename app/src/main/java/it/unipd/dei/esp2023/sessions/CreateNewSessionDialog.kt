@@ -3,6 +3,7 @@ package it.unipd.dei.esp2023.sessions
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,6 +45,7 @@ class CreateNewSessionDialog: DialogFragment() {
         val textInput = view.findViewById<TextInputEditText>(R.id.new_session_input_edit_text)
         textInput.doOnTextChanged { text, start, before, count ->
             sessionName = text.toString()
+            Log.d("TextChanged", sessionName)
         }
         return view
     }

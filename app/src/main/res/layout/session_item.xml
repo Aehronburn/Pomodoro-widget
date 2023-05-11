@@ -5,20 +5,47 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/sessionTV"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="Hello there"
+        android:padding="10dp"
+        android:textSize="50sp"/>
 
-            <TextView
-            android:id="@+id/sessionTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Hello there"
-            android:textSize="50sp"/>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/sessionDateTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sessionTV"
+        android:text="01/01/2001"
+        android:padding="5dp"
+        android:paddingStart="10dp"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/sessionCompletedPomodorosTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="4/4"
+        android:padding="5dp"
+        android:paddingEnd="25dp"
+        android:textSize="20sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sessionDateTV"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="#AAAAAA"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
