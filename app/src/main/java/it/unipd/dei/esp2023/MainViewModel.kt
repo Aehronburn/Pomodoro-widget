@@ -10,7 +10,7 @@ import it.unipd.dei.esp2023.database.PomodoroDatabaseDao
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val database: PomodoroDatabaseDao
+    public val database: PomodoroDatabaseDao
 
     init {
         database = PomodoroDatabase.getInstance(application).databaseDao
