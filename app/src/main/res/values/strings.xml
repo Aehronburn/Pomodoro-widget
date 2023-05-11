@@ -7,6 +7,9 @@
     <string name="create_new_session_title">New session</string>
     <string name="create_new_session_positive">Create</string>
     <string name="create_new_session_negative">Cancel</string>
+    <string name="pomodoro_duration_slider_content_label">Slider for choosing pomodoro duration time in minutes</string>
+    <string name="long_break_duration_slider_content_label">Slider for choosing long break duration time in minutes</string>
+    <string name="short_break_duration_slider_content_label">Slider for choosing short break duration time in minutes</string>
 
     <string-array name="recycler_list">
         <item>Item 0</item>
