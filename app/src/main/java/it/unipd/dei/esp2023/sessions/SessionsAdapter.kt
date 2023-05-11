@@ -6,13 +6,15 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.esp2023.R
+import it.unipd.dei.esp2023.database.Session
 
-class SessionsAdapter(private val sessionsList: Array<String>): RecyclerView.Adapter<SessionsAdapter.SessionsViewHolder>() {
-    class SessionsViewHolder(itemView : View): RecyclerView.ViewHolder(itemView){
+//TODO: Change input parameter to be a SessionList instead of a single Session object
+class SessionsAdapter(private val session: Session?): RecyclerView.Adapter<SessionsAdapter.SessionsViewHolder>() {
+   inner class SessionsViewHolder(itemView : View): RecyclerView.ViewHolder(itemView){
         private val sessionTV:TextView = itemView.findViewById(R.id.sessionTV)
 
         fun bind(word:String){
-            sessionTV.text = word
+            sessionTV.text = this@SessionsAdapter.session?.name
         }
     }
 
@@ -23,10 +25,10 @@ class SessionsAdapter(private val sessionsList: Array<String>): RecyclerView.Ada
     }
 
     override fun getItemCount(): Int {
-        return sessionsList.size
+        return 10
     }
 
     override fun onBindViewHolder(holder: SessionsViewHolder, position: Int) {
-        holder.bind(sessionsList[position])
+        holder.bind("foo")
     }
 }
