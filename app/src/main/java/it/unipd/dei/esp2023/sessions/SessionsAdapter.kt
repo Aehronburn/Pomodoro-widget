@@ -12,9 +12,12 @@ import it.unipd.dei.esp2023.database.Session
 class SessionsAdapter(private val session: Session?): RecyclerView.Adapter<SessionsAdapter.SessionsViewHolder>() {
    inner class SessionsViewHolder(itemView : View): RecyclerView.ViewHolder(itemView){
         private val sessionTV:TextView = itemView.findViewById(R.id.sessionTV)
+        private val sessionDateTV:TextView = itemView.findViewById(R.id.sessionDateTV)
+        private val sessionCompletedPomodorosTV:TextView = itemView.findViewById(R.id.sessionCompletedPomodorosTV)
 
         fun bind(word:String){
             sessionTV.text = this@SessionsAdapter.session?.name
+            sessionDateTV.text = this@SessionsAdapter.session?.creationDate
         }
     }
 
