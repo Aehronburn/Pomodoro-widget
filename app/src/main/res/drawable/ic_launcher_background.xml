@@ -12,28 +12,4 @@
         android:fillType="nonZero"
         android:strokeColor="#00000000"/>
   </group>
-  <path
-      android:pathData="M249.51,153.62C205.6,81.46 11.49,189.46 90.69,321.45C171.49,456.11 458.67,441.23 439.15,246.07C426.5,119.58 278.77,201.7 249.51,153.62Z"
-      android:strokeLineJoin="round"
-      android:strokeWidth="7.16694"
-      android:fillColor="#ff6347"
-      android:fillType="nonZero"
-      android:strokeColor="#434343"
-      android:strokeLineCap="round"/>
-  <path
-      android:pathData="M387.94,230.55C374.1,242.35 302.56,323.81 352.38,336.27C384.1,344.2 437.45,239.19 394.54,228.46C392.8,228.02 389.14,229.53 387.94,230.55Z"
-      android:strokeLineJoin="round"
-      android:strokeWidth="7.16694"
-      android:fillColor="#ff7961"
-      android:fillType="nonZero"
-      android:strokeColor="#434343"
-      android:strokeLineCap="round"/>
-  <path
-      android:pathData="M222.47,140.54C185.29,140.54 118.29,194.61 115.6,194.61C114.33,194.61 117.27,192.63 118.4,192.06C131.95,185.29 228.08,172.81 228.08,169.36C228.08,163.7 166.26,246.9 198.75,246.9C226.4,246.9 226.5,191.12 253.33,184.41C278.62,178.09 282.82,235.42 284.19,235.42C322.41,235.42 271.19,159.39 271.19,167.58C271.19,182.1 300.3,169.06 314.55,171.91C322.89,173.58 349.58,201.41 358.67,192.32C358.8,192.19 346.27,173.21 345.41,170.64C330.96,127.29 302.56,151.7 263.28,136.97C253.51,133.3 229.35,86.65 229.35,107.64C229.35,112.64 226.58,135.19 228.08,135.69"
-      android:strokeLineJoin="round"
-      android:strokeWidth="7.16694"
-      android:fillColor="#54ff56"
-      android:fillType="nonZero"
-      android:strokeColor="#434343"
-      android:strokeLineCap="round"/>
 </vector>
