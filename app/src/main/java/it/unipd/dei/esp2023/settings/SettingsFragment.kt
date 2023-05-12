@@ -1,19 +1,19 @@
 package it.unipd.dei.esp2023.settings
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
-import it.unipd.dei.esp2023.MainViewModel
+import androidx.fragment.app.viewModels
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.databinding.FragmentSettingsBinding
 
 class SettingsFragment : Fragment() {
 
-    private val mainViewModel: MainViewModel by activityViewModels()
+    private val viewModel: SettingsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,19 +21,46 @@ class SettingsFragment : Fragment() {
     ): View {
         val binding: FragmentSettingsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.mainViewModel = mainViewModel
+        binding.viewModel = viewModel
 
         binding.pomodoroDurationSlider.addOnChangeListener { _, value, _ ->
-            mainViewModel.setPomodoroDuration(value.toInt())
+            viewModel.setPomodoroDuration(value.toInt())
         }
         binding.shortBreakDurationSlider.addOnChangeListener { _, value, _ ->
-            mainViewModel.setShortBreakDuration(value.toInt())
+            viewModel.setShortBreakDuration(value.toInt())
         }
         binding.longBreakDurationSlider.addOnChangeListener { _, value, _ ->
-            mainViewModel.setLongBreakDuration(value.toInt())
+            viewModel.setLongBreakDuration(value.toInt())
         }
 
+        val preferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        viewModel.setPomodoroDuration(preferences.getInt(POMODORO_DURATION, 1))
+        viewModel.setShortBreakDuration(preferences.getInt(SHORT_BREAK_DURATION, 1))
+        viewModel.setLongBreakDuration(preferences.getInt(LONG_BREAK_DURATION, 1))
+
         return binding.root
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val preferencesEditor = requireActivity().getPreferences(Context.MODE_PRIVATE).edit()
+        viewModel.pomodoroDuration.value?.let {
+            preferencesEditor.putInt(
+                POMODORO_DURATION,
+                it
+            )
+        }
+        viewModel.shortBreakDuration.value?.let {
+            preferencesEditor.putInt(SHORT_BREAK_DURATION,
+                it
+            )
+        }
+        viewModel.longBreakDuration.value?.let {
+            preferencesEditor.putInt(LONG_BREAK_DURATION,
+                it
+            )
+        }
+        preferencesEditor.apply()
     }
 
     companion object {

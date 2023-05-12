@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="mainViewModel"
-            type="it.unipd.dei.esp2023.MainViewModel" />
+            name="viewModel"
+            type="it.unipd.dei.esp2023.settings.SettingsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/pomodoro_duration_slider_content_label"
             android:stepSize="1"
-            android:value="@{mainViewModel.pomodoroDuration}"
+            android:value="@{viewModel.pomodoroDuration}"
             android:valueFrom="1"
             android:valueTo="10"
             app:layout_constraintBottom_toBottomOf="@+id/pomdoro_slider_start_label"
@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_medium"
-            android:text="@{@string/duration_label(mainViewModel.pomodoroDuration)}"
+            android:text="@{@string/duration_label(viewModel.pomodoroDuration)}"
             app:layout_constraintBaseline_toBaselineOf="@+id/pomodoro_duration_text"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="@tools:sample/lorem" />
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/short_break_duration_slider_content_label"
             android:stepSize="1"
-            android:value="@{mainViewModel.shortBreakDuration}"
+            android:value="@{viewModel.shortBreakDuration}"
             android:valueFrom="1"
             android:valueTo="10"
             app:layout_constraintBottom_toBottomOf="@+id/short_break_slider_start_label"
@@ -84,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_medium"
-            android:text="@{@string/duration_label(mainViewModel.shortBreakDuration)}"
+            android:text="@{@string/duration_label(viewModel.shortBreakDuration)}"
             app:layout_constraintBaseline_toBaselineOf="@+id/short_break_duration_text"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="@tools:sample/lorem" />
@@ -107,7 +107,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/long_break_duration_slider_content_label"
             android:stepSize="1"
-            android:value="@{mainViewModel.longBreakDuration}"
+            android:value="@{viewModel.longBreakDuration}"
             android:valueFrom="1"
             android:valueTo="10"
             app:layout_constraintBottom_toBottomOf="@+id/long_break_slider_start_label"
@@ -122,7 +122,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_medium"
-            android:text="@{@string/duration_label(mainViewModel.longBreakDuration)}"
+            android:text="@{@string/duration_label(viewModel.longBreakDuration)}"
             app:layout_constraintBaseline_toBaselineOf="@+id/long_break_duration_text"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="@tools:sample/lorem" />
