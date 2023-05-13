@@ -43,7 +43,7 @@
                     android:layout_marginTop="@dimen/margin_medium"
                     android:text="@string/today_card_title"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
                 <TextView
                     android:id="@+id/today_pomodoros_completed"
@@ -68,16 +68,12 @@
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/imageView"
                     android:layout_width="0dp"
-                    android:layout_height="126dp"
-                    android:layout_marginStart="@dimen/margin_medium"
-                    android:layout_marginTop="@dimen/margin_medium"
-                    android:layout_marginEnd="@dimen/margin_medium"
-                    android:layout_marginBottom="@dimen/margin_medium"
+                    android:layout_height="150dp"
                     android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toTopOf="@id/today_action"
+                    app:layout_constraintBottom_toTopOf="@+id/today_title"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/today_productivity_time"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:shapeAppearanceOverlay="@style/RoundedCornerImage"
                     app:srcCompat="@drawable/pomodoro_artwork_sleeping" />
 
@@ -88,9 +84,9 @@
                     android:layout_marginEnd="@dimen/margin_medium"
                     android:layout_marginBottom="@dimen/margin_medium"
                     android:text="@string/today_card_action"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/today_productivity_time" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
