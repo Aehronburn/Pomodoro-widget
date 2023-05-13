@@ -21,7 +21,7 @@ data class Task(
     var id: Long = 0L,
 
     @ColumnInfo(name = "session")
-    var session: Long,
+    var session: Long = 0L,
 
     @ColumnInfo(name = "name")
     var name: String="",

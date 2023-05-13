@@ -8,6 +8,7 @@
     <string name="create_new_session_positive">Create</string>
     <string name="create_new_session_negative">Cancel</string>
 
+    <!-- TODO toglimi -->
     <string-array name="recycler_list">
         <item>Item 0</item>
         <item>Item 1</item>
