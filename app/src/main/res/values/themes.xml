@@ -30,4 +30,8 @@
     <item name="android:statusBarColor">@android:color/transparent</item>
     <item name="android:windowLightStatusBar">true</item>
 </style>
+    <style name="RoundedCornerImage">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
 </resources>
