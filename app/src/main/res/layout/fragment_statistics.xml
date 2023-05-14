@@ -68,7 +68,7 @@
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/imageView"
                     android:layout_width="0dp"
-                    android:layout_height="150dp"
+                    android:layout_height="160dp"
                     android:scaleType="centerCrop"
                     app:layout_constraintBottom_toTopOf="@+id/today_title"
                     app:layout_constraintEnd_toEndOf="parent"
