@@ -13,9 +13,15 @@
     <string name="pomodoro_duration_title">Pomodoro duration</string>
     <string name="short_break_duration_title">Short break duration</string>
     <string name="long_break_duration_title">Long break duration</string>
-    <string name="duration_label">%s min</string>
+    <string name="duration_label">%d min</string>
     <string name="duration_slider_start">1</string>
     <string name="duration_slider_end">10</string>
+    <string name="today_card_title">Today</string>
+    <string name="pomodoros_completed">completed pomodoros: %d</string>
+    <string name="productivity_time">productivity time: %dh %dmin</string>
+    <string name="today_card_action">Let\'s concentrate</string>
+    <string name="week_card_title">This week</string>
+    <string name="month_card_title">This month</string>
 
     <!-- TODO toglimi -->
     <string-array name="recycler_list">

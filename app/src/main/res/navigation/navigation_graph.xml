@@ -14,7 +14,13 @@
         android:id="@+id/statistics_fragment"
         android:name="it.unipd.dei.esp2023.statistics.StatisticsFragment"
         android:label="Statistics"
-        tools:layout="@layout/fragment_statistics" />
+        tools:layout="@layout/fragment_statistics" >
+        <action
+            android:id="@+id/action_statistics_fragment_to_sessions_fragment"
+            app:destination="@id/sessions_fragment"
+            app:popUpTo="@id/sessions_fragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/settings_fragment"
         android:name="it.unipd.dei.esp2023.settings.SettingsFragment"
