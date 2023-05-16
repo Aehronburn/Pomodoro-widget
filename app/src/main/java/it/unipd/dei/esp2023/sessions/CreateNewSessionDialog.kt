@@ -18,7 +18,7 @@ import it.unipd.dei.esp2023.R
 
 class CreateNewSessionDialog: DialogFragment() {
 
-    private val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: SessionsViewModel by activityViewModels()
 
     lateinit var dialogView : View
 
