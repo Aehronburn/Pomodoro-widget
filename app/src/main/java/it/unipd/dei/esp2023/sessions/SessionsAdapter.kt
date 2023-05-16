@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.database.Session
 
-//TODO: Change input parameter to be a SessionList instead of a single Session object
+//TODO: Change input parameter to be a List<Session> instead of a single Session object
 class SessionsAdapter(private val session: Session?): RecyclerView.Adapter<SessionsAdapter.SessionsViewHolder>() {
    inner class SessionsViewHolder(itemView : View): RecyclerView.ViewHolder(itemView){
         private val sessionTV:TextView = itemView.findViewById(R.id.sessionTV)
