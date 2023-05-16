@@ -10,9 +10,9 @@
     <string name="pomodoro_duration_slider_content_label">Slider for choosing pomodoro duration time in minutes</string>
     <string name="long_break_duration_slider_content_label">Slider for choosing long break duration time in minutes</string>
     <string name="short_break_duration_slider_content_label">Slider for choosing short break duration time in minutes</string>
-    <string name="pomodoro_duration_title">Pomodoro duration</string>
-    <string name="short_break_duration_title">Short break duration</string>
-    <string name="long_break_duration_title">Long break duration</string>
+    <string name="pomodoro_duration_title">Pomodoro</string>
+    <string name="short_break_duration_title">Short break</string>
+    <string name="long_break_duration_title">Long break</string>
     <string name="duration_label">%d min</string>
     <string name="duration_slider_start">1</string>
     <string name="duration_slider_end">10</string>
@@ -22,6 +22,10 @@
     <string name="today_card_action">Let\'s concentrate</string>
     <string name="week_card_title">This week</string>
     <string name="month_card_title">This month</string>
+    <string name="work_icon">work icon</string>
+    <string name="coffee_icon">coffee icon</string>
+    <string name="lunch_icon">lunch icon</string>
+    <string name="settings_duration_title">Durations</string>
 
     <!-- TODO toglimi -->
     <string-array name="recycler_list">
