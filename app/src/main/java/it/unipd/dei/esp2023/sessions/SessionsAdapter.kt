@@ -15,7 +15,7 @@ class SessionsAdapter(private val session: Session?): RecyclerView.Adapter<Sessi
         private val sessionDateTV:TextView = itemView.findViewById(R.id.sessionDateTV)
         private val sessionCompletedPomodorosTV:TextView = itemView.findViewById(R.id.sessionCompletedPomodorosTV)
 
-        fun bind(word:String){
+        fun bind(){
             sessionTV.text = this@SessionsAdapter.session?.name
             sessionDateTV.text = this@SessionsAdapter.session?.creationDate
         }
@@ -32,6 +32,6 @@ class SessionsAdapter(private val session: Session?): RecyclerView.Adapter<Sessi
     }
 
     override fun onBindViewHolder(holder: SessionsViewHolder, position: Int) {
-        holder.bind("foo")
+        holder.bind()
     }
 }

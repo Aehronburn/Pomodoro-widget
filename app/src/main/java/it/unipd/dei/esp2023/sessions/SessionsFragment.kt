@@ -1,7 +1,7 @@
 package it.unipd.dei.esp2023.sessions
 
 import android.os.Bundle
-import android.se.omapi.Session
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +10,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import it.unipd.dei.esp2023.MainViewModel
 import it.unipd.dei.esp2023.R
 import kotlinx.coroutines.launch
 
@@ -37,8 +36,13 @@ class SessionsFragment : Fragment() {
         //Launch coroutine and pick data from database
         //TODO: Make this change live
         lifecycleScope.launch {
-            val mySession = viewModel.database.getSessionFromId(0L)
-            recyclerView.adapter = SessionsAdapter(mySession.value)
+            val mySession = viewModel.database.getSessionFromName("Hello")
+            //TODO: Pescando tramite ID ho un null pointer exception;
+            //Infatti l'id che vedo effettivamente non è 0L
+            // provo con una query modificata
+            Log.d("Il mio adapter riceve", mySession.name)
+            Log.d("Con ID", mySession.id.toString())
+            recyclerView.adapter = SessionsAdapter(mySession)
         }
 
         recyclerView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->

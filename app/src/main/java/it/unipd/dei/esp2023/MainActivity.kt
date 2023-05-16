@@ -2,6 +2,7 @@ package it.unipd.dei.esp2023
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.*
@@ -53,9 +54,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     //Prova
-    suspend fun setDefault(){
+    private suspend fun setDefault(){
         //Insert one default Session
-        val defaultSession: Session = Session(0L,"Hello", LocalDate.now().toString())
+        val defaultSession = Session(0L,"Hello", LocalDate.now().toString())
         viewModel.database.insertSession(defaultSession)
     }
 
