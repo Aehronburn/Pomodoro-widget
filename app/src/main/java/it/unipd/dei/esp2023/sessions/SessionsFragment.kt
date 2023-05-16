@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 class SessionsFragment : Fragment() {
 
 
-    private val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: SessionsViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
