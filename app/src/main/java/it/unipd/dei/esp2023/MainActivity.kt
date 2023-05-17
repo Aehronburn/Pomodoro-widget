@@ -47,17 +47,7 @@ class MainActivity : AppCompatActivity() {
             name -> if(name.isNotEmpty()) Toast.makeText(this, name, Toast.LENGTH_LONG).show()
         }
 
-        //Prova
-        lifecycleScope.launch {
-            setDefault()
-        }
     }
 
-    //Prova
-    private suspend fun setDefault(){
-        //Insert one default Session
-        val defaultSession = Session(0L,"Hello", LocalDate.now().toString())
-        viewModel.database.insertSession(defaultSession)
-    }
 
 }
