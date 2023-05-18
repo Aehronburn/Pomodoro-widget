@@ -43,15 +43,18 @@ class CreateNewSessionDialog: DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_dialog_create_new_session, container, false)
+
         val textInput = view.findViewById<TextInputEditText>(R.id.new_session_input_edit_text)
         textInput.doOnTextChanged { text, _, _, _ ->
             sessionName = text.toString()
             Log.d("TextChanged", sessionName)
         }
+
         val cancelButton = view.findViewById<Button>(R.id.cancel_session_button)
         cancelButton.setOnClickListener {
             dismiss()
         }
+
         val createButton = view.findViewById<Button>(R.id.create_session_button)
         createButton.setOnClickListener {
             viewModel.setNewSessionName(sessionName)
@@ -65,6 +68,7 @@ class CreateNewSessionDialog: DialogFragment() {
 
             dismiss()
         }
+
         return view
     }
 

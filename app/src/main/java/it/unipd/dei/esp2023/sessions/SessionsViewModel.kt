@@ -28,7 +28,7 @@ class SessionsViewModel(application: Application) : AndroidViewModel(application
         _newSessionName.value = name
     }
 
-    //Ho cancellato due coroutine insieme, senmnò si pestavano i piedi a vicenda
+    //Ho cancellato due coroutine insieme, sennò si pestavano i piedi a vicenda
     //e beccavo sempre il NULL pointer exception
     //Richiamo l'inizializzazione del database tutto nel SessionFragment
 }

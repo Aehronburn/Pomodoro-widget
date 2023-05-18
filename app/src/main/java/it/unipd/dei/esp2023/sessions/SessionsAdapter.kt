@@ -1,5 +1,6 @@
 package it.unipd.dei.esp2023.sessions
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,15 @@ class SessionsAdapter(private val sessionList: List<Session>?): RecyclerView.Ada
         private val sessionTV:TextView = itemView.findViewById(R.id.sessionTV)
         private val sessionDateTV:TextView = itemView.findViewById(R.id.sessionDateTV)
         private val sessionCompletedPomodorosTV:TextView = itemView.findViewById(R.id.sessionCompletedPomodorosTV)
+
+       init {
+           itemView.setOnClickListener{
+               //Deprecata ma funziona; è da cambiare in ogni caso
+               val msg = this@SessionsAdapter.sessionList?.get(position)?.name
+               Log.d("Hai clickato ", msg!!)
+               //TODO: Navigare nei fragment
+           }
+       }
 
         fun bind(position: Int){
             try {
