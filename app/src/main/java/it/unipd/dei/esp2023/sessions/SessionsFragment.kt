@@ -18,7 +18,6 @@ import java.time.LocalDate
 
 class SessionsFragment : Fragment() {
 
-
     private val viewModel: SessionsViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -39,17 +38,14 @@ class SessionsFragment : Fragment() {
         //Launch coroutine and clear database
         //Add some mock data
         //pick this Live data from database
-
         lifecycleScope.launch {
             viewModel.database.deleteAllSessions()
 
-            lateinit var defaultSession: Session
-            for(i in 65..75){
-                defaultSession = Session(0L,String(charArrayOf(i.toChar())), LocalDate.now().toString())
-                viewModel.database.insertSession(defaultSession)
-            }
-
-            //val mySessionList = viewModel.database.getSessionList()
+            //lateinit var defaultSession: Session
+            //for(i in 65..75){
+            //    defaultSession = Session(0L,String(charArrayOf(i.toChar())), LocalDate.now().toString())
+            //    viewModel.database.insertSession(defaultSession)
+            //}
 
             //Watch out, "mySession" it's a LiveData variable: observe
             //its changes and get its value through an iterator

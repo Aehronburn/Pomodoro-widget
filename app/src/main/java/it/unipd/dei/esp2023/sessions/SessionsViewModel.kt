@@ -10,8 +10,8 @@ import java.time.LocalDate
 
 class SessionsViewModel(application: Application) : AndroidViewModel(application) {
     val database: PomodoroDatabaseDao
-    //Mi serve questa lista di LiveData<Session> per poterla osservare da
-    //più posizioni
+
+    //Mi serve questa lista di LiveData<Session> per poterla osservare da più posizioni
     var mySessionList: LiveData<List<Session>>
 
     init {
