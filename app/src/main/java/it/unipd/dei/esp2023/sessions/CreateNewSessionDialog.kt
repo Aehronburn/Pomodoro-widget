@@ -10,14 +10,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import it.unipd.dei.esp2023.R
 
 class CreateNewSessionDialog: DialogFragment() {
 
-    private val viewModel: SessionsViewModel by activityViewModels()
+    private val viewModel: SessionsViewModel by viewModels()
 
     lateinit var dialogView : View
 
@@ -51,7 +51,9 @@ class CreateNewSessionDialog: DialogFragment() {
 
         val createButton = view.findViewById<Button>(R.id.create_session_button)
         createButton.setOnClickListener {
-            viewModel.insertSession(sessionName)
+            if(sessionName.length != 0) {
+                viewModel.insertSession(sessionName)
+            }
             dismiss()
         }
 
