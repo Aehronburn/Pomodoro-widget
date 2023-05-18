@@ -9,17 +9,10 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class SessionsViewModel(application: Application) : AndroidViewModel(application) {
-    // TODO: Implement the ViewModel
-
     val database: PomodoroDatabaseDao
 
     init {
         database = PomodoroDatabase.getInstance(application).databaseDao
-
-        //Prova
-        viewModelScope.launch {
-            setDefault()
-        }
     }
 
     //Serve solo per il Toast
@@ -31,11 +24,7 @@ class SessionsViewModel(application: Application) : AndroidViewModel(application
         _newSessionName.value = name
     }
 
-
-    //Prova
-    private suspend fun setDefault(){
-        //Insert one default Session
-        val defaultSession = Session(0L,"Hello", LocalDate.now().toString())
-        database.insertSession(defaultSession)
-    }
+    //Ho cancellato due coroutine insieme, senmnò si pestavano i piedi a vicenda
+    //e beccavo sempre il NULL pointer exception
+    //Richiamo l'inizializzazione del database tutto nel SessionFragment
 }

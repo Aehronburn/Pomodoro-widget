@@ -7,11 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import it.unipd.dei.esp2023.R
+import it.unipd.dei.esp2023.database.Session
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class SessionsFragment : Fragment() {
 
@@ -34,15 +37,22 @@ class SessionsFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_id)
 
         //Launch coroutine and pick data from database
-        //TODO: Make this change live
         lifecycleScope.launch {
-            val mySession = viewModel.database.getSessionFromName("Hello")
-            //TODO: Pescando tramite ID ho un null pointer exception;
-            //Infatti l'id che vedo effettivamente non è 0L
-            // provo con una query modificata
-            Log.d("Il mio adapter riceve", mySession.name)
-            Log.d("Con ID", mySession.id.toString())
-            recyclerView.adapter = SessionsAdapter(mySession)
+            viewModel.database.deleteAllSessions()
+            //Insert some default Sessions
+            lateinit var defaultSession: Session
+            for(i in 65..75){
+                defaultSession = Session(0L,String(charArrayOf(i.toChar())), LocalDate.now().toString())
+                viewModel.database.insertSession(defaultSession)
+            }
+
+            val mySessionList = viewModel.database.getSessionList()
+
+            //Watch out, "mySession" it's a LiveData variable: observe
+            //its changes and get its value through an iterator
+            mySessionList.observe(viewLifecycleOwner) {
+                recyclerView.adapter = SessionsAdapter(it)
+            }
         }
 
         recyclerView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->

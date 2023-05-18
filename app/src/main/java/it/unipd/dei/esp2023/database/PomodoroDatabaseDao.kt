@@ -20,6 +20,8 @@ interface PomodoroDatabaseDao {
 
     // region delete
 
+    @Query("DELETE FROM Session")
+    suspend fun deleteAllSessions()
     @Delete
     suspend fun deleteSession(session: Session)
     @Query("DELETE FROM Session WHERE id = :sessionId")

@@ -9,15 +9,15 @@ import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.database.Session
 
 //TODO: Change input parameter to be a List<Session> instead of a single Session object
-class SessionsAdapter(private val session: Session?): RecyclerView.Adapter<SessionsAdapter.SessionsViewHolder>() {
+class SessionsAdapter(private val sessionList: List<Session>?): RecyclerView.Adapter<SessionsAdapter.SessionsViewHolder>() {
    inner class SessionsViewHolder(itemView : View): RecyclerView.ViewHolder(itemView){
         private val sessionTV:TextView = itemView.findViewById(R.id.sessionTV)
         private val sessionDateTV:TextView = itemView.findViewById(R.id.sessionDateTV)
         private val sessionCompletedPomodorosTV:TextView = itemView.findViewById(R.id.sessionCompletedPomodorosTV)
 
-        fun bind(){
-            sessionTV.text = this@SessionsAdapter.session?.name
-            sessionDateTV.text = this@SessionsAdapter.session?.creationDate
+        fun bind(position: Int){
+            sessionTV.text = this@SessionsAdapter.sessionList?.get(position)?.name
+            sessionDateTV.text = this@SessionsAdapter.sessionList?.get(position)?.creationDate
         }
     }
 
@@ -32,6 +32,6 @@ class SessionsAdapter(private val session: Session?): RecyclerView.Adapter<Sessi
     }
 
     override fun onBindViewHolder(holder: SessionsViewHolder, position: Int) {
-        holder.bind()
+        holder.bind(position)
     }
 }
