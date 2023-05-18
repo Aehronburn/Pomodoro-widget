@@ -36,21 +36,24 @@ class SessionsFragment : Fragment() {
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_id)
 
-        //Launch coroutine and pick data from database
+        //Launch coroutine and clear database
+        //Add some mock data
+        //pick this Live data from database
+
         lifecycleScope.launch {
             viewModel.database.deleteAllSessions()
-            //Insert some default Sessions
+
             lateinit var defaultSession: Session
             for(i in 65..75){
                 defaultSession = Session(0L,String(charArrayOf(i.toChar())), LocalDate.now().toString())
                 viewModel.database.insertSession(defaultSession)
             }
 
-            val mySessionList = viewModel.database.getSessionList()
+            //val mySessionList = viewModel.database.getSessionList()
 
             //Watch out, "mySession" it's a LiveData variable: observe
             //its changes and get its value through an iterator
-            mySessionList.observe(viewLifecycleOwner) {
+            viewModel.mySessionList.observe(viewLifecycleOwner) {
                 recyclerView.adapter = SessionsAdapter(it)
             }
         }

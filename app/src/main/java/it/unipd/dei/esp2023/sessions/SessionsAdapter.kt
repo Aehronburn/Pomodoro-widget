@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.database.Session
 
-//TODO: Change input parameter to be a List<Session> instead of a single Session object
 class SessionsAdapter(private val sessionList: List<Session>?): RecyclerView.Adapter<SessionsAdapter.SessionsViewHolder>() {
    inner class SessionsViewHolder(itemView : View): RecyclerView.ViewHolder(itemView){
         private val sessionTV:TextView = itemView.findViewById(R.id.sessionTV)
@@ -16,8 +15,13 @@ class SessionsAdapter(private val sessionList: List<Session>?): RecyclerView.Ada
         private val sessionCompletedPomodorosTV:TextView = itemView.findViewById(R.id.sessionCompletedPomodorosTV)
 
         fun bind(position: Int){
-            sessionTV.text = this@SessionsAdapter.sessionList?.get(position)?.name
-            sessionDateTV.text = this@SessionsAdapter.sessionList?.get(position)?.creationDate
+            try {
+                sessionTV.text = this@SessionsAdapter.sessionList?.get(position)?.name
+                sessionDateTV.text = this@SessionsAdapter.sessionList?.get(position)?.creationDate
+            }
+            catch(e: IndexOutOfBoundsException){
+
+            }
         }
     }
 
@@ -28,7 +32,7 @@ class SessionsAdapter(private val sessionList: List<Session>?): RecyclerView.Ada
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return sessionList?.size!!
     }
 
     override fun onBindViewHolder(holder: SessionsViewHolder, position: Int) {
