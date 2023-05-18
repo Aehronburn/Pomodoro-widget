@@ -23,11 +23,13 @@ class SessionsAdapter(private var sessionList: List<Session>): RecyclerView.Adap
 
     fun updateList(newList: List<Session>) {
         sessionList = newList
+        //TODO to be changed to a more efficient method
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionsViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.session_item, parent, false)
+        //TODO implement navigation instead of Log
         view.setOnClickListener { Log.d("debug", "Cliccato") }
         return SessionsViewHolder(view)
     }

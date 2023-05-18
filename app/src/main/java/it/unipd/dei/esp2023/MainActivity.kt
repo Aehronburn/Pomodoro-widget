@@ -15,6 +15,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        /*
+        Displays content edge to edge https://developer.android.com/develop/ui/views/layout/edge-to-edge
+         */
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment

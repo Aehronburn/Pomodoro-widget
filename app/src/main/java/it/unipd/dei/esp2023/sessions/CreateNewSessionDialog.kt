@@ -51,7 +51,7 @@ class CreateNewSessionDialog: DialogFragment() {
 
         val createButton = view.findViewById<Button>(R.id.create_session_button)
         createButton.setOnClickListener {
-            if(sessionName.length != 0) {
+            if(sessionName.isNotEmpty()) {
                 viewModel.insertSession(sessionName)
             }
             dismiss()
