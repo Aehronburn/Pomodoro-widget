@@ -2,24 +2,14 @@ package it.unipd.dei.esp2023
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.core.view.*
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationBarView
-import it.unipd.dei.esp2023.database.Session
-import it.unipd.dei.esp2023.sessions.SessionsViewModel
-import kotlinx.coroutines.launch
-import java.time.LocalDate
 
 class MainActivity : AppCompatActivity() {
-
-    private val viewModel: SessionsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,11 +33,6 @@ class MainActivity : AppCompatActivity() {
         appBar.setupWithNavController(navController, appBarConfiguration)
         setSupportActionBar(appBar)
 
-        viewModel.newSessionName.observe(this) {
-            name -> if(name.isNotEmpty()) Toast.makeText(this, name, Toast.LENGTH_LONG).show()
-        }
-
     }
-
 
 }

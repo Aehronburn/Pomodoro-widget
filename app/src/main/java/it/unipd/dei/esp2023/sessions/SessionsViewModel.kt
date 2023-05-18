@@ -6,26 +6,22 @@ import it.unipd.dei.esp2023.database.PomodoroDatabase
 import it.unipd.dei.esp2023.database.PomodoroDatabaseDao
 import it.unipd.dei.esp2023.database.Session
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 
 class SessionsViewModel(application: Application) : AndroidViewModel(application) {
     val database: PomodoroDatabaseDao
 
     //Mi serve questa lista di LiveData<Session> per poterla osservare da più posizioni
-    var mySessionList: LiveData<List<Session>>
+    val sessionList: LiveData<List<Session>>
 
     init {
         database = PomodoroDatabase.getInstance(application).databaseDao
-        mySessionList = database.getSessionList()
+        sessionList = database.getSessionList()
     }
 
-    //Serve solo per il Toast
-    private val _newSessionName = MutableLiveData<String>("")
-    val newSessionName : LiveData<String>
-        get() = _newSessionName
-
-    fun setNewSessionName(name: String) {
-        _newSessionName.value = name
+    fun insertSession(name: String) {
+        viewModelScope.launch {
+            database.insertSession(Session(name = name))
+        }
     }
 
     //Ho cancellato due coroutine insieme, sennò si pestavano i piedi a vicenda

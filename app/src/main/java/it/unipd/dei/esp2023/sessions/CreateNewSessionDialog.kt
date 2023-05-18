@@ -11,15 +11,9 @@ import android.widget.Button
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
-import it.unipd.dei.esp2023.MainViewModel
 import it.unipd.dei.esp2023.R
-import it.unipd.dei.esp2023.database.Session
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
-import java.time.LocalDate
 
 class CreateNewSessionDialog: DialogFragment() {
 
@@ -57,15 +51,7 @@ class CreateNewSessionDialog: DialogFragment() {
 
         val createButton = view.findViewById<Button>(R.id.create_session_button)
         createButton.setOnClickListener {
-            viewModel.setNewSessionName(sessionName)
-
-            lifecycleScope.launch() {
-                viewModel.database.insertSession(Session(0L, sessionName, LocalDate.now().toString()))
-                viewModel.mySessionList = viewModel.database.getSessionList()
-
-                lifecycleScope.cancel()
-            }
-
+            viewModel.insertSession(sessionName)
             dismiss()
         }
 
