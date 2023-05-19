@@ -38,6 +38,7 @@ class SessionDetailsFragment : Fragment() {
                 Log.d(DEBUG_LOG_TAG, "trigger viewModel.taskList.observe")
                 Log.d(DEBUG_LOG_TAG, "Task list count: "+list.count())
                 theAdapter.setTaskList(list)
+                Log.d(DEBUG_LOG_TAG, "Dopo setTaskList")
         }
         recyclerView.adapter = theAdapter
 

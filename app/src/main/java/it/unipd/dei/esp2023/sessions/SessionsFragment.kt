@@ -51,7 +51,7 @@ class SessionsFragment : Fragment() {
 
 
         // TODO toglimi
-        var listaLiveData: LiveData<List<Session>> = PomodoroDatabase.getInstance(requireContext()).databaseDao.getSessionList()
+        var listaLiveData: LiveData<List<Session>> = PomodoroDatabase.getInstance(requireContext()).databaseDao.getSessionListASC()
         lifecycleScope.launch {
             PomodoroDatabase.getInstance(requireContext()).databaseDao.insertSession(Session(0, "NomeSessione"))
         }

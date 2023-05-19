@@ -1,5 +1,6 @@
 package it.unipd.dei.esp2023.session_details
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.esp2023.R
+import it.unipd.dei.esp2023.database.Session
 import it.unipd.dei.esp2023.database.Task
 
 class SessionDetailsRecyclerViewAdapter : RecyclerView.Adapter<SessionDetailsRecyclerViewAdapter.SDetailsViewHolder>() {
@@ -17,6 +19,7 @@ class SessionDetailsRecyclerViewAdapter : RecyclerView.Adapter<SessionDetailsRec
         private val taskNameTextView: TextView = itemView.findViewById(R.id.taskNameSessionDetails)
 
         fun bind(task: Task) {
+            Log.d(SessionDetailsFragment.DEBUG_LOG_TAG, "bind ${task.name}")
             taskNameTextView.text = task.name
         }
     }
@@ -36,10 +39,15 @@ class SessionDetailsRecyclerViewAdapter : RecyclerView.Adapter<SessionDetailsRec
 
     // Displays data at a certain position
     override fun onBindViewHolder(holder: SDetailsViewHolder, position: Int) {
+        Log.d(SessionDetailsFragment.DEBUG_LOG_TAG, "onBindViewHolder position $position")
         holder.bind(taskList[position])
     }
     fun setTaskList(theList: List<Task>){
+        Log.d(SessionDetailsFragment.DEBUG_LOG_TAG, "inizio setTaskList")
+        Log.d(SessionDetailsFragment.DEBUG_LOG_TAG, "Lunghezza lista parametro: "+theList.count().toString())
         taskList = theList
+        Log.d(SessionDetailsFragment.DEBUG_LOG_TAG, "taskList aggiornata ${taskList.count()}")
         this.notifyDataSetChanged()
+        Log.d(SessionDetailsFragment.DEBUG_LOG_TAG, "this.notifyDataSetChanged()")
     }
 }
