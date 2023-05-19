@@ -20,34 +20,21 @@ class SessionDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(DEBUG_LOG_TAG, "Inizio onCreateView")
         val param: Long? = arguments?.getLong("sessionId")
-        if(param==null){
-            Log.d(DEBUG_LOG_TAG, "Lettura param: null")
-        }else{
-            Log.d(DEBUG_LOG_TAG, "Lettura param: $param")
-        }
 
         require(param!=null)
         val sessionId: Long = param
         viewModel.sessionId = sessionId
         val view = inflater.inflate(R.layout.fragment_session_details, container, false)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.taskListReciclerView)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.taskListRecyclerView)
         val theAdapter = SessionDetailsRecyclerViewAdapter()
         viewModel.taskList.observe(viewLifecycleOwner){
             list ->
-                Log.d(DEBUG_LOG_TAG, "trigger viewModel.taskList.observe")
-                Log.d(DEBUG_LOG_TAG, "Task list count: "+list.count())
                 theAdapter.setTaskList(list)
-                Log.d(DEBUG_LOG_TAG, "Dopo setTaskList")
         }
         recyclerView.adapter = theAdapter
 
         return view
-    }
-
-    companion object {
-        val DEBUG_LOG_TAG: String = "session_details_debug_tag"
     }
 
 }

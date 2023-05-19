@@ -31,4 +31,7 @@
     <string name="create_new_task_positive">Create</string>
     <string name="create_new_task_number_hint">How many pomodoros?</string>
     <string name="create_new_task_title">New task</string>
+    <string name="singular_pomodoro">pomodoro</string>
+    <string name="plural_pomodoro">pomodoros</string>
+
 </resources>

@@ -19,24 +19,11 @@ class SessionDetailsViewModel(app: Application): AndroidViewModel(app) {
     var sessionId: Long = 0
         get() { return field }
         set(id: Long) {
-            Log.d(SessionDetailsFragment.DEBUG_LOG_TAG, "SessionDetailsViewModel set id: $id")
             if(!initialized){
-                Log.d(SessionDetailsFragment.DEBUG_LOG_TAG, "!initialized")
-                try {
-                    Log.d(SessionDetailsFragment.DEBUG_LOG_TAG, "Inizio try")
-                    field = id
-                    Log.d(SessionDetailsFragment.DEBUG_LOG_TAG, "Dopo set field")
-                    taskList = myDao.getTaskListFromSessionId(sessionId)
-                    sessionInfo = myDao.getSessionFromId(sessionId)
-                    Log.d(SessionDetailsFragment.DEBUG_LOG_TAG, "Dopo query")
-                }catch(e: Exception){
-                    Log.d(SessionDetailsFragment.DEBUG_LOG_TAG, "catch")
-                    Log.d(SessionDetailsFragment.DEBUG_LOG_TAG, e.toString())
-                }
+                field = id
+                taskList = myDao.getTaskListFromSessionId(sessionId)
+                sessionInfo = myDao.getSessionFromId(sessionId)
                 initialized = true
-                Log.d(SessionDetailsFragment.DEBUG_LOG_TAG, "initialized settato true")
-            }else{
-                Log.d(SessionDetailsFragment.DEBUG_LOG_TAG, "already initialized")
             }
         }
 
