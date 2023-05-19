@@ -9,7 +9,11 @@
         android:id="@+id/sessions_fragment"
         android:name="it.unipd.dei.esp2023.sessions.SessionsFragment"
         android:label="Sessions"
-        tools:layout="@layout/fragment_sessions" />
+        tools:layout="@layout/fragment_sessions" >
+        <action
+            android:id="@+id/action_sessions_fragment_to_sessionDetails"
+            app:destination="@id/sessionDetails" />
+    </fragment>
     <fragment
         android:id="@+id/statistics_fragment"
         android:name="it.unipd.dei.esp2023.statistics.StatisticsFragment"
@@ -28,7 +32,11 @@
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/sessionDetails"
-        android:name="it.unipd.dei.esp2023.session_details.SessionDetails"
+        android:name="it.unipd.dei.esp2023.session_details.SessionDetailsFragment"
         android:label="Session details"
-        tools:layout="@layout/fragment_session_details" />
+        tools:layout="@layout/fragment_session_details" >
+        <argument
+            android:name="sessionId"
+            app:argType="long" />
+    </fragment>
 </navigation>
