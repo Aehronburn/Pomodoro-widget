@@ -6,9 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import it.unipd.dei.esp2023.R
+import it.unipd.dei.esp2023.database.Session
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 class SessionsFragment : Fragment() {
 
@@ -33,6 +38,11 @@ class SessionsFragment : Fragment() {
             if(scrollY > oldScrollY) extendedFloatingActionButton.shrink()
             else extendedFloatingActionButton.extend()
         }
+
+        lifecycleScope.launch {
+            viewModel.database.deleteAllSessions()
+        }
+        lifecycleScope.cancel()
 
         viewModel.sessionList.observe(viewLifecycleOwner) {
             adapter.updateList(it)
