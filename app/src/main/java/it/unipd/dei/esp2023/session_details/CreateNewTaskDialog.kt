@@ -1,4 +1,4 @@
-package it.unipd.dei.esp2023.sessions
+package it.unipd.dei.esp2023.session_details
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -9,21 +9,19 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import it.unipd.dei.esp2023.R
 
-class CreateNewSessionDialog : DialogFragment() {
-
-    private val viewModel: SessionsViewModel by viewModels()
+class CreateNewTaskDialog : DialogFragment() {
 
     /*
     The view of the dialog fragment we are manually creating inside onCreateDialog
      */
     private lateinit var dialogView: View
 
-    private var sessionName: String = ""
+    private var taskName: String = ""
+    private var pomodorosNumber: Int = 0
 
     /*
     In order to build a dialog with Material 3 theming, it is required to create it using
@@ -41,32 +39,33 @@ class CreateNewSessionDialog : DialogFragment() {
         val builder = MaterialAlertDialogBuilder(requireActivity())
         dialogView = onCreateView(LayoutInflater.from(requireContext()), null, savedInstanceState)
         builder.setView(dialogView)
-        builder.setTitle(R.string.create_new_session_title)
+        builder.setTitle(R.string.create_new_task_title)
         return builder.create()
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.fragment_dialog_create_new_session, container, false)
+        // Inflate the layout for this fragment
+        val view = inflater.inflate(R.layout.fragment_create_new_task_dialog, container, false)
 
-        val textInput = view.findViewById<TextInputEditText>(R.id.new_session_input_edit_text)
-        textInput.doOnTextChanged { text, _, _, _ ->
-            sessionName = text.toString()
+        val nameInput = view.findViewById<TextInputEditText>(R.id.new_task_input_name_edit_text)
+        nameInput.doOnTextChanged { text, _, _, _ ->
+            taskName = text.toString()
         }
 
-        val cancelButton = view.findViewById<Button>(R.id.cancel_session_button)
-        cancelButton.setOnClickListener {
-            dismiss()
+        val numberInput = view.findViewById<TextInputEditText>(R.id.new_task_input_number_edit_text)
+        numberInput.doOnTextChanged { text, _, _, _ ->
+            pomodorosNumber = text.toString().toInt()
         }
 
-        val createButton = view.findViewById<Button>(R.id.create_session_button)
+        val cancelButton = view.findViewById<Button>(R.id.cancel_task_button)
+        cancelButton.setOnClickListener { dismiss() }
+
+        val createButton = view.findViewById<Button>(R.id.create_task_button)
         createButton.setOnClickListener {
-            if (sessionName.isNotEmpty()) {
-                viewModel.insertSession(sessionName)
-            }
+            //TODO invocare funzione dal SessionDetailsViewModel
             dismiss()
         }
 
@@ -80,4 +79,5 @@ class CreateNewSessionDialog : DialogFragment() {
     override fun getView(): View {
         return dialogView
     }
+
 }
