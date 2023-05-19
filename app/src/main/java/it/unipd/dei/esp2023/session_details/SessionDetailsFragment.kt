@@ -43,8 +43,6 @@ class SessionDetailsFragment : Fragment() {
         }
         recyclerView.adapter = theAdapter
 
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.GONE
-
         return view
     }
 
