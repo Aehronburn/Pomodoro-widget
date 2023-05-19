@@ -24,7 +24,10 @@ class SessionsViewModel(application: Application) : AndroidViewModel(application
             database.insertSession(Session(name = name))
         }
         //Serve a chiudere questa coroutine, visto che ce ne potrebbero essere altre aperte
-        viewModelScope.cancel()
+        /*
+        TODO to be removed. BUGS
+         */
+        //viewModelScope.cancel()
     }
 
     //Ho cancellato due coroutine insieme, sennò si pestavano i piedi a vicenda

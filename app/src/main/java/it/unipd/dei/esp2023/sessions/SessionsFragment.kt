@@ -44,7 +44,7 @@ class SessionsFragment : Fragment() {
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_id)
-        val adapter = SessionsAdapter(emptyList())
+        val adapter = SessionsAdapter()
         recyclerView.adapter = adapter
 
         recyclerView.setOnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
@@ -52,10 +52,13 @@ class SessionsFragment : Fragment() {
             else extendedFloatingActionButton.extend()
         }
 
+        /*
+        TODO this is bugged. Everything. To remove already present data cancel it from android settings
         lifecycleScope.launch {
             viewModel.database.deleteAllSessions()
         }
         lifecycleScope.cancel()
+        */
 
         viewModel.sessionList.observe(viewLifecycleOwner) {
             adapter.updateList(it)
@@ -63,6 +66,7 @@ class SessionsFragment : Fragment() {
 
 
         // TODO toglimi
+        /*
         var listaLiveData: LiveData<List<Session>> = PomodoroDatabase.getInstance(requireContext()).databaseDao.getSessionListASC()
         lifecycleScope.launch {
             PomodoroDatabase.getInstance(requireContext()).databaseDao.insertSession(Session(0, "NomeSessione"))
@@ -89,7 +93,7 @@ class SessionsFragment : Fragment() {
                     navController.navigate(R.id.action_sessions_fragment_to_sessionDetails, bundle);
                 }
         }
-
+        */
 
         return view
     }
