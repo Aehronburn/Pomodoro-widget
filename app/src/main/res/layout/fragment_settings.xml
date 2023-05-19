@@ -15,6 +15,17 @@
         tools:context=".settings.SettingsFragment">
 
         <TextView
+            android:id="@+id/settings_duration_title"
+            style="@style/TextAppearance.Material3.HeadlineMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_large"
+            android:text="@string/settings_duration_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
             android:id="@+id/pomodoro_duration_text"
             style="@style/TextAppearance.Material3.TitleMedium"
             android:layout_width="wrap_content"
@@ -22,35 +33,33 @@
             android:layout_marginStart="@dimen/margin_medium"
             android:layout_marginTop="@dimen/margin_large"
             android:text="@string/pomodoro_duration_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/work_icon"
+            app:layout_constraintTop_toBottomOf="@+id/settings_duration_title" />
 
         <com.google.android.material.slider.Slider
             android:id="@+id/pomodoro_duration_slider"
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_medium"
             android:contentDescription="@string/pomodoro_duration_slider_content_label"
             android:stepSize="1"
             android:value="@{viewModel.pomodoroDuration}"
             android:valueFrom="1"
             android:valueTo="10"
-            app:layout_constraintBottom_toBottomOf="@+id/pomdoro_slider_start_label"
-            app:layout_constraintEnd_toStartOf="@+id/pomodoro_slider_end_label"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/pomdoro_slider_start_label"
-            app:layout_constraintTop_toTopOf="@+id/pomdoro_slider_start_label" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/work_icon"
+            app:layout_constraintTop_toBottomOf="@+id/pomodoro_duration_text" />
 
         <TextView
             android:id="@+id/pomodoro_duration_label"
             style="?attr/textAppearanceBodyMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_large"
             android:text="@{@string/duration_label(viewModel.pomodoroDuration)}"
-            app:layout_constraintBaseline_toBaselineOf="@+id/pomodoro_duration_text"
+            app:layout_constraintBottom_toTopOf="@+id/pomodoro_duration_slider"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="@tools:sample/lorem" />
 
@@ -62,7 +71,7 @@
             android:layout_marginStart="@dimen/margin_medium"
             android:layout_marginTop="@dimen/margin_large"
             android:text="@string/short_break_duration_title"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/coffee_icon"
             app:layout_constraintTop_toBottomOf="@+id/pomodoro_duration_slider" />
 
         <com.google.android.material.slider.Slider
@@ -70,26 +79,25 @@
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_medium"
             android:contentDescription="@string/short_break_duration_slider_content_label"
             android:stepSize="1"
             android:value="@{viewModel.shortBreakDuration}"
             android:valueFrom="1"
             android:valueTo="10"
-            app:layout_constraintBottom_toBottomOf="@+id/short_break_slider_start_label"
-            app:layout_constraintEnd_toStartOf="@+id/short_break_slider_end_label"
-            app:layout_constraintStart_toEndOf="@id/short_break_slider_start_label"
-            app:layout_constraintTop_toTopOf="@+id/short_break_slider_start_label" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/coffee_icon"
+            app:layout_constraintTop_toBottomOf="@+id/short_break_duration_text" />
 
         <TextView
             android:id="@+id/short_break_duration_label"
             style="@style/TextAppearance.Material3.BodyMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_large"
             android:text="@{@string/duration_label(viewModel.shortBreakDuration)}"
-            app:layout_constraintBaseline_toBaselineOf="@+id/short_break_duration_text"
+            app:layout_constraintBottom_toTopOf="@+id/short_break_duration_slider"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="@tools:sample/lorem" />
 
@@ -101,7 +109,7 @@
             android:layout_marginStart="@dimen/margin_medium"
             android:layout_marginTop="@dimen/margin_large"
             android:text="@string/long_break_duration_title"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lunch_icon"
             app:layout_constraintTop_toBottomOf="@+id/short_break_duration_slider" />
 
         <com.google.android.material.slider.Slider
@@ -109,102 +117,66 @@
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_medium"
             android:contentDescription="@string/long_break_duration_slider_content_label"
             android:stepSize="1"
             android:value="@{viewModel.longBreakDuration}"
             android:valueFrom="1"
             android:valueTo="10"
-            app:layout_constraintBottom_toBottomOf="@+id/long_break_slider_start_label"
-            app:layout_constraintEnd_toStartOf="@+id/long_break_slider_end_label"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/long_break_slider_start_label"
-            app:layout_constraintTop_toTopOf="@+id/long_break_slider_start_label" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lunch_icon"
+            app:layout_constraintTop_toBottomOf="@+id/long_break_duration_text" />
 
         <TextView
             android:id="@+id/long_break_duration_label"
             style="?attr/textAppearanceBodyMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_large"
             android:text="@{@string/duration_label(viewModel.longBreakDuration)}"
-            app:layout_constraintBaseline_toBaselineOf="@+id/long_break_duration_text"
+            app:layout_constraintBottom_toTopOf="@+id/long_break_duration_slider"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="@tools:sample/lorem" />
 
-        <TextView
-            android:id="@+id/pomdoro_slider_start_label"
-            style="@style/TextAppearance.Material3.LabelSmall"
+        <ImageView
+            android:id="@+id/work_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_medium"
-            android:layout_marginTop="@dimen/margin_large"
-            android:text="@string/duration_slider_start"
-            app:layout_constraintEnd_toStartOf="@+id/pomodoro_duration_slider"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pomodoro_duration_text" />
-
-        <TextView
-            android:id="@+id/pomodoro_slider_end_label"
-            style="@style/TextAppearance.Material3.LabelSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_medium"
-            android:text="@string/duration_slider_end"
+            android:layout_marginStart="@dimen/margin_medium_large"
+            android:contentDescription="@string/work_icon"
             app:layout_constraintBottom_toBottomOf="@+id/pomodoro_duration_slider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/pomodoro_duration_slider" />
-
-        <TextView
-            android:id="@+id/short_break_slider_start_label"
-            style="@style/TextAppearance.Material3.LabelSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_medium"
-            android:layout_marginTop="@dimen/margin_large"
-            android:text="@string/duration_slider_start"
-            app:layout_constraintEnd_toStartOf="@+id/short_break_duration_slider"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/short_break_duration_text" />
+            app:layout_constraintTop_toTopOf="@+id/pomodoro_duration_text"
+            app:layout_constraintVertical_bias="0.4"
+            app:srcCompat="@drawable/work_fill0_wght400_grad0_opsz48"
+            app:tint="?attr/colorOnBackground" />
 
-        <TextView
-            android:id="@+id/short_break_slider_end_label"
-            style="@style/TextAppearance.Material3.LabelSmall"
+        <ImageView
+            android:id="@+id/coffee_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_medium"
-            android:text="@string/duration_slider_end"
+            android:layout_marginStart="@dimen/margin_medium_large"
+            android:contentDescription="@string/coffee_icon"
             app:layout_constraintBottom_toBottomOf="@+id/short_break_duration_slider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/short_break_duration_slider" />
-
-        <TextView
-            android:id="@+id/long_break_slider_start_label"
-            style="@style/TextAppearance.Material3.LabelSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_medium"
-            android:layout_marginTop="@dimen/margin_large"
-            android:text="@string/duration_slider_start"
-            app:layout_constraintEnd_toStartOf="@+id/long_break_duration_slider"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/long_break_duration_text" />
+            app:layout_constraintTop_toTopOf="@+id/short_break_duration_text"
+            app:layout_constraintVertical_bias="0.4"
+            app:srcCompat="@drawable/coffee_fill0_wght400_grad0_opsz48"
+            app:tint="?attr/colorOnBackground" />
 
-        <TextView
-            android:id="@+id/long_break_slider_end_label"
-            style="@style/TextAppearance.Material3.LabelSmall"
+        <ImageView
+            android:id="@+id/lunch_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_medium"
-            android:text="@string/duration_slider_end"
+            android:layout_marginStart="@dimen/margin_medium_large"
+            android:contentDescription="@string/lunch_icon"
             app:layout_constraintBottom_toBottomOf="@+id/long_break_duration_slider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/long_break_duration_slider"
-            app:layout_constraintTop_toTopOf="@+id/long_break_duration_slider" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/long_break_duration_text"
+            app:layout_constraintVertical_bias="0.4"
+            app:srcCompat="@drawable/lunch_dining_fill0_wght400_grad0_opsz48"
+            app:tint="?attr/colorOnBackground" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

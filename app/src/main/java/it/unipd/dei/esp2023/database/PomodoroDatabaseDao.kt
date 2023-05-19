@@ -20,6 +20,8 @@ interface PomodoroDatabaseDao {
 
     // region delete
 
+    @Query("DELETE FROM Session")
+    suspend fun deleteAllSessions()
     @Delete
     suspend fun deleteSession(session: Session)
     @Query("DELETE FROM Session WHERE id = :sessionId")
@@ -49,6 +51,9 @@ interface PomodoroDatabaseDao {
     // region read
     @Query("SELECT * FROM session WHERE id = :sessionId")
     fun getSessionFromId(sessionId: Long): LiveData<Session>
+    //TODO remove selection using name since more sessions could share the same name
+    @Query("SELECT * FROM session WHERE name = :Name")
+    fun getSessionFromName(Name: String): Session
     @Query("SELECT * FROM task WHERE id = :taskId")
     fun getTaskFromId(taskId: Long): LiveData<Task>
     @Query("SELECT * FROM completed_pomodoro WHERE id = :pomodoroId")

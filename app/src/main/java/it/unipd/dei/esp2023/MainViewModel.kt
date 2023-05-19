@@ -10,18 +10,5 @@ import it.unipd.dei.esp2023.database.PomodoroDatabaseDao
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    val database: PomodoroDatabaseDao
-
-    init {
-        database = PomodoroDatabase.getInstance(application).databaseDao
-    }
-
-    private val _newSessionName = MutableLiveData<String>("")
-    val newSessionName : LiveData<String>
-        get() = _newSessionName
-
-    fun setNewSessionName(name: String) {
-        _newSessionName.value = name
-    }
 
 }
