@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import it.unipd.dei.esp2023.MainViewModel
 import it.unipd.dei.esp2023.R
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 // Aggiunti per prova apertura session details
 // TODO toglimi
@@ -47,6 +49,15 @@ class SessionsFragment : Fragment() {
         recyclerView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             if(scrollY > oldScrollY) extendedFloatingActionButton.shrink()
             else extendedFloatingActionButton.extend()
+        }
+
+        lifecycleScope.launch {
+            viewModel.database.deleteAllSessions()
+        }
+        lifecycleScope.cancel()
+
+        viewModel.sessionList.observe(viewLifecycleOwner) {
+            adapter.updateList(it)
         }
 
 
