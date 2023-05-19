@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.database.PomodoroDatabase
 import it.unipd.dei.esp2023.database.Session
@@ -42,9 +43,11 @@ class SessionDetailsFragment : Fragment() {
         }
         recyclerView.adapter = theAdapter
 
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.GONE
 
         return view
     }
+
     companion object {
         val DEBUG_LOG_TAG: String = "session_details_debug_tag"
     }
