@@ -14,8 +14,42 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomInfoLLWrapper"
         app:layoutManager="LinearLayoutManager"/>
+    <LinearLayout
+        android:id="@+id/bottomInfoLLWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskListRecyclerView"
+        android:paddingHorizontal="20dp"
+        android:paddingBottom="30dp"
+        >
+        <TextView
+            android:id="@+id/sessionTaskCountTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20sp"
+            />
+        <TextView
+            android:id="@+id/sessionPomodoroCountTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20sp"
+            />
+        <TextView
+            android:id="@+id/sessionTimeTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20sp"
+            />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

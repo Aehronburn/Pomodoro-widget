@@ -34,9 +34,9 @@ class SettingsFragment : Fragment() {
         }
 
         val preferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
-        viewModel.setPomodoroDuration(preferences.getInt(POMODORO_DURATION, 1))
-        viewModel.setShortBreakDuration(preferences.getInt(SHORT_BREAK_DURATION, 1))
-        viewModel.setLongBreakDuration(preferences.getInt(LONG_BREAK_DURATION, 1))
+        viewModel.setPomodoroDuration(preferences.getInt(POMODORO_DURATION, DEFAULT_POMODORO_DURATION))
+        viewModel.setShortBreakDuration(preferences.getInt(SHORT_BREAK_DURATION, DEFAULT_SHORT_BREAK_DURATION))
+        viewModel.setLongBreakDuration(preferences.getInt(LONG_BREAK_DURATION, DEFAULT_LONG_BREAK_DURATION))
 
         return binding.root
     }
@@ -67,6 +67,9 @@ class SettingsFragment : Fragment() {
         const val POMODORO_DURATION = "pomodoro_duration"
         const val SHORT_BREAK_DURATION = "short_break_duration"
         const val LONG_BREAK_DURATION = "long_break_duration"
+        const val DEFAULT_POMODORO_DURATION = 1
+        const val DEFAULT_SHORT_BREAK_DURATION = 1
+        const val DEFAULT_LONG_BREAK_DURATION = 1
     }
 
 }
