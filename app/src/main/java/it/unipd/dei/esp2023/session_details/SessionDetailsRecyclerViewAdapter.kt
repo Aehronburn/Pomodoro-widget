@@ -1,5 +1,6 @@
 package it.unipd.dei.esp2023.session_details
 
+import android.graphics.Paint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,9 @@ class SessionDetailsRecyclerViewAdapter : RecyclerView.Adapter<SessionDetailsRec
         fun bind(task: Task) {
             taskNameTextView.text = task.name
             pomCountTextView.text = "${task.totalPomodoros} ${if(task.totalPomodoros==1) itemView.context.resources.getString(R.string.singular_pomodoro) else itemView.context.resources.getString(R.string.plural_pomodoro)}"
+            if(true){
+                taskNameTextView.paintFlags = taskNameTextView.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            }
         }
     }
 

@@ -14,19 +14,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/bottomInfoLLWrapper"
+        app:layout_constraintBottom_toTopOf="@+id/hrBottomBar"
         app:layoutManager="LinearLayoutManager"/>
+    <View
+        android:id="@+id/hrBottomBar"
+        app:layout_constraintTop_toBottomOf="@+id/taskListRecyclerView"
+        app:layout_constraintBottom_toTopOf="@+id/bottomInfoLLWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#cccccc"/>
     <LinearLayout
         android:id="@+id/bottomInfoLLWrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/hrBottomBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskListRecyclerView"
-        android:paddingHorizontal="20dp"
-        android:paddingBottom="30dp"
+        android:paddingHorizontal="30dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="10dp"
+
         >
         <TextView
             android:id="@+id/sessionTaskCountTV"
