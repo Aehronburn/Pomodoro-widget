@@ -24,4 +24,10 @@ class SessionsViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    fun deleteSession(session: Session) {
+        viewModelScope.launch {
+            database.deleteSession(session)
+        }
+    }
+
 }
