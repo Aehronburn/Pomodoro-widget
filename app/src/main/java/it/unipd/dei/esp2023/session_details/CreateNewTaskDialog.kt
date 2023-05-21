@@ -57,7 +57,9 @@ class CreateNewTaskDialog : DialogFragment() {
 
         val numberInput = view.findViewById<TextInputEditText>(R.id.new_task_input_number_edit_text)
         numberInput.doOnTextChanged { text, _, _, _ ->
-            pomodorosNumber = text.toString().toInt()
+            if (text != null && text.isNotEmpty()) {
+                pomodorosNumber = text.toString().toInt()
+            }
         }
 
         val cancelButton = view.findViewById<Button>(R.id.cancel_task_button)
