@@ -9,22 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import it.unipd.dei.esp2023.R
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
-
-// Aggiunti per prova apertura session details
-// TODO toglimi
-import androidx.lifecycle.LiveData
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import it.unipd.dei.esp2023.database.PomodoroDatabase
-import it.unipd.dei.esp2023.database.Session
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
-import kotlinx.coroutines.launch
-import android.util.Log
-import androidx.fragment.app.viewModels
-import it.unipd.dei.esp2023.database.Task
 
 class SessionsFragment : Fragment() {
 
