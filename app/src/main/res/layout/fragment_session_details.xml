@@ -23,6 +23,19 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="?colorOnBackground"/>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/start_session"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:clickable="true"
+        android:text="@string/start_session"
+        app:icon="@drawable/timer_fill0_wght400_grad0_opsz48"
+        app:layout_constraintBottom_toTopOf="@+id/hrBottomBar"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <LinearLayout
         android:id="@+id/bottomInfoLLWrapper"
         android:layout_width="match_parent"
@@ -59,6 +72,19 @@
             android:textSize="20sp"
             />
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/create_new_task_fab"
+        style="?attr/floatingActionButtonSmallStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:clickable="true"
+        android:contentDescription="@string/create_new_task_description"
+        android:src="@drawable/add_task_fill0_wght400_grad0_opsz48"
+        app:layout_constraintBottom_toTopOf="@+id/start_session"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

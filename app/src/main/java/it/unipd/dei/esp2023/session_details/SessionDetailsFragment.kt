@@ -6,10 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.database.PomodoroDatabase
 import it.unipd.dei.esp2023.database.Session
@@ -17,6 +20,7 @@ import it.unipd.dei.esp2023.settings.SettingsViewModel
 
 class SessionDetailsFragment : Fragment() {
     private val viewModel: SessionDetailsViewModel by viewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,6 +51,21 @@ class SessionDetailsFragment : Fragment() {
         val timeTV = view.findViewById<TextView>(R.id.sessionTimeTV)
         viewModel.timeProgress.observe(viewLifecycleOwner){
             timeTV.text = getString(R.string.time_progress_session_details, it.first, it.second)
+        }
+
+        val startSessionFAB: ExtendedFloatingActionButton = view.findViewById(R.id.start_session)
+        startSessionFAB.setOnClickListener {
+            //TODO implement navigation
+        }
+
+        val createNewTaskFAB: FloatingActionButton = view.findViewById(R.id.create_new_task_fab)
+        createNewTaskFAB.setOnClickListener {
+            CreateNewTaskDialog().show(parentFragmentManager, "CreateNewTaskDialog")
+        }
+
+        recyclerView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if(scrollY > oldScrollY) startSessionFAB.shrink()
+            else startSessionFAB.extend()
         }
 
         return view

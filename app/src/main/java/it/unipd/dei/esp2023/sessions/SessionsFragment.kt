@@ -22,8 +22,8 @@ class SessionsFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_sessions, container, false)
 
-        val extendedFloatingActionButton = view.findViewById<ExtendedFloatingActionButton>(R.id.create_new_session_fab)
-        extendedFloatingActionButton.setOnClickListener{
+        val createNewSessionFAB = view.findViewById<ExtendedFloatingActionButton>(R.id.create_new_session_fab)
+        createNewSessionFAB.setOnClickListener{
             CreateNewSessionDialog().show(parentFragmentManager, "CreateNewSessionDialog")
         }
 
@@ -32,8 +32,8 @@ class SessionsFragment : Fragment() {
         recyclerView.adapter = adapter
 
         recyclerView.setOnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
-            if(scrollY > oldScrollY) extendedFloatingActionButton.shrink()
-            else extendedFloatingActionButton.extend()
+            if(scrollY > oldScrollY) createNewSessionFAB.shrink()
+            else createNewSessionFAB.extend()
         }
 
         viewModel.sessionList.observe(viewLifecycleOwner) {
