@@ -8,10 +8,12 @@
     tools:context=".sessions.SessionsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_id"
+        android:id="@+id/sessions_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="LinearLayoutManager" >
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        app:layoutManager="LinearLayoutManager">
 
     </androidx.recyclerview.widget.RecyclerView>
 

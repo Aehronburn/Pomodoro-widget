@@ -30,7 +30,7 @@ class SessionsFragment : Fragment() {
             CreateNewSessionDialog().show(parentFragmentManager, "CreateNewSessionDialog")
         }
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_id)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.sessions_recyclerview)
         val adapter = SessionsAdapter(onItemClickedListener = onItemClickedListener, onItemDeletedListener = onItemDeletedListener)
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
