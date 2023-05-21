@@ -25,8 +25,9 @@ class SessionsAdapter(private var sessionList: List<Session> = emptyList()): Rec
 
     fun updateList(newList: List<Session>) {
         sessionList = newList
-        //TODO to be changed to a more efficient method
-        notifyDataSetChanged()
+       //Siccome al momento l'unica operazione permessa è l'inserimento
+       //notifico l'adapter che ho inserito un elemento in coda
+        notifyItemInserted(newList.size)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionsViewHolder {
