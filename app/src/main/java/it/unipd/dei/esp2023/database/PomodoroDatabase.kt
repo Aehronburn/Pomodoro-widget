@@ -19,7 +19,7 @@ abstract class PomodoroDatabase : RoomDatabase() {
             synchronized(this) {
                 var instance = INSTANCE
                 if(instance == null) {
-                    instance = Room.databaseBuilder(context.applicationContext, PomodoroDatabase::class.java, "pomodoro_database").build()
+                    instance = Room.databaseBuilder(context.applicationContext, PomodoroDatabase::class.java, "pomodoro_database").fallbackToDestructiveMigration().build()
                     INSTANCE = instance
                 }
                 return instance

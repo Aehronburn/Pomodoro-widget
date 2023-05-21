@@ -5,7 +5,6 @@ import androidx.lifecycle.*
 import it.unipd.dei.esp2023.database.PomodoroDatabase
 import it.unipd.dei.esp2023.database.PomodoroDatabaseDao
 import it.unipd.dei.esp2023.database.Session
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class SessionsViewModel(application: Application) : AndroidViewModel(application) {
@@ -25,14 +24,4 @@ class SessionsViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    //Solo quando il viewModel non mi serve più e viene cancellato,
-    //allora annullo tutte le coroutine che stanno andando
-    override fun onCleared() {
-        viewModelScope.cancel()
-        super.onCleared()
-    }
-
-    //Ho cancellato due coroutine insieme, sennò si pestavano i piedi a vicenda
-    //e beccavo sempre il NULL pointer exception
-    //Richiamo l'inizializzazione del database tutto nel SessionFragment
 }

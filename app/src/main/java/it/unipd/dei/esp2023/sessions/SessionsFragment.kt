@@ -8,9 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import it.unipd.dei.esp2023.R
-import kotlinx.coroutines.cancel
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 
 class SessionsFragment : Fragment() {
 
@@ -43,13 +41,6 @@ class SessionsFragment : Fragment() {
         }
 
         return view
-    }
-
-    //Funziona similarmente a viewModelScope.cancel(): appena non ho più bisogno
-    //di questa View, annullo tutte le coroutine attive in background
-    override fun onDestroyView() {
-        lifecycleScope.cancel()
-        super.onDestroyView()
     }
 
 }
