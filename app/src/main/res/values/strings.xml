@@ -26,5 +26,15 @@
     <string name="coffee_icon">coffee icon</string>
     <string name="lunch_icon">lunch icon</string>
     <string name="settings_duration_title">Durations</string>
+    <string name="create_new_task_hint">Task name</string>
+    <string name="create_new_task_negative">Cancel</string>
+    <string name="create_new_task_positive">Create</string>
+    <string name="create_new_task_number_hint">How many pomodoros?</string>
+    <string name="create_new_task_title">New task</string>
+    <string name="singular_pomodoro">pomodoro</string>
+    <string name="plural_pomodoro">pomodoros</string>
+    <string name="task_count_session_details">Tasks: %1$d / %2$d</string>
+    <string name="pom_count_session_details">Pomodoros: %1$d / %2$d</string>
+    <string name="time_progress_session_details">Time: %1$d min / %2$d min</string>
 
 </resources>

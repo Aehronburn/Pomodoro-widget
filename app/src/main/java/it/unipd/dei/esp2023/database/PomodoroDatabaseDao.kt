@@ -137,6 +137,11 @@ interface PomodoroDatabaseDao {
         ORDER BY week.display_order
     """)
     fun getCurrentWeekStatistics(firstDayMonday: Boolean = true): LiveData<List<SingleStat>>
-
+    @Query("SELECT COALESCE ((SELECT sum(total_pomodoros) FROM task WHERE session = :sessionId),0)") // https://stackoverflow.com/questions/4866162/get-0-value-from-a-count-with-no-rows
+    fun getTotalPomodorosCountFromSessionId(sessionId: Long): LiveData<Int>
+    @Query("SELECT COALESCE ((SELECT count(*) FROM task T JOIN completed_pomodoro C ON T.id = C.task WHERE session = :sessionId),0)")
+    fun getCompletedPomodorosCountFromSessionId(sessionId: Long): LiveData<Int>
+    @Query("SELECT COALESCE ((SELECT sum(duration) FROM task T JOIN completed_pomodoro C ON T.id = C.task WHERE session = :sessionId),0)")
+    fun getCompletedTimeFromSessionId(sessionId: Long): LiveData<Int>
     // endregion
 }

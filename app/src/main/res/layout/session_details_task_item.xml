@@ -3,15 +3,68 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingVertical="10dp"
+    >
 
-    <TextView
-        android:id="@+id/taskNameSessionDetails"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal"
+        android:weightSum="10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+        <LinearLayout
+            android:layout_weight="8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:paddingHorizontal="20dp"
+
+            >
+            <TextView
+                android:id="@+id/taskNameSessionDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="20sp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                />
+            <TextView
+                android:id="@+id/taskPomodoroCountSessionDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="15sp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                />
+        </LinearLayout>
+        <!-- https://stackoverflow.com/a/10748836 -->
+        <Button
+            android:id="@+id/deleteTaskBtnSessionDetails"
+            style="@style/Widget.Material3.Button.IconButton.Outlined"
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:drawableTint="#BBB"
+            android:src="@drawable/trash_can_outline"
+            />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
