@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.database.Session
@@ -26,8 +27,10 @@ class SessionsAdapter(private var sessionList: List<Session> = emptyList(),
     }
 
     fun updateList(newList: List<Session>) {
+        val diffCallback = SessionDiffUtil(sessionList, newList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         sessionList = newList
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionsViewHolder {
@@ -44,5 +47,24 @@ class SessionsAdapter(private var sessionList: List<Session> = emptyList(),
         holder.itemView.setOnClickListener {
             onItemClickedListener(sessionList[position].id)
         }
+    }
+
+    inner class SessionDiffUtil(private val oldList: List<Session>, private val newList: List<Session>): DiffUtil.Callback() {
+        override fun getOldListSize(): Int {
+            return oldList.size
+        }
+
+        override fun getNewListSize(): Int {
+            return newList.size
+        }
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
+
     }
 }
