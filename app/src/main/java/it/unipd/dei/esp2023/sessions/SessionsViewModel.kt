@@ -23,11 +23,13 @@ class SessionsViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             database.insertSession(Session(name = name))
         }
-        //Serve a chiudere questa coroutine, visto che ce ne potrebbero essere altre aperte
-        /*
-        TODO to be removed. BUGS
-         */
-        //viewModelScope.cancel()
+    }
+
+    //Solo quando il viewModel non mi serve più e viene cancellato,
+    //allora annullo tutte le coroutine che stanno andando
+    override fun onCleared() {
+        viewModelScope.cancel()
+        super.onCleared()
     }
 
     //Ho cancellato due coroutine insieme, sennò si pestavano i piedi a vicenda
