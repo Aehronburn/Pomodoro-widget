@@ -15,7 +15,27 @@ import kotlinx.coroutines.launch
 
 
 class SessionDetailsViewModel(app: Application): AndroidViewModel(app) {
-    // TODO spiegare i crimini di guerra commessi dentro questo viewmodel
+    /*
+    * Powered by: Ufficio complicazione affari semplici
+    *
+    * This ViewModel is probably more complicate than it should be.
+    * The process for the creation of taskList and sessionInfo observables is straightforward:
+    * - the Dao is initialized in init{}
+    * - when the session id is set the first time, the two observables are constructed by two Dao queries
+    *   - sessionId MUST be specified before reading any ViewModel data
+    *   - sessionId is set exactly once: if it is already set, its value will not change using the setter method
+    * The process for session stats data is not as elegant. Data is provided to SessionDetailsFragment via three
+    * observables: taskCountProgress, pomCountProgress and timeProgress (all LiveData<Pair<Int, Int>>, first
+    * value is completed and second value is total).
+    * Each one of these public observables is constructed manually starting from the single integers that
+    * it's composed of: number of completed/total tasks for taskCountProgress, number of completed/total pomodoros
+    * for pomCountProgress, number of completed minutes, completed pomodoros and total pomodoros for timeProgress.
+    * Each integer is observed individually and, when there is enough data to construct a stat (eg: when both the
+    * number of completed tasks and total tasks have been read at least once) the corresponding integer pair is
+    * "injected" in the public observable.
+    * Observation of the single integer stats is being done with observeForever, hence every observer MUST be
+    * cancelled in onCleared.
+    */
 
     private var pomodoroDuration: Int
     private val myDao: PomodoroDatabaseDao
@@ -70,6 +90,8 @@ class SessionDetailsViewModel(app: Application): AndroidViewModel(app) {
         }
     }
     // TODO posso assicurarmi che runni solo un observer alla volta e evitare che i !! facciano danni?
+    // I !! non dovrebbero fare danni perchè una volta che viene dato un valore alle variabili non tornano più
+    // a null, ma magari un minimo di semaforo non farebbe comunque male, dunno
     private val ttObserver: Observer<Int> = Observer<Int>{
         totalTasks = it
         if(completedTasks!=null){
@@ -111,19 +133,17 @@ class SessionDetailsViewModel(app: Application): AndroidViewModel(app) {
         }
     }
     private fun initProgressInfo(): Unit{
-        // Powered by: Ufficio complicazione affari semplici
-
         tt = myDao.getTotalTaskCountFromSessionId(sessionId)
         ct = myDao.getCompletedTaskCountFromSessionId(sessionId)
         tp = myDao.getTotalPomodorosCountFromSessionId(sessionId)
         cp = myDao.getCompletedPomodorosCountFromSessionId(sessionId)
         cm = myDao.getCompletedTimeFromSessionId(sessionId)
 
-        tt.observeForever (ttObserver)
-        ct.observeForever (ctObserver)
-        tp.observeForever (tpObserver)
-        cp.observeForever (cpObserver)
-        cm.observeForever (cmObserver)
+        tt.observeForever(ttObserver)
+        ct.observeForever(ctObserver)
+        tp.observeForever(tpObserver)
+        cp.observeForever(cpObserver)
+        cm.observeForever(cmObserver)
     }
 
     override fun onCleared() {
