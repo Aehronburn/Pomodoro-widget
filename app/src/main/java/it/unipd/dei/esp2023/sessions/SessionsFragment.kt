@@ -64,37 +64,6 @@ class SessionsFragment : Fragment() {
             adapter.updateList(it)
         }
 
-
-        // TODO toglimi
-        /*
-        var listaLiveData: LiveData<List<Session>> = PomodoroDatabase.getInstance(requireContext()).databaseDao.getSessionListASC()
-        lifecycleScope.launch {
-            PomodoroDatabase.getInstance(requireContext()).databaseDao.insertSession(Session(0, "NomeSessione"))
-        }
-        listaLiveData.observe(viewLifecycleOwner){
-            lista->
-                Log.d(SessionDetailsFragment.DEBUG_LOG_TAG, "Conteggio lista sessions: "+lista.count().toString())
-                if(lista.count()>0){
-                    val navController: NavController = Navigation.findNavController(view)
-                    val bundle = Bundle()
-                    Log.d(SessionDetailsFragment.DEBUG_LOG_TAG, "Id sessione: "+lista.last().id.toString())
-                    lifecycleScope.launch {
-                        PomodoroDatabase.getInstance(requireContext()).databaseDao.insertTask(
-                            Task(0, lista.last().id, "Task 1 ultima sessione", 1, 1)
-                        )
-                        PomodoroDatabase.getInstance(requireContext()).databaseDao.insertTask(
-                            Task(0, lista.last().id, "Task 2 ultima sessione", 2, 2)
-                        )
-                        PomodoroDatabase.getInstance(requireContext()).databaseDao.insertTask(
-                            Task(0, lista.last().id, "Task 3 ultima sessione", 3, 3)
-                        )
-                    }
-                    bundle.putLong("sessionId", lista.last().id)
-                    navController.navigate(R.id.action_sessions_fragment_to_sessionDetails, bundle);
-                }
-        }
-        */
-
         return view
     }
 
