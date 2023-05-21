@@ -52,19 +52,18 @@ class SessionsFragment : Fragment() {
             else extendedFloatingActionButton.extend()
         }
 
-        /*
-        TODO this is bugged. Everything. To remove already present data cancel it from android settings
-        lifecycleScope.launch {
-            viewModel.database.deleteAllSessions()
-        }
-        lifecycleScope.cancel()
-        */
-
         viewModel.sessionList.observe(viewLifecycleOwner) {
             adapter.updateList(it)
         }
 
         return view
+    }
+
+    //Funziona similarmente a viewModelScope.cancel(): appena non ho più bisogno
+    //di questa View, annullo tutte le coroutine attive in background
+    override fun onDestroyView() {
+        lifecycleScope.cancel()
+        super.onDestroyView()
     }
 
 }
