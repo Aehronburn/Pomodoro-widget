@@ -58,6 +58,7 @@
         </LinearLayout>
         <!-- https://stackoverflow.com/a/10748836 -->
         <Button
+            android:id="@+id/deleteTaskBtnSessionDetails"
             style="@style/Widget.Material3.Button.IconButton.Outlined"
             android:layout_weight="2"
             android:layout_width="0dp"

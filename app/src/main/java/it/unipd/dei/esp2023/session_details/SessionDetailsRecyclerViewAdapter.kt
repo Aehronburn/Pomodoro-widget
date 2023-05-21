@@ -12,19 +12,23 @@ import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.database.Session
 import it.unipd.dei.esp2023.database.Task
 
-class SessionDetailsRecyclerViewAdapter : RecyclerView.Adapter<SessionDetailsRecyclerViewAdapter.SDetailsViewHolder>() {
+class SessionDetailsRecyclerViewAdapter(protected val viewModel: SessionDetailsViewModel) : RecyclerView.Adapter<SessionDetailsRecyclerViewAdapter.SDetailsViewHolder>() {
     private var taskList: List<Task> = emptyList<Task>()
 
-    // Describes an item view and its place within the RecyclerView
-    class SDetailsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    // https://stackoverflow.com/a/46376182
+    inner class SDetailsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val taskNameTextView: TextView = itemView.findViewById(R.id.taskNameSessionDetails)
         private val pomCountTextView: TextView = itemView.findViewById(R.id.taskPomodoroCountSessionDetails)
+        private val deleteButton: TextView = itemView.findViewById(R.id.deleteTaskBtnSessionDetails)
 
         fun bind(task: Task) {
             taskNameTextView.text = task.name
             pomCountTextView.text = "${task.totalPomodoros} ${if(task.totalPomodoros==1) itemView.context.resources.getString(R.string.singular_pomodoro) else itemView.context.resources.getString(R.string.plural_pomodoro)}"
             if(true){
                 taskNameTextView.paintFlags = taskNameTextView.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            }
+            deleteButton.setOnClickListener {
+                viewModel.deleteTask(task)
             }
         }
     }

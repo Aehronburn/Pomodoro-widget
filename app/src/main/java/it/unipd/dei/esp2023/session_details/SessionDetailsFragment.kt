@@ -28,7 +28,7 @@ class SessionDetailsFragment : Fragment() {
         viewModel.sessionId = sessionId
         val view = inflater.inflate(R.layout.fragment_session_details, container, false)
         val recyclerView = view.findViewById<RecyclerView>(R.id.taskListRecyclerView)
-        val theAdapter = SessionDetailsRecyclerViewAdapter()
+        val theAdapter = SessionDetailsRecyclerViewAdapter(viewModel)
         viewModel.taskList.observe(viewLifecycleOwner){
             list ->
                 theAdapter.setTaskList(list)

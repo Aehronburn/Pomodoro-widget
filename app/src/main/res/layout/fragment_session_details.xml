@@ -22,7 +22,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomInfoLLWrapper"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#cccccc"/>
+        android:background="?colorOnBackground"/>
     <LinearLayout
         android:id="@+id/bottomInfoLLWrapper"
         android:layout_width="match_parent"

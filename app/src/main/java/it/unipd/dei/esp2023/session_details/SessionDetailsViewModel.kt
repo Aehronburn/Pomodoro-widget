@@ -3,16 +3,15 @@ package it.unipd.dei.esp2023.session_details
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.*
 import it.unipd.dei.esp2023.MainActivity
 import it.unipd.dei.esp2023.database.PomodoroDatabase
 import it.unipd.dei.esp2023.database.PomodoroDatabaseDao
 import it.unipd.dei.esp2023.database.Session
 import it.unipd.dei.esp2023.database.Task
 import it.unipd.dei.esp2023.settings.SettingsFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class SessionDetailsViewModel(app: Application): AndroidViewModel(app) {
@@ -65,6 +64,11 @@ class SessionDetailsViewModel(app: Application): AndroidViewModel(app) {
     private lateinit var cp: LiveData<Int> //completed pomodoros
     private lateinit var cm: LiveData<Int> //completed minutes
 
+    fun deleteTask(t: Task): Unit{
+        viewModelScope.launch(Dispatchers.IO){
+            myDao.deleteTask(t)
+        }
+    }
     // TODO posso assicurarmi che runni solo un observer alla volta e evitare che i !! facciano danni?
     private val ttObserver: Observer<Int> = Observer<Int>{
         totalTasks = it
