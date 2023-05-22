@@ -10,7 +10,9 @@ import kotlinx.coroutines.launch
 class SessionsViewModel(application: Application) : AndroidViewModel(application) {
     val database: PomodoroDatabaseDao
 
-    //Mi serve questa lista di LiveData<Session> per poterla osservare da più posizioni
+    /*
+    List of Sessions to be displayed in the RecyclerView of SessionsFragment
+     */
     val sessionList: LiveData<List<Session>>
 
     init {

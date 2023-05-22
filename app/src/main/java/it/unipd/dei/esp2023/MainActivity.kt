@@ -29,6 +29,10 @@ class MainActivity : AppCompatActivity() {
 
         val bottomNavigationBarView = findViewById<NavigationBarView>(R.id.bottomNavigationView)
         bottomNavigationBarView.setupWithNavController(navController)
+
+        /*
+        bottomNavigationBarView is visible only on the three main screens(Statistics, Sessions, Settings) and hidden everywhere else
+         */
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when(destination.id) {
                 R.id.sessions_fragment -> bottomNavigationBarView.visibility = View.VISIBLE
@@ -38,6 +42,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        /*
+        when (Statistics, Sessions, Settings) are navigated using bottomNavigationView, toolbar title is updated accordingly
+         */
         val appBar = findViewById<MaterialToolbar>(R.id.app_bar)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -48,9 +55,7 @@ class MainActivity : AppCompatActivity() {
         )
         appBar.setupWithNavController(navController, appBarConfiguration)
         setSupportActionBar(appBar)
-        /*
-        TODO navigating up by pressing back icon with this method does not provide animations, in contrast with using back gesture
-         */
+
         appBar.setNavigationOnClickListener { navController.navigateUp() }
 
     }

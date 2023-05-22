@@ -34,6 +34,9 @@ class SessionsAdapter(
     }
 
     fun updateList(newList: List<Session>) {
+        /*
+        first the result of difference between current list and newList is calculated efficiently, then the difference is updated
+         */
         val diffCallback = SessionDiffUtil(sessionList, newList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         sessionList = newList
@@ -53,6 +56,9 @@ class SessionsAdapter(
         holder.bind(sessionList[position], onItemDeletedListener, onItemClickedListener)
     }
 
+    /*
+    Since notifying efficiently insertion of items and deletions of items at random positions can be tricky, instead we use a DiffUtil
+     */
     inner class SessionDiffUtil(
         private val oldList: List<Session>,
         private val newList: List<Session>

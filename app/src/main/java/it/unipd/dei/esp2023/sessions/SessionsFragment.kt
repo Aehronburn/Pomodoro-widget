@@ -26,21 +26,33 @@ class SessionsFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_sessions, container, false)
 
+        /*
+        Spawns a dialog requesting user to input data for creating a new session
+         */
         val createNewSessionFAB = view.findViewById<ExtendedFloatingActionButton>(R.id.create_new_session_fab)
         createNewSessionFAB.setOnClickListener{
             CreateNewSessionDialog().show(childFragmentManager, "CreateNewSessionDialog")
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.sessions_recyclerview)
+        /*
+        grid column count depends on the screen size. Default 1, for screen widths >= 400dp column count is 2
+         */
         recyclerView.layoutManager = StaggeredGridLayoutManager(resources.getInteger(R.integer.grid_column_count), VERTICAL)
         val adapter = SessionsAdapter(onItemClickedListener = onItemClickedListener, onItemDeletedListener = onItemDeletedListener)
         recyclerView.adapter = adapter
 
+        /*
+        shrinks the extended fab when scrolled
+         */
         recyclerView.setOnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
             if(scrollY > oldScrollY) createNewSessionFAB.shrink()
             else createNewSessionFAB.extend()
         }
 
+        /*
+        update list of RecyclerView everytime a session is added/deleted
+         */
         viewModel.sessionList.observe(viewLifecycleOwner) {
             adapter.updateList(it)
         }
@@ -48,12 +60,18 @@ class SessionsFragment : Fragment() {
         return view
     }
 
+    /*
+    callback function called when user opens the session's details
+     */
     private val onItemClickedListener: (Session) -> Unit =  { session ->
         val bundle = Bundle()
         bundle.putLong("sessionId", session.id)
         findNavController().navigate(R.id.action_sessions_fragment_to_sessionDetails, bundle)
     }
 
+    /*
+    callback function called when user presses the delete button of the RecyclerView item
+     */
     private val onItemDeletedListener: (Session) -> Unit = { session ->
         viewModel.deleteSession(session)
     }

@@ -17,6 +17,9 @@ import it.unipd.dei.esp2023.R
 
 class CreateNewSessionDialog : DialogFragment() {
 
+    /*
+    viewModel is the same shared instance of SessionsViewModel owned by SessionsFragment
+     */
     private val viewModel: SessionsViewModel by viewModels(ownerProducer = { requireParentFragment() })
 
     /*

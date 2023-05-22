@@ -33,6 +33,9 @@ class SettingsFragment : Fragment() {
             viewModel.setLongBreakDuration(value.toInt())
         }
 
+        /*
+        loading settings that were last saved in SharedPreferences
+         */
         val preferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
         viewModel.setPomodoroDuration(preferences.getInt(POMODORO_DURATION, DEFAULT_POMODORO_DURATION))
         viewModel.setShortBreakDuration(preferences.getInt(SHORT_BREAK_DURATION, DEFAULT_SHORT_BREAK_DURATION))
@@ -41,6 +44,9 @@ class SettingsFragment : Fragment() {
         return binding.root
     }
 
+    /*
+    Saving settings to persistent memory
+     */
     override fun onPause() {
         super.onPause()
         val preferencesEditor = requireActivity().getPreferences(Context.MODE_PRIVATE).edit()
