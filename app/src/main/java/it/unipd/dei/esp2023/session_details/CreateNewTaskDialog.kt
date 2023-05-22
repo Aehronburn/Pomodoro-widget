@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -60,7 +61,7 @@ class CreateNewTaskDialog : DialogFragment() {
 
         val numberInput = view.findViewById<TextInputEditText>(R.id.new_task_input_number_edit_text)
         numberInput.doOnTextChanged { text, _, _, _ ->
-            if (text != null && text.isNotEmpty()) {
+            if (!text.isNullOrEmpty()) {
                 pomodorosNumber = text.toString().toInt()
             }
         }
@@ -70,7 +71,11 @@ class CreateNewTaskDialog : DialogFragment() {
 
         val createButton = view.findViewById<Button>(R.id.create_task_button)
         createButton.setOnClickListener {
-            viewModel.newTask(taskName, pomodorosNumber)
+            if(taskName.isNotEmpty() && pomodorosNumber != 0) {
+                viewModel.newTask(taskName, pomodorosNumber)
+            } else {
+                Toast.makeText(requireContext(), "Write a non empty name and/or a number greater than 0", Toast.LENGTH_SHORT).show()
+            }
             dismiss()
         }
 
