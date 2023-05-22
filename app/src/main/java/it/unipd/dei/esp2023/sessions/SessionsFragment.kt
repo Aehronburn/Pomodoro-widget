@@ -10,7 +10,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import it.unipd.dei.esp2023.R
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import it.unipd.dei.esp2023.database.Session
 
 class SessionsFragment : Fragment() {
@@ -31,9 +31,9 @@ class SessionsFragment : Fragment() {
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.sessions_recyclerview)
+        recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         val adapter = SessionsAdapter(onItemClickedListener = onItemClickedListener, onItemDeletedListener = onItemDeletedListener)
         recyclerView.adapter = adapter
-        recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
 
         recyclerView.setOnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
             if(scrollY > oldScrollY) createNewSessionFAB.shrink()
@@ -47,9 +47,9 @@ class SessionsFragment : Fragment() {
         return view
     }
 
-    private val onItemClickedListener: (Long) -> Unit =  { id ->
+    private val onItemClickedListener: (Session) -> Unit =  { session ->
         val bundle = Bundle()
-        bundle.putLong("sessionId", id)
+        bundle.putLong("sessionId", session.id)
         findNavController().navigate(R.id.action_sessions_fragment_to_sessionDetails, bundle)
     }
 
