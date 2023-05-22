@@ -11,6 +11,7 @@ import it.unipd.dei.esp2023.R
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
 import it.unipd.dei.esp2023.database.Session
 
 class SessionsFragment : Fragment() {
@@ -31,7 +32,7 @@ class SessionsFragment : Fragment() {
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.sessions_recyclerview)
-        recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        recyclerView.layoutManager = StaggeredGridLayoutManager(2, VERTICAL)
         val adapter = SessionsAdapter(onItemClickedListener = onItemClickedListener, onItemDeletedListener = onItemDeletedListener)
         recyclerView.adapter = adapter
 
@@ -56,5 +57,4 @@ class SessionsFragment : Fragment() {
     private val onItemDeletedListener: (Session) -> Unit = { session ->
         viewModel.deleteSession(session)
     }
-
 }

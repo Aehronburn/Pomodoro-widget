@@ -12,6 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/margin_medium"
+        android:paddingBottom="88dp"
+        android:clipToPadding="false"
+        android:scrollbarStyle="outsideOverlay"
         app:layoutManager="LinearLayoutManager">
 
     </androidx.recyclerview.widget.RecyclerView>
