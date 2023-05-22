@@ -14,7 +14,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import it.unipd.dei.esp2023.R
 
-class CreateNewTaskDialog(private val sessionId: Long) : DialogFragment() {
+class CreateNewTaskDialog : DialogFragment() {
 
     /*
     The view of the dialog fragment we are manually creating inside onCreateDialog
@@ -24,7 +24,7 @@ class CreateNewTaskDialog(private val sessionId: Long) : DialogFragment() {
     private var taskName: String = ""
     private var pomodorosNumber: Int = 0
 
-    private val viewModel: SessionDetailsViewModel by viewModels()
+    private val viewModel: SessionDetailsViewModel by viewModels(ownerProducer = { requireParentFragment() })
 
     /*
     In order to build a dialog with Material 3 theming, it is required to create it using
@@ -39,7 +39,6 @@ class CreateNewTaskDialog(private val sessionId: Long) : DialogFragment() {
     */
     @SuppressLint("UseGetLayoutInflater")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        viewModel.sessionId = sessionId
         val builder = MaterialAlertDialogBuilder(requireActivity())
         dialogView = onCreateView(LayoutInflater.from(requireContext()), null, savedInstanceState)
         builder.setView(dialogView)

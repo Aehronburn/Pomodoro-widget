@@ -2,7 +2,6 @@ package it.unipd.dei.esp2023.session_details
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.*
 import it.unipd.dei.esp2023.MainActivity
 import it.unipd.dei.esp2023.database.*

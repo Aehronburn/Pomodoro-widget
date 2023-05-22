@@ -28,7 +28,7 @@ class SessionsFragment : Fragment() {
 
         val createNewSessionFAB = view.findViewById<ExtendedFloatingActionButton>(R.id.create_new_session_fab)
         createNewSessionFAB.setOnClickListener{
-            CreateNewSessionDialog().show(parentFragmentManager, "CreateNewSessionDialog")
+            CreateNewSessionDialog().show(childFragmentManager, "CreateNewSessionDialog")
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.sessions_recyclerview)

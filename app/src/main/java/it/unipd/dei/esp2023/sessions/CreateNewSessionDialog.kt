@@ -17,7 +17,7 @@ import it.unipd.dei.esp2023.R
 
 class CreateNewSessionDialog : DialogFragment() {
 
-    private val viewModel: SessionsViewModel by viewModels()
+    private val viewModel: SessionsViewModel by viewModels(ownerProducer = { requireParentFragment() })
 
     /*
     The view of the dialog fragment we are manually creating inside onCreateDialog
