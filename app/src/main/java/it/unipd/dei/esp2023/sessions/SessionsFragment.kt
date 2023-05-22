@@ -32,7 +32,7 @@ class SessionsFragment : Fragment() {
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.sessions_recyclerview)
-        recyclerView.layoutManager = StaggeredGridLayoutManager(2, VERTICAL)
+        recyclerView.layoutManager = StaggeredGridLayoutManager(resources.getInteger(R.integer.grid_column_count), VERTICAL)
         val adapter = SessionsAdapter(onItemClickedListener = onItemClickedListener, onItemDeletedListener = onItemDeletedListener)
         recyclerView.adapter = adapter
 
