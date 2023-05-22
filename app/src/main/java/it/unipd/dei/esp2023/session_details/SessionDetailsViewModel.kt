@@ -5,10 +5,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import it.unipd.dei.esp2023.MainActivity
-import it.unipd.dei.esp2023.database.PomodoroDatabase
-import it.unipd.dei.esp2023.database.PomodoroDatabaseDao
-import it.unipd.dei.esp2023.database.Session
-import it.unipd.dei.esp2023.database.Task
+import it.unipd.dei.esp2023.database.*
 import it.unipd.dei.esp2023.settings.SettingsFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -51,13 +48,13 @@ class SessionDetailsViewModel(app: Application): AndroidViewModel(app) {
         set(id: Long) {
             if(!initialized){
                 field = id
-                taskList = myDao.getTaskListFromSessionId(sessionId)
+                taskList = myDao.getTaskExtListFromSessionId(sessionId)
                 sessionInfo = myDao.getSessionFromId(sessionId)
                 initProgressInfo()
                 initialized = true
             }
         }
-    lateinit var taskList: LiveData<List<Task>>
+    lateinit var taskList: LiveData<List<TaskExt>>
     lateinit var sessionInfo: LiveData<Session>
 
     val taskCountProgress: LiveData<Pair<Int, Int>>
@@ -84,9 +81,10 @@ class SessionDetailsViewModel(app: Application): AndroidViewModel(app) {
     private lateinit var cp: LiveData<Int> //completed pomodoros
     private lateinit var cm: LiveData<Int> //completed minutes
 
-    fun deleteTask(t: Task): Unit{
+    fun deleteTask(t: TaskExt): Unit{
+        val toDelete: Task = Task(t.id, t.session, t.name, t.taskOrder, t.totalPomodoros)
         viewModelScope.launch(Dispatchers.IO){
-            myDao.deleteTask(t)
+            myDao.deleteTask(toDelete)
         }
     }
     // TODO posso assicurarmi che runni solo un observer alla volta e evitare che i !! facciano danni?
@@ -164,6 +162,10 @@ class SessionDetailsViewModel(app: Application): AndroidViewModel(app) {
         if(cm.isInitialized && cm.hasObservers()){
             cm.removeObserver(cmObserver)
         }
+    }
+
+    fun getCompletedPomodorosCount(task: Task):LiveData<Int>{
+        return myDao.getCompletedPomodorosCountFromTaskId(task.id)
     }
 
 }

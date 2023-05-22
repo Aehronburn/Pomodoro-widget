@@ -67,7 +67,6 @@ class SessionDetailsFragment : Fragment() {
             if(scrollY > oldScrollY) startSessionFAB.shrink()
             else startSessionFAB.extend()
         }
-
         return view
     }
 

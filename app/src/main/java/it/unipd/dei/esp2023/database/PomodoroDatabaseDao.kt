@@ -143,5 +143,13 @@ interface PomodoroDatabaseDao {
     fun getCompletedPomodorosCountFromSessionId(sessionId: Long): LiveData<Int>
     @Query("SELECT COALESCE ((SELECT sum(duration) FROM task T JOIN completed_pomodoro C ON T.id = C.task WHERE session = :sessionId),0)")
     fun getCompletedTimeFromSessionId(sessionId: Long): LiveData<Int>
+    @Query("""
+        SELECT B.id as id, B.session as session, B.name as name, B.task_order as taskOrder, B.total_pomodoros as totalPomodoros, A.pomCount as completedPomodoros 
+        FROM (SELECT T.id AS id, count(C.id) AS pomCount FROM task AS T LEFT JOIN completed_pomodoro as C on T.id = C.task GROUP BY T.id) AS A JOIN 
+        (SELECT * FROM task WHERE session = :sessionId) AS B on A.id = B.id
+        ORDER BY B.task_order ASC, B.id ASC
+        """)
+    fun getTaskExtListFromSessionId(sessionId: Long): LiveData<List<TaskExt>> // si veda TaskExt.kt
     // endregion
 }
+

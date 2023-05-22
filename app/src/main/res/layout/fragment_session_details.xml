@@ -15,7 +15,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/hrBottomBar"
-        app:layoutManager="LinearLayoutManager"/>
+        app:layoutManager="LinearLayoutManager"
+        android:paddingBottom="160dp"
+        android:clipToPadding="false"
+        />
+        <!-- TODO calcolare meglio il paddingBottom del recycler -->
     <View
         android:id="@+id/hrBottomBar"
         app:layout_constraintTop_toBottomOf="@+id/taskListRecyclerView"
