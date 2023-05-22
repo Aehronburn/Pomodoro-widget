@@ -7,14 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".sessions.SessionsFragment">
 
+    <!-- paddingBottom and clipToPadding are needed to display a padding at the bottom of the
+    RecyclerView in order for the last item to not be covered by FABs when scrolled to the end -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/sessions_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/margin_medium"
-        android:paddingBottom="88dp"
+        android:paddingBottom="@dimen/session_recyclerview_bottom_padding"
         android:clipToPadding="false"
-        android:scrollbarStyle="outsideOverlay"
         app:layoutManager="LinearLayoutManager">
 
     </androidx.recyclerview.widget.RecyclerView>

@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".session_details.SessionDetailsFragment">
 
+    <!-- paddingBottom and clipToPadding are needed to display a padding at the bottom of the
+    RecyclerView in order for the last item to not be covered by FABs when scrolled to the end -->
     <!-- https://stackoverflow.com/a/58709708 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/taskListRecyclerView"
@@ -14,13 +16,12 @@
         android:layout_marginStart="@dimen/margin_medium"
         android:layout_marginEnd="@dimen/margin_medium"
         android:clipToPadding="false"
-        android:paddingBottom="160dp"
+        android:paddingBottom="@dimen/session_details_recyclerview_bottom_padding"
         app:layoutManager="LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/hrBottomBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-        <!-- TODO calcolare meglio il paddingBottom del recycler -->
     <View
         android:id="@+id/hrBottomBar"
         app:layout_constraintTop_toBottomOf="@+id/taskListRecyclerView"
