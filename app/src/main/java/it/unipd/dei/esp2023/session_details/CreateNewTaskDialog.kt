@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import it.unipd.dei.esp2023.R
@@ -22,6 +23,8 @@ class CreateNewTaskDialog : DialogFragment() {
 
     private var taskName: String = ""
     private var pomodorosNumber: Int = 0
+
+    private val viewModel: SessionDetailsViewModel by viewModels()
 
     /*
     In order to build a dialog with Material 3 theming, it is required to create it using
@@ -67,8 +70,7 @@ class CreateNewTaskDialog : DialogFragment() {
 
         val createButton = view.findViewById<Button>(R.id.create_task_button)
         createButton.setOnClickListener {
-            //TODO invocare funzione dal SessionDetailsViewModel
-            dismiss()
+            viewModel.newTask(taskName, pomodorosNumber)
         }
 
         return view

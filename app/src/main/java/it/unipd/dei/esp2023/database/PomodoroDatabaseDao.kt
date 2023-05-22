@@ -150,6 +150,13 @@ interface PomodoroDatabaseDao {
         ORDER BY B.task_order ASC, B.id ASC
         """)
     fun getTaskExtListFromSessionId(sessionId: Long): LiveData<List<TaskExt>> // si veda TaskExt.kt
+    @Query("SELECT COALESCE(MAX(task_order),-1) FROM task WHERE session = :sessionId")
+    fun getMaxTaskOrderFromSessionId(sessionId: Long): Int
     // endregion
+    @Transaction
+    suspend fun insertLastTask(sessionId: Long, taskName: String, pomCount: Int){
+        val newOrder: Int = getMaxTaskOrderFromSessionId(sessionId) + 1
+        insertTask(Task(0, sessionId, taskName, newOrder, pomCount))
+    }
 }
 

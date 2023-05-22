@@ -87,6 +87,12 @@ class SessionDetailsViewModel(app: Application): AndroidViewModel(app) {
             myDao.deleteTask(toDelete)
         }
     }
+    fun newTask(name: String, totPom: Int): Unit{
+        println(sessionId)
+        viewModelScope.launch(Dispatchers.IO){
+            myDao.insertLastTask(sessionId, name, totPom)
+        }
+    }
     // TODO posso assicurarmi che runni solo un observer alla volta e evitare che i !! facciano danni?
     // I !! non dovrebbero fare danni perchè una volta che viene dato un valore alle variabili non tornano più
     // a null, ma magari un minimo di semaforo non farebbe comunque male, dunno
