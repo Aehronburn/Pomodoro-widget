@@ -60,7 +60,7 @@ class SessionDetailsFragment : Fragment() {
 
         val createNewTaskFAB: FloatingActionButton = view.findViewById(R.id.create_new_task_fab)
         createNewTaskFAB.setOnClickListener {
-            CreateNewTaskDialog().show(parentFragmentManager, "CreateNewTaskDialog")
+            CreateNewTaskDialog(sessionId).show(parentFragmentManager, "CreateNewTaskDialog")
         }
 
         recyclerView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->

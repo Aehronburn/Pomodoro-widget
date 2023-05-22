@@ -170,8 +170,4 @@ class SessionDetailsViewModel(app: Application): AndroidViewModel(app) {
         }
     }
 
-    fun getCompletedPomodorosCount(task: Task):LiveData<Int>{
-        return myDao.getCompletedPomodorosCountFromTaskId(task.id)
-    }
-
 }

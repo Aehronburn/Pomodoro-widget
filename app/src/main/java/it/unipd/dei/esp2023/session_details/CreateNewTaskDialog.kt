@@ -14,7 +14,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import it.unipd.dei.esp2023.R
 
-class CreateNewTaskDialog : DialogFragment() {
+class CreateNewTaskDialog(private val sessionId: Long) : DialogFragment() {
 
     /*
     The view of the dialog fragment we are manually creating inside onCreateDialog
@@ -39,6 +39,7 @@ class CreateNewTaskDialog : DialogFragment() {
     */
     @SuppressLint("UseGetLayoutInflater")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        viewModel.sessionId = sessionId
         val builder = MaterialAlertDialogBuilder(requireActivity())
         dialogView = onCreateView(LayoutInflater.from(requireContext()), null, savedInstanceState)
         builder.setView(dialogView)
@@ -71,6 +72,7 @@ class CreateNewTaskDialog : DialogFragment() {
         val createButton = view.findViewById<Button>(R.id.create_task_button)
         createButton.setOnClickListener {
             viewModel.newTask(taskName, pomodorosNumber)
+            dismiss()
         }
 
         return view
