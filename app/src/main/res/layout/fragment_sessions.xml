@@ -8,10 +8,11 @@
     tools:context=".sessions.SessionsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_id"
+        android:id="@+id/sessions_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="LinearLayoutManager" >
+        android:layout_marginStart="@dimen/margin_medium"
+        app:layoutManager="LinearLayoutManager">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -22,7 +23,7 @@
         android:layout_gravity="end|bottom"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="New session"
+        android:text="@string/create_new_session_fab_text"
         app:icon="@drawable/add_fill0_wght400_grad0_opsz48"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

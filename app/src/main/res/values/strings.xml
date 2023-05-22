@@ -38,5 +38,8 @@
     <string name="time_progress_session_details">Time: %1$d min / %2$d min</string>
     <string name="start_session">Start</string>
     <string name="create_new_task_description">Create a new task</string>
+    <string name="delete_session_button_description">Delete this session</string>
+    <string name="see_tasks_button_text">Tasks</string>
+    <string name="create_new_session_fab_text">New session</string>
 
 </resources>

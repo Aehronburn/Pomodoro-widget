@@ -1,33 +1,43 @@
 package it.unipd.dei.esp2023.sessions
 
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
-import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.database.Session
 
-class SessionsAdapter(private var sessionList: List<Session> = emptyList()): RecyclerView.Adapter<SessionsAdapter.SessionsViewHolder>() {
-   inner class SessionsViewHolder(itemView : View): RecyclerView.ViewHolder(itemView) {
-        private val sessionTV:TextView = itemView.findViewById(R.id.sessionTV)
-        private val sessionDateTV:TextView = itemView.findViewById(R.id.sessionDateTV)
-        private val sessionCompletedPomodorosTV:TextView = itemView.findViewById(R.id.sessionCompletedPomodorosTV)
+class SessionsAdapter(
+    private var sessionList: List<Session> = emptyList(),
+    private val onItemClickedListener: (Session) -> Unit,
+    private val onItemDeletedListener: (Session) -> Unit
+) : RecyclerView.Adapter<SessionsAdapter.SessionsViewHolder>() {
+    inner class SessionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val sessionTV: TextView = itemView.findViewById(R.id.sessionTV)
+        private val sessionDateTV: TextView = itemView.findViewById(R.id.sessionDateTV)
+        private val deleteButton: Button = itemView.findViewById(R.id.delete_session_button)
+        private val seeTasksButton: Button = itemView.findViewById(R.id.see_tasks_button)
 
-        fun bind(session: Session) {
+        fun bind(
+            session: Session,
+            onItemDeletedListener: (Session) -> Unit,
+            onItemClickedListener: (Session) -> Unit
+        ) {
             sessionTV.text = session.name
             sessionDateTV.text = session.creationDate
+            deleteButton.setOnClickListener { onItemDeletedListener(session) }
+            seeTasksButton.setOnClickListener { onItemClickedListener(session) }
         }
     }
 
     fun updateList(newList: List<Session>) {
+        val diffCallback = SessionDiffUtil(sessionList, newList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         sessionList = newList
-       //Siccome al momento l'unica operazione permessa è l'inserimento
-       //notifico l'adapter che ho inserito un elemento in coda
-        notifyItemInserted(newList.size)
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionsViewHolder {
@@ -40,11 +50,28 @@ class SessionsAdapter(private var sessionList: List<Session> = emptyList()): Rec
     }
 
     override fun onBindViewHolder(holder: SessionsViewHolder, position: Int) {
-        holder.bind(sessionList[position])
-        holder.itemView.setOnClickListener { view ->
-            val bundle = Bundle()
-            bundle.putLong("sessionId", sessionList[position].id)
-            view.findNavController().navigate(R.id.action_sessions_fragment_to_sessionDetails, bundle)
+        holder.bind(sessionList[position], onItemDeletedListener, onItemClickedListener)
+    }
+
+    inner class SessionDiffUtil(
+        private val oldList: List<Session>,
+        private val newList: List<Session>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int {
+            return oldList.size
         }
+
+        override fun getNewListSize(): Int {
+            return newList.size
+        }
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
+
     }
 }

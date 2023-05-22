@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import it.unipd.dei.esp2023.R
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import it.unipd.dei.esp2023.database.Session
 
 class SessionsFragment : Fragment() {
 
@@ -27,8 +30,9 @@ class SessionsFragment : Fragment() {
             CreateNewSessionDialog().show(parentFragmentManager, "CreateNewSessionDialog")
         }
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_id)
-        val adapter = SessionsAdapter()
+        val recyclerView = view.findViewById<RecyclerView>(R.id.sessions_recyclerview)
+        recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        val adapter = SessionsAdapter(onItemClickedListener = onItemClickedListener, onItemDeletedListener = onItemDeletedListener)
         recyclerView.adapter = adapter
 
         recyclerView.setOnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
@@ -41,6 +45,16 @@ class SessionsFragment : Fragment() {
         }
 
         return view
+    }
+
+    private val onItemClickedListener: (Session) -> Unit =  { session ->
+        val bundle = Bundle()
+        bundle.putLong("sessionId", session.id)
+        findNavController().navigate(R.id.action_sessions_fragment_to_sessionDetails, bundle)
+    }
+
+    private val onItemDeletedListener: (Session) -> Unit = { session ->
+        viewModel.deleteSession(session)
     }
 
 }
