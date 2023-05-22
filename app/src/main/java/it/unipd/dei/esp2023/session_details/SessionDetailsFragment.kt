@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import it.unipd.dei.esp2023.R
@@ -27,6 +29,7 @@ class SessionDetailsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_session_details, container, false)
         val recyclerView = view.findViewById<RecyclerView>(R.id.taskListRecyclerView)
         val theAdapter = SessionDetailsRecyclerViewAdapter(viewModel)
+        recyclerView.addItemDecoration(DividerItemDecoration(context, VERTICAL))
         viewModel.taskList.observe(viewLifecycleOwner){
             list ->
                 theAdapter.setTaskList(list)

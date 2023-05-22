@@ -11,14 +11,15 @@
         android:id="@+id/taskListRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:clipToPadding="false"
+        android:paddingBottom="160dp"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/hrBottomBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/hrBottomBar"
-        app:layoutManager="LinearLayoutManager"
-        android:paddingBottom="160dp"
-        android:clipToPadding="false"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
         <!-- TODO calcolare meglio il paddingBottom del recycler -->
     <View
         android:id="@+id/hrBottomBar"
