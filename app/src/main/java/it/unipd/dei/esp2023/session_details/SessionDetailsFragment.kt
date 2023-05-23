@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import it.unipd.dei.esp2023.R
@@ -35,6 +36,11 @@ class SessionDetailsFragment : Fragment() {
                 theAdapter.setTaskList(list)
         }
         recyclerView.adapter = theAdapter
+
+        viewModel.sessionInfo.observe(viewLifecycleOwner) {
+            val toolbar: MaterialToolbar = requireActivity().findViewById(R.id.app_bar)
+            toolbar.title = it.name
+        }
 
         // https://developer.android.com/guide/topics/resources/string-resource#formatting-strings
         val tCountTV = view.findViewById<TextView>(R.id.sessionTaskCountTV)
