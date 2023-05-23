@@ -1,16 +1,13 @@
 package it.unipd.dei.esp2023.session_details
 
 import android.graphics.Paint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.lifecycle.LiveData
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.esp2023.R
-import it.unipd.dei.esp2023.database.Session
-import it.unipd.dei.esp2023.database.Task
 import it.unipd.dei.esp2023.database.TaskExt
 
 class SessionDetailsRecyclerViewAdapter(protected val viewModel: SessionDetailsViewModel) : RecyclerView.Adapter<SessionDetailsRecyclerViewAdapter.SDetailsViewHolder>() {
@@ -54,7 +51,28 @@ class SessionDetailsRecyclerViewAdapter(protected val viewModel: SessionDetailsV
         holder.bind(taskList[position])
     }
     fun setTaskList(theList: List<TaskExt>){
+        val diffCallback = TaskDiffUtil(taskList, theList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         taskList = theList
-        this.notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    inner class TaskDiffUtil(private val oldList: List<TaskExt>, private val newList: List<TaskExt>): DiffUtil.Callback() {
+        override fun getOldListSize(): Int {
+            return oldList.size
+        }
+
+        override fun getNewListSize(): Int {
+            return newList.size
+        }
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
+
     }
 }
