@@ -14,6 +14,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import it.unipd.dei.esp2023.R
+import it.unipd.dei.esp2023.database.TaskExt
 
 class SessionDetailsFragment : Fragment() {
     private val viewModel: SessionDetailsViewModel by viewModels()
@@ -29,7 +30,7 @@ class SessionDetailsFragment : Fragment() {
         viewModel.sessionId = sessionId
         val view = inflater.inflate(R.layout.fragment_session_details, container, false)
         val recyclerView = view.findViewById<RecyclerView>(R.id.taskListRecyclerView)
-        val theAdapter = SessionDetailsRecyclerViewAdapter(viewModel)
+        val theAdapter = SessionDetailsRecyclerViewAdapter(onItemDeletedListener)
         recyclerView.addItemDecoration(DividerItemDecoration(context, VERTICAL))
         viewModel.taskList.observe(viewLifecycleOwner){
             list ->
@@ -71,6 +72,10 @@ class SessionDetailsFragment : Fragment() {
             else startSessionFAB.extend()
         }
         return view
+    }
+
+    private val onItemDeletedListener: (TaskExt) -> Unit = {
+        viewModel.deleteTask(it)
     }
 
 }

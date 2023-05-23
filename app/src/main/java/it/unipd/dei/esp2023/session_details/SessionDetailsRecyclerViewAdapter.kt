@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.database.TaskExt
 
-class SessionDetailsRecyclerViewAdapter(protected val viewModel: SessionDetailsViewModel) : RecyclerView.Adapter<SessionDetailsRecyclerViewAdapter.SDetailsViewHolder>() {
+class SessionDetailsRecyclerViewAdapter(private val onItemDeletedListener: (TaskExt) -> Unit) : RecyclerView.Adapter<SessionDetailsRecyclerViewAdapter.SDetailsViewHolder>() {
     private var taskList: List<TaskExt> = emptyList<TaskExt>()
 
     // https://stackoverflow.com/a/46376182
@@ -28,7 +28,7 @@ class SessionDetailsRecyclerViewAdapter(protected val viewModel: SessionDetailsV
                 taskNameTextView.paintFlags = taskNameTextView.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
             }
             deleteButton.setOnClickListener {
-                viewModel.deleteTask(task)
+                onItemDeletedListener(task)
             }
         }
     }
