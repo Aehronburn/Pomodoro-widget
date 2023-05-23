@@ -4,10 +4,14 @@ import android.content.ContentProvider
 import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
+import it.unipd.dei.esp2023.database.PomodoroDatabase
+import it.unipd.dei.esp2023.database.PomodoroDatabaseDao
 
 class SessionProvider: ContentProvider() {
+    lateinit var database: PomodoroDatabaseDao
     override fun onCreate(): Boolean {
-        TODO("Not yet implemented")
+        database = PomodoroDatabase.getInstance(context!!).databaseDao
+        return true
     }
 
     override fun query(
