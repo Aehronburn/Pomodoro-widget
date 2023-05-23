@@ -38,5 +38,8 @@
         <argument
             android:name="sessionId"
             app:argType="long" />
+        <argument
+            android:name="sessionName"
+            app:argType="string" />
     </fragment>
 </navigation>

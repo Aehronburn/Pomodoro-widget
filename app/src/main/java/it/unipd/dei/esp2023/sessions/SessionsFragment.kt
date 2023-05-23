@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
 import it.unipd.dei.esp2023.database.Session
+import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
 
 class SessionsFragment : Fragment() {
 
@@ -65,7 +66,8 @@ class SessionsFragment : Fragment() {
      */
     private val onItemClickedListener: (Session) -> Unit =  { session ->
         val bundle = Bundle()
-        bundle.putLong("sessionId", session.id)
+        bundle.putLong(SessionDetailsFragment.ARGUMENT_SESSION_ID, session.id)
+        bundle.putString(SessionDetailsFragment.ARGUMENT_SESSION_NAME, session.name)
         findNavController().navigate(R.id.action_sessions_fragment_to_sessionDetails, bundle)
     }
 

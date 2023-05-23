@@ -23,10 +23,11 @@ class SessionDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val param: Long? = arguments?.getLong("sessionId")
+        val argumentSessionId: Long? = arguments?.getLong(ARGUMENT_SESSION_ID)
+        val argumentSessionName: String? = arguments?.getString(ARGUMENT_SESSION_NAME)
 
-        require(param!=null)
-        val sessionId: Long = param
+        require(argumentSessionId!=null)
+        val sessionId: Long = argumentSessionId
         viewModel.sessionId = sessionId
         val view = inflater.inflate(R.layout.fragment_session_details, container, false)
         val recyclerView = view.findViewById<RecyclerView>(R.id.taskListRecyclerView)
@@ -38,10 +39,8 @@ class SessionDetailsFragment : Fragment() {
         }
         recyclerView.adapter = theAdapter
 
-        viewModel.sessionInfo.observe(viewLifecycleOwner) {
-            val toolbar: MaterialToolbar = requireActivity().findViewById(R.id.app_bar)
-            toolbar.title = it.name
-        }
+        val toolbar: MaterialToolbar = requireActivity().findViewById(R.id.app_bar)
+        toolbar.title = argumentSessionName
 
         // https://developer.android.com/guide/topics/resources/string-resource#formatting-strings
         val tCountTV = view.findViewById<TextView>(R.id.sessionTaskCountTV)
@@ -76,6 +75,14 @@ class SessionDetailsFragment : Fragment() {
 
     private val onItemDeletedListener: (TaskExt) -> Unit = {
         viewModel.deleteTask(it)
+    }
+
+    companion object {
+        /*
+        Parameters to pass in the bundle when navigating to this fragment
+         */
+        const val ARGUMENT_SESSION_ID = "sessionId"
+        const val ARGUMENT_SESSION_NAME = "sessionName"
     }
 
 }
