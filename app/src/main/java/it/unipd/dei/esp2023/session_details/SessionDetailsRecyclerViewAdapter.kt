@@ -27,6 +27,8 @@ class SessionDetailsRecyclerViewAdapter(protected val viewModel: SessionDetailsV
             pomCountTextView.text = "${task.totalPomodoros} ${if(task.totalPomodoros==1) itemView.context.resources.getString(R.string.singular_pomodoro) else itemView.context.resources.getString(R.string.plural_pomodoro)}"
             if(task.completedPomodoros>=task.totalPomodoros){
                 taskNameTextView.paintFlags = taskNameTextView.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            }else{
+                taskNameTextView.paintFlags = taskNameTextView.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
             }
             deleteButton.setOnClickListener {
                 viewModel.deleteTask(task)
