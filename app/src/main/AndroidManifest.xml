@@ -20,6 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:authorities="SessionProvider"
+            android:name=".content_provider.SessionProvider">
+
+        </provider>
     </application>
 
 </manifest>
