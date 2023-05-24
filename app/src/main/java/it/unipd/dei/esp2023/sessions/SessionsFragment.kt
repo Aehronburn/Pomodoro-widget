@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
+import it.unipd.dei.esp2023.SessionsContentProvider
 import it.unipd.dei.esp2023.database.Session
 
 class SessionsFragment : Fragment() {
@@ -63,7 +64,11 @@ class SessionsFragment : Fragment() {
             val resolver: ContentResolver by lazy {
                 requireContext().contentResolver
             }
-            val uri = Uri.parse("content://it.unipd.dei.esp2023.SessionsContentProvider")
+            val uri = Uri.parse(SessionsContentProvider.URI)
+            /*
+            wrong uri
+            val uri = Uri.parse("content://it.unipd.dei.esp2023.SessionsContentProvider/session")
+            */
             val cursor = resolver.query(uri, null, null, null, null)
             cursor.use {
                 val count = cursor!!.count

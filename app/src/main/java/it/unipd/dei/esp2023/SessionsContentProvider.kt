@@ -22,6 +22,9 @@ class SessionsContentProvider: ContentProvider() {
         selectionArgs: Array<out String>?,
         sortOrder: String?
     ): Cursor {
+        if(uri != Uri.parse(URI)) {
+            throw IllegalArgumentException()
+        }
         return database.getSessionListCursor()
     }
 
@@ -44,5 +47,9 @@ class SessionsContentProvider: ContentProvider() {
 
     override fun getType(uri: Uri): String? {
         throw UnsupportedOperationException()
+    }
+
+    companion object {
+        const val URI = "content://it.unipd.dei.esp2023.SessionsContentProvider/sessions"
     }
 }
