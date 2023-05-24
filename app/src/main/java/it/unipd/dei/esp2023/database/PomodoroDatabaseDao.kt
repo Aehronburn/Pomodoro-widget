@@ -103,10 +103,7 @@ interface PomodoroDatabaseDao {
         FROM completed_pomodoro WHERE completion_date= :dateStr
         """)
     fun getSingleDayStatisticsFromDate(dateStr: String, description: String = "Today"): LiveData<SingleStat>
-    @Query("""
-        SELECT 0 as dayNumber, 'Today' as dayDescription, count(*) as numCompleted, sum(duration) as focusTime 
-        FROM completed_pomodoro WHERE completion_date= :dateStr
-        """)
+
     fun getTodayStatistics(): LiveData<SingleStat> {
         return getSingleDayStatisticsFromDate("date()")
     }
