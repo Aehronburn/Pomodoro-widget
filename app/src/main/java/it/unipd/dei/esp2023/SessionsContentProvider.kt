@@ -1,4 +1,4 @@
-package it.unipd.dei.esp2023.content_provider
+package it.unipd.dei.esp2023
 
 import android.content.ContentProvider
 import android.content.ContentValues
@@ -7,7 +7,7 @@ import android.net.Uri
 import it.unipd.dei.esp2023.database.PomodoroDatabase
 import it.unipd.dei.esp2023.database.PomodoroDatabaseDao
 
-class SessionProvider: ContentProvider() {
+class SessionsContentProvider: ContentProvider() {
     lateinit var database: PomodoroDatabaseDao
     override fun onCreate(): Boolean {
         database = PomodoroDatabase.getInstance(context!!).databaseDao

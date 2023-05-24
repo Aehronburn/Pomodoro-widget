@@ -21,8 +21,8 @@
             </intent-filter>
         </activity>
         <provider
-            android:authorities="SessionProvider"
-            android:name=".content_provider.SessionProvider">
+            android:authorities="it.unipd.dei.esp2023.SessionsContentProvider"
+            android:name=".SessionsContentProvider">
 
         </provider>
     </application>
