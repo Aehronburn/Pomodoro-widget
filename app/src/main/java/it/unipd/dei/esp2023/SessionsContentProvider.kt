@@ -41,11 +41,13 @@ class SessionsContentProvider: ContentProvider() {
     }
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
-        TODO("Not yet implemented")
+        //This function is not available at the moment
+        return null
     }
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
-        TODO("Not yet implemented")
+        //This function is not available at the moment
+        return -1
     }
 
     override fun update(
@@ -54,11 +56,13 @@ class SessionsContentProvider: ContentProvider() {
         selection: String?,
         selectionArgs: Array<out String>?
     ): Int {
-        TODO("Not yet implemented")
+        //This function is not available at the moment
+        return -1
     }
 
     override fun getType(uri: Uri): String? {
-        TODO("Not yet implemented")
+        //This function is not available at the moment
+        return null
     }
 
     private fun createCursorFromList(myList: List<Session>): Cursor{
