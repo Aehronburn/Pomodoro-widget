@@ -26,7 +26,6 @@ class SessionDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val argumentSessionId: Long? = arguments?.getLong(ARGUMENT_SESSION_ID)
-        val argumentSessionName: String? = arguments?.getString(ARGUMENT_SESSION_NAME)
 
         require(argumentSessionId!=null)
         val sessionId: Long = argumentSessionId
@@ -40,8 +39,6 @@ class SessionDetailsFragment : Fragment() {
                 theAdapter.setTaskList(list)
         }
         recyclerView.adapter = theAdapter
-
-        requireActivity().title = argumentSessionName
 
         // https://developer.android.com/guide/topics/resources/string-resource#formatting-strings
         val tCountTV = view.findViewById<TextView>(R.id.sessionTaskCountTV)
