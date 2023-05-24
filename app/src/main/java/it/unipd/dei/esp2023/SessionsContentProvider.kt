@@ -6,6 +6,10 @@ import android.database.Cursor
 import android.database.MatrixCursor
 import android.net.Uri
 import android.util.Log
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import it.unipd.dei.esp2023.database.PomodoroDatabase
 import it.unipd.dei.esp2023.database.PomodoroDatabaseDao
 import it.unipd.dei.esp2023.database.Session
@@ -16,10 +20,6 @@ class SessionsContentProvider: ContentProvider() {
     override fun onCreate(): Boolean {
         //Pick database from application context because it already exists
         database = PomodoroDatabase.getInstance(context!!).databaseDao
-
-        //DEBUG: il database che prendo è lo stesso
-        Log.d("Il_mio_tag", "Dal content provider ho database id = $database")
-
         return true
     }
 
@@ -33,7 +33,9 @@ class SessionsContentProvider: ContentProvider() {
         sortOrder: String?
     ): Cursor? {
         //TODO: Continua a pescare lista NULL da getSessionsList().value
-        val myList = database.getSessionList().value ?: emptyList()
+        //val myList = database.getSessionList()
+
+        val myList = database.getSessionListNoLive()
 
         return createCursorFromList(myList)
     }
@@ -61,15 +63,13 @@ class SessionsContentProvider: ContentProvider() {
 
     private fun createCursorFromList(myList: List<Session>): Cursor{
         val cursor = MatrixCursor(arrayOf("id", "name", "creation_date"))
+            if(myList.isEmpty()){
+                Log.d("Il_mio_tag", "Lista vuota")
+            }
 
-        if(myList.isEmpty()){
-            Log.d("Il_mio_tag", "Lista vuota")
-        }
-
-        myList.forEach{
-            cursor.addRow(arrayOf(it.id, it.name, it.creationDate))
-        }
-
-        return cursor
+            myList.forEach{
+                cursor.addRow(arrayOf(it.id, it.name, it.creationDate))
+            }
+     return cursor
     }
 }

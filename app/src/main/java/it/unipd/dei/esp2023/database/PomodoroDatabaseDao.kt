@@ -55,6 +55,8 @@ interface PomodoroDatabaseDao {
     fun getTaskFromId(taskId: Long): LiveData<Task>
     @Query("SELECT * FROM completed_pomodoro WHERE id = :pomodoroId")
     fun getCompletedPomodoroFromId(pomodoroId: Long): LiveData<CompletedPomodoro>
+    @Query("SELECT * FROM session")
+    fun getSessionListNoLive(): List<Session>
     @Query("SELECT * FROM session ORDER BY creation_date DESC")
     fun getSessionList(): LiveData<List<Session>>
     @Query("SELECT * FROM session ORDER BY creation_date ASC")

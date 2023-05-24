@@ -7,11 +7,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.contentValuesOf
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import it.unipd.dei.esp2023.R
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
@@ -26,11 +28,6 @@ class SessionsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        //DEBUG
-        val myDB = viewModel.database
-        Log.d("Il_mio_tag", "Dal Session fragment ho database id = $myDB")
-
         val view = inflater.inflate(R.layout.fragment_sessions, container, false)
 
         /*
@@ -63,25 +60,16 @@ class SessionsFragment : Fragment() {
         viewModel.sessionList.observe(viewLifecycleOwner) {
             adapter.updateList(it)
 
-
-            //TODO: L'osservazione di prova del cursore la faccio da qua
-
-            //Lazy: non viene creato finchè non è richiamato
+            //Prova
             val resolver: ContentResolver by lazy {
                 requireContext().contentResolver
             }
-
-            //Prendo l'URI dalll'authority nel Manifest
-            val uri = Uri.parse("content://it.unipd.dei.esp2023.SessionsContentProvider")
-
-            //Ottengo il mio cursore aggiornato
-            val cursor = resolver.query(uri, null, null, null, null)
-
-            //Faccio le chiamate di prova
-            val a = cursor!!.count
-            Log.d("Il_mio_tag", "Pesco: $a")
-
-
+            if(resolver!=null){
+                val uri = Uri.parse("content://it.unipd.dei.esp2023.SessionsContentProvider")
+                val cursor = resolver.query(uri, null, null, null, null)
+                val a = cursor!!.count
+                Log.d("Il_mio_tag", "Conto $a")
+            }
         }
 
         return view
