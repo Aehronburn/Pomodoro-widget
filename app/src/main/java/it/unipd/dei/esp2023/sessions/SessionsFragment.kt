@@ -1,6 +1,9 @@
 package it.unipd.dei.esp2023.sessions
 
+import android.content.ContentResolver
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +26,10 @@ class SessionsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        //DEBUG
+        val myDB = viewModel.database
+        Log.d("Il_mio_tag", "Dal Session fragment ho database id = $myDB")
 
         val view = inflater.inflate(R.layout.fragment_sessions, container, false)
 
@@ -55,6 +62,26 @@ class SessionsFragment : Fragment() {
          */
         viewModel.sessionList.observe(viewLifecycleOwner) {
             adapter.updateList(it)
+
+
+            //TODO: L'osservazione di prova del cursore la faccio da qua
+
+            //Lazy: non viene creato finchè non è richiamato
+            val resolver: ContentResolver by lazy {
+                requireContext().contentResolver
+            }
+
+            //Prendo l'URI dalll'authority nel Manifest
+            val uri = Uri.parse("content://it.unipd.dei.esp2023.SessionsContentProvider")
+
+            //Ottengo il mio cursore aggiornato
+            val cursor = resolver.query(uri, null, null, null, null)
+
+            //Faccio le chiamate di prova
+            val a = cursor!!.count
+            Log.d("Il_mio_tag", "Pesco: $a")
+
+
         }
 
         return view
