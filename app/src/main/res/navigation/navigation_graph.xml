@@ -33,8 +33,7 @@
     <fragment
         android:id="@+id/sessionDetails"
         android:name="it.unipd.dei.esp2023.session_details.SessionDetailsFragment"
-        android:label="Session details"
-        tools:layout="@layout/fragment_session_details" >
+        tools:layout="@layout/fragment_session_details">
         <argument
             android:name="sessionId"
             app:argType="long" />
