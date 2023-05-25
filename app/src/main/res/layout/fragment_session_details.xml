@@ -37,7 +37,7 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/create_new_task_fab"
-        style="?attr/floatingActionButtonSmallStyle"
+        style="?attr/floatingActionButtonSmallSurfaceStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_medium"
