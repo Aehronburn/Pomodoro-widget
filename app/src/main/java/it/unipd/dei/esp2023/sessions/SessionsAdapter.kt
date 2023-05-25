@@ -22,9 +22,7 @@ class SessionsAdapter(
         private val seeTasksButton: Button = itemView.findViewById(R.id.see_tasks_button)
 
         fun bind(
-            session: Session,
-            onItemDeletedListener: (Session) -> Unit,
-            onItemClickedListener: (Session) -> Unit
+            session: Session
         ) {
             sessionTV.text = session.name
             sessionDateTV.text = session.creationDate
@@ -53,7 +51,7 @@ class SessionsAdapter(
     }
 
     override fun onBindViewHolder(holder: SessionsViewHolder, position: Int) {
-        holder.bind(sessionList[position], onItemDeletedListener, onItemClickedListener)
+        holder.bind(sessionList[position])
     }
 
     /*

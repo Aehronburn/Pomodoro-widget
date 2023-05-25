@@ -18,17 +18,10 @@
         android:clipToPadding="false"
         android:paddingBottom="@dimen/session_details_recyclerview_bottom_padding"
         app:layoutManager="LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/hrBottomBar"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_sheet"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <View
-        android:id="@+id/hrBottomBar"
-        app:layout_constraintTop_toBottomOf="@+id/taskListRecyclerView"
-        app:layout_constraintBottom_toTopOf="@+id/bottomInfoLLWrapper"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="?colorOnBackground"/>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/start_session"
@@ -39,45 +32,8 @@
         android:clickable="true"
         android:text="@string/start_session"
         app:icon="@drawable/timer_fill0_wght400_grad0_opsz48"
-        app:layout_constraintBottom_toTopOf="@+id/hrBottomBar"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_sheet"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/bottomInfoLLWrapper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/hrBottomBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:paddingHorizontal="30dp"
-        android:paddingBottom="20dp"
-        android:paddingTop="10dp"
-
-        >
-        <TextView
-            android:id="@+id/sessionTaskCountTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp"
-            />
-        <TextView
-            android:id="@+id/sessionPomodoroCountTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp"
-            />
-        <TextView
-            android:id="@+id/sessionTimeTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp"
-            />
-    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/create_new_task_fab"
@@ -92,5 +48,48 @@
         app:layout_constraintBottom_toTopOf="@+id/start_session"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <FrameLayout
+        android:id="@+id/bottom_sheet"
+        style="@style/Widget.Material3.BottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorOnSurfaceInverse"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/taskListRecyclerView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingVertical="@dimen/margin_medium_large">
+
+            <TextView
+                android:id="@+id/sessionTaskCountTV"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_medium"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/sessionPomodoroCountTV"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_medium"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/sessionTimeTV"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_medium"
+                android:text="" />
+        </LinearLayout>
+
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

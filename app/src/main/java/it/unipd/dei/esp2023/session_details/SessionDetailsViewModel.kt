@@ -47,13 +47,11 @@ class SessionDetailsViewModel(app: Application): AndroidViewModel(app) {
         set(id: Long) {
             if(!initialized){
                 field = id
-                taskList = myDao.getTaskExtListFromSessionId(sessionId)
                 sessionInfo = myDao.getSessionFromId(sessionId)
                 initProgressInfo()
                 initialized = true
             }
         }
-    lateinit var taskList: LiveData<List<TaskExt>>
     lateinit var sessionInfo: LiveData<Session>
 
     val taskCountProgress: LiveData<Pair<Int, Int>>
