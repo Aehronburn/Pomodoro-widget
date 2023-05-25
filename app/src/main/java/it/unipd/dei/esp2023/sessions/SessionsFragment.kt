@@ -60,7 +60,7 @@ class SessionsFragment : Fragment() {
         viewModel.sessionList.observe(viewLifecycleOwner) {
             adapter.updateList(it)
 
-            //TODO temporary test of content provider
+            //TODO temporary test of content provider, remove this
             val resolver: ContentResolver by lazy {
                 requireContext().contentResolver
             }

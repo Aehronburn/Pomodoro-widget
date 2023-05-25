@@ -19,6 +19,7 @@ abstract class PomodoroDatabase : RoomDatabase() {
             synchronized(this) {
                 var instance = INSTANCE
                 if(instance == null) {
+                    //TODO: Remove allowMainThreadQueries
                     instance = Room.databaseBuilder(context.applicationContext, PomodoroDatabase::class.java, "pomodoro_database").allowMainThreadQueries().fallbackToDestructiveMigration().build()
                     INSTANCE = instance
                 }
