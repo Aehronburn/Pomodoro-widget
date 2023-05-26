@@ -71,7 +71,7 @@ class SessionDetailsFragment : Fragment() {
         val startSessionFAB: ExtendedFloatingActionButton = view.findViewById(R.id.start_session)
         startSessionFAB.setOnClickListener {
             //TODO implement navigation
-            mService?.send(Message.obtain(null, TimerService.MSG_START_TIMER, 0, 0)) // todo toglimi
+            mService?.send(Message.obtain(null, TimerService.ACTION_CREATE_TIMER, 1, TimerService.ONE_MINUTE_IN_MS.toInt()*10)) // todo toglimi
         }
 
         val createNewTaskFAB: FloatingActionButton = view.findViewById(R.id.create_new_task_fab)
@@ -107,7 +107,7 @@ class SessionDetailsFragment : Fragment() {
     // region todo toglimi
     override fun onDestroyView() {
         super.onDestroyView()
-        mService?.send(Message.obtain(null, TimerService.MSG_STOP_TIMER, 0, 0))
+        mService?.send(Message.obtain(null, TimerService.ACTION_DELETE_TIMER, 0, 0))
         val intent = Intent(context, TimerService::class.java)
         context?.unbindService(mConnection)
     }

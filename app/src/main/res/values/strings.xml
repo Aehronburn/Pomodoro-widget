@@ -43,4 +43,5 @@
     <string name="create_new_session_fab_text">New session</string>
     <string name="delete_task_content_decription">Delete the task</string> <!-- TODO fix typo -->
     <string name="service_notification_title">Pomodoro timer running</string>
+    <string name="service_notification_text_progress">%1$s in progress: %2$d minutes remaining</string>
 </resources>
