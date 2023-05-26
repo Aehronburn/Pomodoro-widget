@@ -1,5 +1,19 @@
 package it.unipd.dei.esp2023.session_details
 
+// region todo toglimi
+import android.Manifest
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
+import android.os.IBinder
+import android.os.Message
+import android.os.Messenger
+import it.unipd.dei.esp2023.service.TimerService
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.PermissionChecker
+// endregion
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -57,6 +71,7 @@ class SessionDetailsFragment : Fragment() {
         val startSessionFAB: ExtendedFloatingActionButton = view.findViewById(R.id.start_session)
         startSessionFAB.setOnClickListener {
             //TODO implement navigation
+            mService?.send(Message.obtain(null, TimerService.MSG_START_TIMER, 0, 0)) // todo toglimi
         }
 
         val createNewTaskFAB: FloatingActionButton = view.findViewById(R.id.create_new_task_fab)
@@ -68,6 +83,12 @@ class SessionDetailsFragment : Fragment() {
             if(scrollY > oldScrollY) startSessionFAB.shrink()
             else startSessionFAB.extend()
         }
+        // region todo toglimi
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) != PermissionChecker.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.POST_NOTIFICATIONS), 12345)
+        val intent = Intent(context, TimerService::class.java)
+        context?.bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
+        // endregion
         return view
     }
 
@@ -83,4 +104,40 @@ class SessionDetailsFragment : Fragment() {
         const val ARGUMENT_SESSION_NAME = "sessionName"
     }
 
+    // region todo toglimi
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mService?.send(Message.obtain(null, TimerService.MSG_STOP_TIMER, 0, 0))
+        val intent = Intent(context, TimerService::class.java)
+        context?.unbindService(mConnection)
+    }
+
+    /** Messenger for communicating with the service.  */
+    private var mService: Messenger? = null
+
+    /** Flag indicating whether we have called bind on the service.  */
+    private var bound: Boolean = false
+
+    private val mConnection = object : ServiceConnection {
+
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            // This is called when the connection with the service has been
+            // established, giving us the object we can use to
+            // interact with the service.  We are communicating with the
+            // service using a Messenger, so here we get a client-side
+            // representation of that from the raw IBinder object.
+            println("ServiceConnection onServiceConnected")
+            mService = Messenger(service)
+            var bound = true
+        }
+
+        override fun onServiceDisconnected(className: ComponentName) {
+            // This is called when the connection with the service has been
+            // unexpectedly disconnected&mdash;that is, its process crashed.
+            println("ServiceConnection onServiceDisconnected")
+            mService = null
+            bound = false
+        }
+    }
+    // endregion
 }
