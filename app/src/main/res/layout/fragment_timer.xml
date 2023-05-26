@@ -1,57 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".timer.TimerFragment">
+<layout>
 
-    <TextView
-        android:id="@+id/current_task_text"
-        style="@style/TextAppearance.Material3.HeadlineLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Current task"
-        app:layout_constraintBottom_toTopOf="@+id/minutes_left_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".timer.TimerFragment">
 
-    <TextView
-        android:id="@+id/minutes_left_text"
-        style="@style/TextAppearance.Material3.DisplayLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="25"
-        app:layout_constraintBottom_toTopOf="@+id/toggle_start_play_pause"
-        app:layout_constraintEnd_toEndOf="@+id/current_task_text"
-        app:layout_constraintStart_toStartOf="@+id/current_task_text"
-        app:layout_constraintTop_toBottomOf="@+id/current_task_text" />
+        <TextView
+            android:id="@+id/current_task_text"
+            style="@style/TextAppearance.Material3.HeadlineLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Current task"
+            app:layout_constraintBottom_toTopOf="@+id/minutes_left_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/toggle_start_play_pause"
-        style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:contentDescription="@string/toggle_start_play_pause_description"
-        android:src="@drawable/play_arrow_fill1_wght400_grad0_opsz48"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/minutes_left_text"
-        app:layout_constraintStart_toStartOf="@+id/minutes_left_text"
-        app:layout_constraintTop_toBottomOf="@+id/minutes_left_text" />
+        <TextView
+            android:id="@+id/minutes_left_text"
+            style="@style/TextAppearance.Material3.DisplayLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="25"
+            app:layout_constraintBottom_toTopOf="@+id/toggle_start_play_pause"
+            app:layout_constraintEnd_toEndOf="@+id/current_task_text"
+            app:layout_constraintStart_toStartOf="@+id/current_task_text"
+            app:layout_constraintTop_toBottomOf="@+id/current_task_text" />
 
-    <Button
-        android:id="@+id/button"
-        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/reset_timer_button_description"
-        app:icon="@drawable/restart_alt_fill0_wght400_grad0_opsz48"
-        app:layout_constraintBottom_toBottomOf="@+id/toggle_start_play_pause"
-        app:layout_constraintEnd_toStartOf="@+id/toggle_start_play_pause"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toggle_start_play_pause" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/toggle_start_play_pause"
+            style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contentDescription="@string/toggle_start_play_pause_description"
+            android:src="@drawable/play_arrow_fill1_wght400_grad0_opsz48"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/minutes_left_text"
+            app:layout_constraintStart_toStartOf="@+id/minutes_left_text"
+            app:layout_constraintTop_toBottomOf="@+id/minutes_left_text" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/reset_button"
+            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/reset_timer_button_description"
+            app:icon="@drawable/restart_alt_fill0_wght400_grad0_opsz48"
+            app:layout_constraintBottom_toBottomOf="@+id/toggle_start_play_pause"
+            app:layout_constraintEnd_toStartOf="@+id/toggle_start_play_pause"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/toggle_start_play_pause" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
