@@ -49,5 +49,9 @@
         android:id="@+id/timerFragment"
         android:name="it.unipd.dei.esp2023.timer.TimerFragment"
         android:label="Timer"
-        tools:layout="@layout/fragment_timer" />
+        tools:layout="@layout/fragment_timer" >
+        <argument
+            android:name="sessionId"
+            app:argType="long" />
+    </fragment>
 </navigation>
