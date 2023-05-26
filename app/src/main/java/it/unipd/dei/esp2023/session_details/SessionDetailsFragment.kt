@@ -35,10 +35,6 @@ class SessionDetailsFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.taskListRecyclerView)
         val theAdapter = SessionDetailsRecyclerViewAdapter(onItemDeletedListener)
         recyclerView.addItemDecoration(DividerItemDecoration(context, VERTICAL))
-        mainViewModel.getTaskExtList(sessionId).observe(viewLifecycleOwner){
-            list ->
-                theAdapter.setTaskList(list)
-        }
         recyclerView.adapter = theAdapter
 
         // https://developer.android.com/guide/topics/resources/string-resource#formatting-strings
@@ -71,6 +67,13 @@ class SessionDetailsFragment : Fragment() {
             if(scrollY > oldScrollY) startSessionFAB.shrink()
             else startSessionFAB.extend()
         }
+
+        mainViewModel.getTaskExtList(sessionId).observe(viewLifecycleOwner){
+                list ->
+            theAdapter.setTaskList(list)
+            startSessionFAB.isEnabled = list.isNotEmpty()
+        }
+
         return view
     }
 
