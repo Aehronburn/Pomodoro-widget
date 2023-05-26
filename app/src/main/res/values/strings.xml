@@ -42,5 +42,7 @@
     <string name="see_tasks_button_text">Tasks</string>
     <string name="create_new_session_fab_text">New session</string>
     <string name="delete_task_content_decription">Delete the task</string>
+    <string name="toggle_start_play_pause_description">Starts the timer if not started, or toggles play/pause</string>
+    <string name="reset_timer_button_description">Resets the current timer</string>
 
 </resources>

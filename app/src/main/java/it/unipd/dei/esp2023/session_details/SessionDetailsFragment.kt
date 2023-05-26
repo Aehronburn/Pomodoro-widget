@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
@@ -56,7 +57,7 @@ class SessionDetailsFragment : Fragment() {
 
         val startSessionFAB: ExtendedFloatingActionButton = view.findViewById(R.id.start_session)
         startSessionFAB.setOnClickListener {
-            //TODO implement navigation
+            findNavController().navigate(R.id.action_sessionDetails_to_timerFragment)
         }
 
         val createNewTaskFAB: FloatingActionButton = view.findViewById(R.id.create_new_task_fab)
