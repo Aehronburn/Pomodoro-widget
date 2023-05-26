@@ -8,20 +8,18 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Message
 import android.os.Messenger
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.Builder
 import it.unipd.dei.esp2023.MainActivity
 import it.unipd.dei.esp2023.R
-import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
 import it.unipd.dei.esp2023.settings.SettingsFragment
 
 class TimerService : Service() {
 
     private lateinit var mMessenger: Messenger
     private var isForeground: Boolean = false
+    private var isPaused: Boolean = false
     private var currentTimer: CountDownTimer? = null
-    private var msUntilFinish: Long = 0
     private var timerType: Int = 0
     private var remainingTimerMs: Long = 0
     /*
@@ -41,6 +39,10 @@ class TimerService : Service() {
             * arg2: Timer duration in ms (if 0 defaults to the correct value in SettingsFragment, eg DEFAULT_POMODORO_DURATION*ONE_MINUTE_IN_MS for arg1 = pomodoro)
             *
             * See acceptable Action and Timer types in companion object
+            *
+            * The duration parameter is passed as Int via arg2 and not as Long in a Bundle because Int.MAX_VALUE ms (more than 24 days) is
+            * deemed by the author to be more than enough for a maximum timer duration for the scope of this app. If a focus time of 25+
+            * days straight is needed on a single pomodoro, consider taking at least a short break after the 24th day :)
             */
 
             // Passo sempre msg a tutti i metodi per uniformare le interfacce, poi lì capisco se usarlo o meno
@@ -58,27 +60,17 @@ class TimerService : Service() {
                 ACTION_DELETE_TIMER -> {
                     handleDeleteTimer(msg)
                 }
+                Int.MAX_VALUE->super.handleMessage(msg)
                 else -> super.handleMessage(msg)
             }
         }
     }
 
-    override fun onBind(intent: Intent): IBinder? {
-        mMessenger = Messenger(IncomingHandler(this))
-        return mMessenger.binder
-    }
     private fun enterForeground(){
         startForeground(TIMER_SERVICE_NOTIFICATION_ID, createNotification())
     }
     private fun exitForeground(removeNotificationBehaviour: Int = STOP_FOREGROUND_REMOVE){
         stopForeground(removeNotificationBehaviour)
-    }
-    override fun onCreate()
-    {
-        super.onCreate()
-        notificationManager = getSystemService( NotificationManager::class.java )
-        val channel = NotificationChannel(TIMER_SERVICE_NOTIFICATION_CHANNEL_ID, TIMER_SERVICE_NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW)
-        notificationManager.createNotificationChannel(channel)
     }
     private fun getTimerTypeString(): String{
         return when(timerType){
@@ -90,7 +82,14 @@ class TimerService : Service() {
     private fun createNotification(): Notification {
         return notificationBuilder
             .setContentTitle(getString(R.string.service_notification_title))
-            .setContentText(getString(R.string.service_notification_text_progress, getTimerTypeString(), remainingTimerMs/ONE_MINUTE_IN_MS))
+            .setContentText(
+                getString(
+                    if(isPaused) R.string.service_notification_text_progress_paused else R.string.service_notification_text_progress_running,
+                    getTimerTypeString(),
+                    remainingTimerMs/ONE_MINUTE_IN_MS,
+                    (remainingTimerMs%ONE_MINUTE_IN_MS)/1000
+                )
+            )
             .setSmallIcon(R.mipmap.ic_launcher)
             .setOngoing(true)
             .setContentIntent(
@@ -98,7 +97,8 @@ class TimerService : Service() {
                     this,
                     0,
                     Intent(this, MainActivity::class.java),
-                    PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE)
+                    PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+                )
             ) // TODO aprire nel fragment del timer invece che nell'homepage dell'app
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .setOnlyAlertOnce(true)
@@ -111,16 +111,25 @@ class TimerService : Service() {
         currentTimer?.cancel()
         currentTimer = null
     }
-    private fun startTimer(){ // TODO inviare timer progress iniziale
+    private fun startTimer(){
+        // TODO inviare timer progress iniziale
         currentTimer?.start()
     }
     private fun onTickCountDownTimer(millisUntilFinished: Long){
         remainingTimerMs = millisUntilFinished
         updateNotification()
+        // todo inviare progress timer aggiornato
     }
     private fun onFinishCountDownTimer(){
+        cancelTimer()
+        if(isForeground){
+            exitForeground()
+        }
+        isPaused = false
+        remainingTimerMs = 0
+        // TODO inviare progress timer completato
     }
-    private fun createNewTimer(msDuration: Long, msInterval: Long): CountDownTimer{
+    private fun createNewTimer(msDuration: Long, msInterval: Long = TIMER_TICK_DURATION): CountDownTimer{
         return object: CountDownTimer(msDuration,msInterval) {
             override fun onTick(millisUntilFinished: Long) = onTickCountDownTimer(millisUntilFinished)
             override fun onFinish() = onFinishCountDownTimer()
@@ -131,25 +140,88 @@ class TimerService : Service() {
             exitForeground()
         }
         cancelTimer()
-        // todo azzerare campi pausa
+        isPaused = false
         val timerDuration: Long = if(msg.arg2!=0) msg.arg2.toLong() else DEFAULT_DURATION_FOR_TIMER_TYPE(msg.arg1)
-        currentTimer = createNewTimer(timerDuration, TIMER_TICK_DURATION)
+        currentTimer = createNewTimer(timerDuration)
         remainingTimerMs = timerDuration
         timerType = msg.arg1
         enterForeground()
         startTimer()
     }
-    private fun handleStartTimer(msg: Message) {
-    }
-    private fun handlePauseTimer(msg: Message){}
-    private fun handleDeleteTimer(msg: Message) {
-        currentTimer?.cancel()
-        currentTimer = null
+    private fun handleStartTimer(ignored: Message) {
+        if(isPaused){
+            if(remainingTimerMs>0){
+                currentTimer = createNewTimer(remainingTimerMs)
+                if(!isForeground){
+                    enterForeground()
+                }
+                startTimer()
+            }else{
+                if(isForeground){
+                    exitForeground()
+                }
+                cancelTimer()
+                // Todo progresso timer completato
+            }
+            isPaused = false;
+        }
         if(isForeground){
-            exitForeground()
-            isForeground = false
+            updateNotification()
         }
     }
+    private fun handlePauseTimer(ignored: Message){
+        cancelTimer()
+        if(remainingTimerMs>0){
+            if(!isForeground){
+                enterForeground()
+            }
+            isPaused = true
+            updateNotification()
+            // todo segnalare timer in pausa
+        }else{
+            if(isForeground){
+                exitForeground()
+            }
+            isPaused = false
+            // todo segnalare timer completato
+        }
+    }
+    private fun handleDeleteTimer(ignored: Message) {
+        cancelTimer()
+        if(isForeground){
+            exitForeground()
+        }
+        remainingTimerMs = 0
+        isPaused = false
+        // todo inviare progress timer eliminato
+    }
+
+    // region lifecycle
+    override fun onCreate()
+    {
+        super.onCreate()
+        notificationManager = getSystemService(NotificationManager::class.java)
+        val channel = NotificationChannel(TIMER_SERVICE_NOTIFICATION_CHANNEL_ID, TIMER_SERVICE_NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW)
+        notificationManager.createNotificationChannel(channel)
+    }
+    override fun onBind(intent: Intent): IBinder? {
+        mMessenger = Messenger(IncomingHandler(this))
+        return mMessenger.binder
+    }
+    /*
+    * Note: onUnbind is not overridden because the default implementation is fine (new clients will use onBind and not onRebind)
+    * https://developer.android.com/reference/android/app/Service#onUnbind(android.content.Intent)
+    */
+    override fun onDestroy(){
+        if(isForeground){
+            exitForeground()
+        }
+        cancelTimer()
+        // todo pulizia dati pausa
+        return
+    }
+    // endregion
+
     companion object{
         const val TIMER_SERVICE_NOTIFICATION_CHANNEL_ID = "PomodoroTimer"
         const val TIMER_SERVICE_NOTIFICATION_CHANNEL_NAME = "Pomodoro Timer notification channel"
@@ -167,7 +239,7 @@ class TimerService : Service() {
 
         const val TIMER_TYPE_POMODORO = 0
         const val TIMER_TYPE_SHORT_BREAK = 1
-        const val TIMER_TYPE_LONG_BREAK = 1
+        const val TIMER_TYPE_LONG_BREAK = 2
         fun DEFAULT_DURATION_FOR_TIMER_TYPE(timer_type: Int): Long{
             return when(timer_type){
                 TIMER_TYPE_SHORT_BREAK -> SettingsFragment.DEFAULT_SHORT_BREAK_DURATION
