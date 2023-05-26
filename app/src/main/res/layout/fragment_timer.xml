@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+    <data>
+        <variable
+            name="viewModel"
+            type="it.unipd.dei.esp2023.timer.TimerViewModel" />
+        <import type="android.view.View"/>
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -13,7 +19,7 @@
             style="@style/TextAppearance.Material3.HeadlineLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Current task"
+            android:text="@{viewModel.currentPhase.name}"
             app:layout_constraintBottom_toTopOf="@+id/minutes_left_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -25,7 +31,7 @@
             style="@style/TextAppearance.Material3.DisplayLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="25"
+            android:text="@{String.valueOf(viewModel.currentPhase.duration)}"
             app:layout_constraintBottom_toTopOf="@+id/toggle_start_play_pause"
             app:layout_constraintEnd_toEndOf="@+id/current_task_text"
             app:layout_constraintStart_toStartOf="@+id/current_task_text"
@@ -51,6 +57,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/reset_timer_button_description"
             app:icon="@drawable/restart_alt_fill0_wght400_grad0_opsz48"
+            android:visibility="@{viewModel.isStarted == true ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/toggle_start_play_pause"
             app:layout_constraintEnd_toStartOf="@+id/toggle_start_play_pause"
             app:layout_constraintStart_toStartOf="parent"

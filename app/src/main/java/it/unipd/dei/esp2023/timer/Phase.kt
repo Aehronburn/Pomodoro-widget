@@ -9,5 +9,5 @@ placeholders.
 data class Phase(
     val taskId: Long,
     val name: String,
-    var duration: Long
+    var duration: Int
 )

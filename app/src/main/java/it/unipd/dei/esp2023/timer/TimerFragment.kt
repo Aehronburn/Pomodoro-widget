@@ -2,6 +2,7 @@ package it.unipd.dei.esp2023.timer
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -39,10 +40,13 @@ class TimerFragment : Fragment() {
         activityViewModel.getTaskExtList(sessionId).observe(viewLifecycleOwner) {
             if(it.isNotEmpty()) {
                 viewModel.createPhasesList(it)
+                viewModel.updateCurrentPhase()
+                Log.d("debug", viewModel.currentPhase.value.toString())
             }
         }
 
-        binding.resetButton.visibility = if(viewModel.started.value == true) View.VISIBLE else View.INVISIBLE
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
         return binding.root
     }
