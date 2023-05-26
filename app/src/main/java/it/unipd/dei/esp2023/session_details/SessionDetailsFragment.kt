@@ -57,7 +57,9 @@ class SessionDetailsFragment : Fragment() {
 
         val startSessionFAB: ExtendedFloatingActionButton = view.findViewById(R.id.start_session)
         startSessionFAB.setOnClickListener {
-            findNavController().navigate(R.id.action_sessionDetails_to_timerFragment)
+            val bundle = Bundle()
+            bundle.putLong(ARGUMENT_SESSION_ID, argumentSessionId)
+            findNavController().navigate(R.id.action_sessionDetails_to_timerFragment, bundle)
         }
 
         val createNewTaskFAB: FloatingActionButton = view.findViewById(R.id.create_new_task_fab)
