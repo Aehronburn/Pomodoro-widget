@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/reset_timer_button_description"
             app:icon="@drawable/restart_alt_fill0_wght400_grad0_opsz48"
-            android:visibility="@{viewModel.isStarted == true ? View.VISIBLE : View.INVISIBLE}"
+            android:visibility="@{viewModel.isPlaying == true ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/toggle_start_play_pause"
             app:layout_constraintEnd_toStartOf="@+id/toggle_start_play_pause"
             app:layout_constraintStart_toStartOf="parent"

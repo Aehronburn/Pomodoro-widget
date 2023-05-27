@@ -20,6 +20,10 @@ class TimerViewModel : ViewModel() {
     val isStarted: LiveData<Boolean>
         get() = _isStarted
 
+    private val _isPlaying = MutableLiveData<Boolean>(false)
+    val isPlaying: LiveData<Boolean>
+        get() = _isPlaying
+
     private var _currentPhase = MutableLiveData<Phase>()
     val currentPhase: LiveData<Phase>
         get() = _currentPhase
@@ -46,7 +50,7 @@ class TimerViewModel : ViewModel() {
     }
 
     /*
-    initialise phases durations
+    initialise phases durations. To be called before createPhaseList()
      */
     fun setPhasesDurations(pomodoro: Int, shortBreak: Int, longBreak: Int) {
         pomodoroDuration = pomodoro
@@ -56,6 +60,10 @@ class TimerViewModel : ViewModel() {
 
     fun setIsStarted(started: Boolean) {
         _isStarted.value = started
+    }
+
+    fun setIsPlaying(playing: Boolean) {
+        _isPlaying.value = playing
     }
 
     fun updateCurrentPhase() {
