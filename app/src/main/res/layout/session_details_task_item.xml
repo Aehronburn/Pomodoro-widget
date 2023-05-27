@@ -63,7 +63,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="2"
-            android:contentDescription="@string/delete_task_content_decription"
+            android:contentDescription="@string/delete_task_content_description"
             app:icon="@drawable/trash_can_outline"
             app:iconGravity="textStart"
             app:iconPadding="0dp" />
