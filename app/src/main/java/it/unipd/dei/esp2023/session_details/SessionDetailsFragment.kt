@@ -69,9 +69,9 @@ class SessionDetailsFragment : Fragment() {
         startSessionFAB.setOnClickListener {
             val bundle = Bundle()
             bundle.putLong(ARGUMENT_SESSION_ID, argumentSessionId)
-            findNavController().navigate(R.id.action_sessionDetails_to_timerFragment, bundle)
             //TODO implement navigation
             mService?.send(Message.obtain(null, TimerService.ACTION_CREATE_TIMER, 1, TimerService.ONE_MINUTE_IN_MS.toInt()*10)) // todo toglimi
+            findNavController().navigate(R.id.action_sessionDetails_to_timerFragment, bundle)
         }
 
         val createNewTaskFAB: FloatingActionButton = view.findViewById(R.id.create_new_task_fab)
@@ -91,8 +91,9 @@ class SessionDetailsFragment : Fragment() {
         }
 
         // region todo toglimi
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) != PermissionChecker.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.POST_NOTIFICATIONS), 12345)
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU)
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) != PermissionChecker.PERMISSION_GRANTED)
+                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.POST_NOTIFICATIONS), 12345)
         val intent = Intent(context, TimerService::class.java)
         context?.bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
         // endregion
