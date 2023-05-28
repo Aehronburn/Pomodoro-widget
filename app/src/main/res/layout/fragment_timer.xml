@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:contentDescription="@string/toggle_start_play_pause_description"
-            android:src="@drawable/play_arrow_fill1_wght400_grad0_opsz48"
+            android:src="@{viewModel.isPlaying == true ? @drawable/pause_fill1_wght400_grad0_opsz48 : @drawable/play_arrow_fill1_wght400_grad0_opsz48}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/minutes_left_text"
             app:layout_constraintStart_toStartOf="@+id/minutes_left_text"
