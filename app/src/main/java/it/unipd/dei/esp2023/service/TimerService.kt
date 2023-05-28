@@ -3,11 +3,7 @@ package it.unipd.dei.esp2023.service
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.os.CountDownTimer
-import android.os.Handler
-import android.os.IBinder
-import android.os.Message
-import android.os.Messenger
+import android.os.*
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.Builder
 import it.unipd.dei.esp2023.MainActivity
@@ -31,7 +27,7 @@ class TimerService : Service() {
      */
     private val notificationBuilder: Builder = Builder(this, TIMER_SERVICE_NOTIFICATION_CHANNEL_ID) // NotificationCompat.Builder
     private lateinit var notificationManager: NotificationManager
-    inner class IncomingHandler(context: Context, private val applicationContext: Context = context.applicationContext) : Handler() {
+    inner class IncomingHandler(context: Context, private val applicationContext: Context = context.applicationContext) : Handler(Looper.myLooper()!!) {
         override fun handleMessage(msg: Message) {
             /*
             * what: Action type
@@ -203,9 +199,10 @@ class TimerService : Service() {
         notificationManager = getSystemService(NotificationManager::class.java)
         val channel = NotificationChannel(TIMER_SERVICE_NOTIFICATION_CHANNEL_ID, TIMER_SERVICE_NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW)
         notificationManager.createNotificationChannel(channel)
+
+        mMessenger = Messenger(IncomingHandler(this))
     }
     override fun onBind(intent: Intent): IBinder? {
-        mMessenger = Messenger(IncomingHandler(this))
         return mMessenger.binder
     }
     /*
@@ -217,7 +214,8 @@ class TimerService : Service() {
             exitForeground()
         }
         cancelTimer()
-        // todo pulizia dati pausa
+        remainingTimerMs = 0
+        isPaused = false
         return
     }
     // endregion
