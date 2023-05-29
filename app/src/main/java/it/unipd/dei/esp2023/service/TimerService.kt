@@ -176,7 +176,7 @@ class TimerService : Service() {
                 cancelTimer()
                 sendProgress(PROGRESS_STATUS_COMPLETED)
             }
-            isPaused = false;
+            isPaused = false
         }
         if(isForeground){
             updateNotification()
@@ -216,7 +216,7 @@ class TimerService : Service() {
         isPaused = true
         remainingTimerMs = if(msg.arg1 != 0) msg.arg1.toLong() else lastInitialDuration
         updateNotification()
-        sendProgress(PROGRESS_STATUS_PAUSED, remainingTimerMs.toInt())
+        sendProgress(PROGRESS_STATUS_DELETED, remainingTimerMs.toInt())
     }
     private fun handleSubscribe(msg: Message) {
         boundMessengersList.add(msg.replyTo)

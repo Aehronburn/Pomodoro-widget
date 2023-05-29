@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.os.IBinder
 import android.os.Message
 import android.os.Messenger
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -52,12 +51,17 @@ class TimerFragment : Fragment() {
             if(it.isNotEmpty()) {
                 viewModel.createPhasesList(it)
                 viewModel.updateCurrentPhase()
-                Log.d("debug", viewModel.currentPhase.value.toString())
+                viewModel.setRemainingTime(viewModel.currentPhase.value!!.duration * TimerService.ONE_MINUTE_IN_MS.toInt())
             }
         }
 
         binding.toggleStartPlayPause.setOnClickListener {
-            mService?.send(Message.obtain(null, TimerService.ACTION_CREATE_TIMER, TimerService.TIMER_TYPE_POMODORO, TimerService.ONE_MINUTE_IN_MS.toInt()* viewModel.currentPhase.value!!.duration)) // todo toglimi
+            if(viewModel.isStarted.value == false) {
+                mService?.send(Message.obtain(null, TimerService.ACTION_CREATE_TIMER, TimerService.TIMER_TYPE_POMODORO, TimerService.ONE_MINUTE_IN_MS.toInt()* viewModel.currentPhase.value!!.duration))
+            } else {
+                val action = if(viewModel.isPlaying.value == true) TimerService.ACTION_PAUSE_TIMER else TimerService.ACTION_START_TIMER
+                mService?.send(Message.obtain(null, action))
+            }
         }
         binding.resetButton.setOnClickListener {
             mService?.send(Message.obtain(null, TimerService.ACTION_RESET_TIMER, 0, 0))
@@ -74,7 +78,6 @@ class TimerFragment : Fragment() {
         return binding.root
     }
 
-    // region todo toglimi
     override fun onDestroyView() {
         super.onDestroyView()
         mService?.send(Message.obtain(null, TimerService.ACTION_DELETE_TIMER, 0, 0))
@@ -102,7 +105,7 @@ class TimerFragment : Fragment() {
             // representation of that from the raw IBinder object.
             println("ServiceConnection onServiceConnected")
             mService = Messenger(service)
-            var subscribeMsg = Message.obtain(null, TimerService.ACTION_SUBSCRIBE, 0, 0)
+            val subscribeMsg = Message.obtain(null, TimerService.ACTION_SUBSCRIBE, 0, 0)
             subscribeMsg.replyTo = viewModel.replyMessenger
             mService?.send(subscribeMsg)
             bound = true
@@ -116,6 +119,5 @@ class TimerFragment : Fragment() {
             bound = false
         }
     }
-    // endregion
 
 }

@@ -13,11 +13,22 @@ import it.unipd.dei.esp2023.service.TimerService
 
 class TimerViewModel : ViewModel() {
 
+    var replyMessenger: Messenger = Messenger(HandlerReplyMsg(this))
+
     private var pomodoroDuration: Int = 0
     private var shortBreakDuration: Int = 0
     private var longBreakDuration: Int = 0
 
     private val phasesList: MutableList<Phase> = mutableListOf()
+
+    private val _remainingMinutes =  MutableLiveData<Int>(0)
+    val remainingMinutes : LiveData<Int>
+        get() = _remainingMinutes
+
+    private val _remainingSeconds = MutableLiveData<Int>(0)
+    val remainingSeconds: LiveData<Int>
+        get() = _remainingSeconds
+
 
     /*
     is the countdown timer started
@@ -33,6 +44,7 @@ class TimerViewModel : ViewModel() {
     private var _currentPhase = MutableLiveData<Phase>()
     val currentPhase: LiveData<Phase>
         get() = _currentPhase
+
     /*
     creates a list of phases from the task list of the session.
     After a task pomodoro a short break is added. After 4 task pomodoros a log break is added.
@@ -75,7 +87,11 @@ class TimerViewModel : ViewModel() {
     fun updateCurrentPhase() {
         _currentPhase.value = phasesList.first()
     }
-    var replyMessenger: Messenger = Messenger(HandlerReplyMsg(this))
+
+    fun setRemainingTime(remainingTimeMillis: Int) {
+        _remainingMinutes.value = remainingTimeMillis / TimerService.ONE_MINUTE_IN_MS.toInt()
+        _remainingSeconds.value = (remainingTimeMillis % TimerService.ONE_MINUTE_IN_MS.toInt()) / ONE_SECOND_IN_MS
+    }
 
     // https://stackoverflow.com/questions/14351674/send-data-from-service-to-activity-android
     internal class HandlerReplyMsg(val viewModel: TimerViewModel) : Handler(Looper.myLooper()!!) {
@@ -85,14 +101,17 @@ class TimerViewModel : ViewModel() {
                 TimerService.PROGRESS_STATUS_RUNNING -> {
                     viewModel.setIsStarted(true)
                     viewModel.setIsPlaying(true)
+                    viewModel.setRemainingTime(msg.arg1)
                 }
                 TimerService.PROGRESS_STATUS_DELETED -> {
                     viewModel.setIsStarted(false)
                     viewModel.setIsPlaying(false)
+                    viewModel.setRemainingTime(msg.arg1)
                 }
                 TimerService.PROGRESS_STATUS_PAUSED -> {
                     viewModel.setIsStarted(true)
                     viewModel.setIsPlaying(false)
+                    viewModel.setRemainingTime(msg.arg1)
                 }
                 TimerService.PROGRESS_STATUS_COMPLETED -> {
                     viewModel.setIsStarted(false)
@@ -107,5 +126,6 @@ class TimerViewModel : ViewModel() {
         private const val LONG_BREAK_NAME = "Long break" // TODO strings
         private const val LONG_BREAK_FREQUENCY = 3 //one long break each 4 pomodoros(0-3)
         private const val BREAK_ID: Long = -1
+        private const val ONE_SECOND_IN_MS = 1000
     }
 }
