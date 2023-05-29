@@ -16,8 +16,10 @@ class TimerService : Service() {
     private var isForeground: Boolean = false
     private var isPaused: Boolean = false
     private var currentTimer: CountDownTimer? = null
+    private var lastInitialDuration: Long = DEFAULT_DURATION_FOR_TIMER_TYPE(TIMER_TYPE_POMODORO)
     private var timerType: Int = 0
     private var remainingTimerMs: Long = 0
+    private var boundMessengersList: MutableList<Messenger> = mutableListOf<Messenger>() //TODO mettere set invece di list
     /*
         From Jared's reply to https://stackoverflow.com/a/25821942:
         "Also please keep in mind if you want it to update pretty and not erase it and re-create
@@ -44,17 +46,26 @@ class TimerService : Service() {
             // Passo sempre msg a tutti i metodi per uniformare le interfacce, poi lì capisco se usarlo o meno
             // La descrizione di ogni azione si trova nel metodo handleNomeAzione corrispondente
             when (msg.what) {
-                ACTION_CREATE_TIMER->{
+                ACTION_CREATE_TIMER -> {
                     handleCreateTimer(msg)
                 }
-                ACTION_START_TIMER ->{
+                ACTION_START_TIMER -> {
                     handleStartTimer(msg)
                 }
-                ACTION_PAUSE_TIMER->{
+                ACTION_PAUSE_TIMER -> {
                     handlePauseTimer(msg)
                 }
                 ACTION_DELETE_TIMER -> {
                     handleDeleteTimer(msg)
+                }
+                ACTION_RESET_TIMER -> {
+                    handleResetTimer(msg)
+                }
+                ACTION_SUBSCRIBE -> {
+                    handleSubscribe(msg)
+                }
+                ACTION_UNSUBSCRIBE -> {
+                    handleUnsubscribe(msg)
                 }
                 Int.MAX_VALUE->super.handleMessage(msg)
                 else -> super.handleMessage(msg)
@@ -103,18 +114,23 @@ class TimerService : Service() {
     private fun updateNotification(){
         notificationManager.notify(TIMER_SERVICE_NOTIFICATION_ID, createNotification())
     }
+    private fun sendProgress(status: Int, progress: Int = 0){
+        for(rec in boundMessengersList){
+            rec.send(Message.obtain(null, status, progress, 0))
+        }
+    }
     private fun cancelTimer(){
         currentTimer?.cancel()
         currentTimer = null
     }
     private fun startTimer(){
-        // TODO inviare timer progress iniziale
+        sendProgress(PROGRESS_STATUS_RUNNING, remainingTimerMs.toInt())
         currentTimer?.start()
     }
     private fun onTickCountDownTimer(millisUntilFinished: Long){
         remainingTimerMs = millisUntilFinished
         updateNotification()
-        // todo inviare progress timer aggiornato
+        sendProgress(PROGRESS_STATUS_RUNNING, millisUntilFinished.toInt())
     }
     private fun onFinishCountDownTimer(){
         cancelTimer()
@@ -123,7 +139,7 @@ class TimerService : Service() {
         }
         isPaused = false
         remainingTimerMs = 0
-        // TODO inviare progress timer completato
+        sendProgress(PROGRESS_STATUS_COMPLETED)
     }
     private fun createNewTimer(msDuration: Long, msInterval: Long = TIMER_TICK_DURATION): CountDownTimer{
         return object: CountDownTimer(msDuration,msInterval) {
@@ -138,6 +154,7 @@ class TimerService : Service() {
         cancelTimer()
         isPaused = false
         val timerDuration: Long = if(msg.arg2!=0) msg.arg2.toLong() else DEFAULT_DURATION_FOR_TIMER_TYPE(msg.arg1)
+        lastInitialDuration = timerDuration
         currentTimer = createNewTimer(timerDuration)
         remainingTimerMs = timerDuration
         timerType = msg.arg1
@@ -157,7 +174,7 @@ class TimerService : Service() {
                     exitForeground()
                 }
                 cancelTimer()
-                // Todo progresso timer completato
+                sendProgress(PROGRESS_STATUS_COMPLETED)
             }
             isPaused = false;
         }
@@ -173,13 +190,13 @@ class TimerService : Service() {
             }
             isPaused = true
             updateNotification()
-            // todo segnalare timer in pausa
+            sendProgress(PROGRESS_STATUS_PAUSED, remainingTimerMs.toInt())
         }else{
             if(isForeground){
                 exitForeground()
             }
             isPaused = false
-            // todo segnalare timer completato
+            sendProgress(PROGRESS_STATUS_COMPLETED)
         }
     }
     private fun handleDeleteTimer(ignored: Message) {
@@ -189,7 +206,23 @@ class TimerService : Service() {
         }
         remainingTimerMs = 0
         isPaused = false
-        // todo inviare progress timer eliminato
+        sendProgress(PROGRESS_STATUS_DELETED)
+    }
+    private fun handleResetTimer(msg: Message) {
+        cancelTimer()
+        if(!isForeground){
+            enterForeground()
+        }
+        isPaused = true
+        remainingTimerMs = if(msg.arg1 != 0) msg.arg1.toLong() else lastInitialDuration
+        updateNotification()
+        sendProgress(PROGRESS_STATUS_PAUSED, remainingTimerMs.toInt())
+    }
+    private fun handleSubscribe(msg: Message) {
+        boundMessengersList.add(msg.replyTo)
+    }
+    private fun handleUnsubscribe(msg: Message) {
+        // TODO a come fare unsubscribe ci pensiamo quando abbiamo anche un widget :P
     }
 
     // region lifecycle
@@ -230,6 +263,9 @@ class TimerService : Service() {
         const val ACTION_START_TIMER = 2
         const val ACTION_PAUSE_TIMER = 3
         const val ACTION_DELETE_TIMER = 4
+        const val ACTION_RESET_TIMER = 5
+        const val ACTION_SUBSCRIBE = 6
+        const val ACTION_UNSUBSCRIBE = 7
 
         const val TIMER_TICK_DURATION: Long = 1000
 
@@ -245,5 +281,10 @@ class TimerService : Service() {
                 else -> SettingsFragment.DEFAULT_POMODORO_DURATION
             } * ONE_MINUTE_IN_MS
         }
+
+        const val PROGRESS_STATUS_RUNNING = 1
+        const val PROGRESS_STATUS_PAUSED = 2
+        const val PROGRESS_STATUS_DELETED = 3
+        const val PROGRESS_STATUS_COMPLETED = 4
     }
 }

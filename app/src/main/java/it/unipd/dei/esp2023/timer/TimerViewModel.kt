@@ -1,9 +1,15 @@
 package it.unipd.dei.esp2023.timer
 
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
+import android.os.Messenger
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import it.unipd.dei.esp2023.database.TaskExt
+import it.unipd.dei.esp2023.service.TimerService
+
 
 class TimerViewModel : ViewModel() {
 
@@ -69,10 +75,36 @@ class TimerViewModel : ViewModel() {
     fun updateCurrentPhase() {
         _currentPhase.value = phasesList.first()
     }
+    var replyMessenger: Messenger = Messenger(HandlerReplyMsg(this))
+
+    // https://stackoverflow.com/questions/14351674/send-data-from-service-to-activity-android
+    internal class HandlerReplyMsg(val viewModel: TimerViewModel) : Handler(Looper.myLooper()!!) {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            when(msg.what){
+                TimerService.PROGRESS_STATUS_RUNNING -> {
+                    viewModel.setIsStarted(true)
+                    viewModel.setIsPlaying(true)
+                }
+                TimerService.PROGRESS_STATUS_DELETED -> {
+                    viewModel.setIsStarted(false)
+                    viewModel.setIsPlaying(false)
+                }
+                TimerService.PROGRESS_STATUS_PAUSED -> {
+                    viewModel.setIsStarted(true)
+                    viewModel.setIsPlaying(false)
+                }
+                TimerService.PROGRESS_STATUS_COMPLETED -> {
+                    viewModel.setIsStarted(false)
+                    viewModel.setIsPlaying(false)
+                }
+            }
+        }
+    }
 
     companion object {
-        private const val SHORT_BREAK_NAME = "Short break"
-        private const val LONG_BREAK_NAME = "Long break"
+        private const val SHORT_BREAK_NAME = "Short break" // TODO strings
+        private const val LONG_BREAK_NAME = "Long break" // TODO strings
         private const val LONG_BREAK_FREQUENCY = 3 //one long break each 4 pomodoros(0-3)
         private const val BREAK_ID: Long = -1
     }

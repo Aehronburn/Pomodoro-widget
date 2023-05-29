@@ -57,19 +57,16 @@ class TimerFragment : Fragment() {
         }
 
         binding.toggleStartPlayPause.setOnClickListener {
-
-            // region todo toglimi
-            if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU)
-                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) != PermissionChecker.PERMISSION_GRANTED)
-                    ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.POST_NOTIFICATIONS), 12345)
-            val intent = Intent(context, TimerService::class.java)
-            context?.bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
-            // endregion
-
             mService?.send(Message.obtain(null, TimerService.ACTION_CREATE_TIMER, TimerService.TIMER_TYPE_POMODORO, TimerService.ONE_MINUTE_IN_MS.toInt()* viewModel.currentPhase.value!!.duration)) // todo toglimi
-
-            viewModel.setIsPlaying(!viewModel.isPlaying.value!!)
         }
+        binding.resetButton.setOnClickListener {
+            mService?.send(Message.obtain(null, TimerService.ACTION_RESET_TIMER, 0, 0))
+        }
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU)
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) != PermissionChecker.PERMISSION_GRANTED)
+                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.POST_NOTIFICATIONS), 12345)
+        val intent = Intent(context, TimerService::class.java)
+        context?.bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
@@ -81,7 +78,11 @@ class TimerFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         mService?.send(Message.obtain(null, TimerService.ACTION_DELETE_TIMER, 0, 0))
-        val intent = Intent(context, TimerService::class.java)
+
+        val unsubscribeMsg = Message.obtain(null, TimerService.ACTION_UNSUBSCRIBE, 0, 0)
+        unsubscribeMsg.replyTo = viewModel.replyMessenger
+        mService?.send(unsubscribeMsg)
+
         context?.unbindService(mConnection)
     }
 
@@ -101,7 +102,10 @@ class TimerFragment : Fragment() {
             // representation of that from the raw IBinder object.
             println("ServiceConnection onServiceConnected")
             mService = Messenger(service)
-            var bound = true
+            var subscribeMsg = Message.obtain(null, TimerService.ACTION_SUBSCRIBE, 0, 0)
+            subscribeMsg.replyTo = viewModel.replyMessenger
+            mService?.send(subscribeMsg)
+            bound = true
         }
 
         override fun onServiceDisconnected(className: ComponentName) {
