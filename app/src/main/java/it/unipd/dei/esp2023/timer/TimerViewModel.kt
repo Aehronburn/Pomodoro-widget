@@ -26,6 +26,9 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
 
     var isInitialized = false
 
+    /*
+    messenger that will be sent as replyTo of outcoming message to service, which will use it to message back status changes
+     */
     var replyMessenger: Messenger = Messenger(HandlerReplyMsg(this))
 
     private var pomodoroDuration: Int = 0
@@ -92,9 +95,13 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
                 }
             }
         }
+        /*
+        remove eventual short or long break if it is the last phase
+         */
         if(phasesList.isNotEmpty()) {
             if(phasesList.last().taskId != TimerService.TIMER_TYPE_SHORT_BREAK.toLong() ||
-                phasesList.last().taskId != TimerService.TIMER_TYPE_LONG_BREAK.toLong()) phasesList.removeLast()
+                phasesList.last().taskId != TimerService.TIMER_TYPE_LONG_BREAK.toLong())
+                phasesList.removeLast()
             updateCurrentPhase()
         } else {
             _isPhasesListCompleted.value = true
@@ -118,6 +125,9 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
         _isPlaying.value = playing
     }
 
+    /*
+    update current phase with the new first element of phases list
+     */
     private fun updateCurrentPhase() {
         _currentPhase.value = phasesList.first()
         setInitialDuration(_currentPhase.value!!.duration)
@@ -131,6 +141,9 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
         _remainingSeconds.value = (remainingTimeMillis % TimerService.ONE_MINUTE_IN_MS.toInt()) / ONE_SECOND_IN_MS
     }
 
+    /*
+    insert completed pomodoro phase into database and prepares the next phase
+     */
     fun advancePhase() {
         /*
         insert pomodoro into database if it is not a short or long break

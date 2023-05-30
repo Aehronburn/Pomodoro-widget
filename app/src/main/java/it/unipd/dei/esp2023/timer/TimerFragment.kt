@@ -58,6 +58,9 @@ class TimerFragment : Fragment() {
         }
 
         binding.toggleStartPlayPause.setOnClickListener {
+            /*
+            we use the same button for either creating(and start) timer and play/pause. We distinguish using a boolean variable isStarted
+             */
             if(viewModel.isStarted.value == false) {
                 val timerType = when(viewModel.currentPhase.value!!.taskId) {
                     TimerService.TIMER_TYPE_SHORT_BREAK.toLong() -> TimerService.TIMER_TYPE_SHORT_BREAK
