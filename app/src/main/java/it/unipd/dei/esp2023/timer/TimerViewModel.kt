@@ -130,7 +130,7 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
      */
     private fun updateCurrentPhase() {
         _currentPhase.value = phasesList.first()
-        setInitialDuration(_currentPhase.value!!.duration)
+        setInitialDuration(_currentPhase.value!!.duration * TimerService.ONE_MINUTE_IN_MS.toInt())
     }
 
     /*
