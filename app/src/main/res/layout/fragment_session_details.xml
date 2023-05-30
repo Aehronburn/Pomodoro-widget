@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
         android:clipToPadding="false"
         android:paddingBottom="@dimen/session_details_recyclerview_bottom_padding"
         app:layoutManager="LinearLayoutManager"
