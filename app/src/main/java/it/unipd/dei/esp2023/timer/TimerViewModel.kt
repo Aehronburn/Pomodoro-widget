@@ -81,7 +81,7 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
         var longBreakCounter = 0
         for(item in list) {
             for(i in item.completedPomodoros until item.totalPomodoros) {
-                phasesList.add(Phase(item.id, item.name, pomodoroDuration))
+                phasesList.add(Phase(item.id, String.format("%s (%d / %d)", item.name, i + 1, item.totalPomodoros), pomodoroDuration))
                 if(longBreakCounter == LONG_BREAK_FREQUENCY) {
                     phasesList.add(Phase(TimerService.TIMER_TYPE_LONG_BREAK.toLong(), LONG_BREAK_NAME, longBreakDuration))
                     longBreakCounter = 0
