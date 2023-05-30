@@ -5,7 +5,6 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.os.Messenger
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -24,6 +23,8 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
     init{
         database = PomodoroDatabase.getInstance(application).databaseDao
     }
+
+    var isInitialized = false
 
     var replyMessenger: Messenger = Messenger(HandlerReplyMsg(this))
 
@@ -44,7 +45,6 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
     val remainingSeconds: LiveData<Int>
         get() = _remainingSeconds
 
-
     /*
     is there already a countdown timer which has been created previously?
      */
@@ -60,14 +60,14 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
         get() = _isPlaying
 
     /*
-    are all tasks completed=
+    are all phases completed?
      */
     private var _isPhasesListCompleted = MutableLiveData<Boolean>(false)
     val isPhasesListCompleted: LiveData<Boolean>
         get() = _isPhasesListCompleted
 
     /*
-    first phase of the phasesList
+    current first phase of the phasesList
      */
     private var _currentPhase = MutableLiveData<Phase>()
     val currentPhase: LiveData<Phase>
@@ -83,25 +83,22 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
             for(i in item.completedPomodoros until item.totalPomodoros) {
                 phasesList.add(Phase(item.id, item.name, pomodoroDuration))
                 if(longBreakCounter == LONG_BREAK_FREQUENCY) {
-                    phasesList.add(Phase(BREAK_ID, LONG_BREAK_NAME, longBreakDuration))
+                    phasesList.add(Phase(TimerService.TIMER_TYPE_LONG_BREAK.toLong(), LONG_BREAK_NAME, longBreakDuration))
                     longBreakCounter = 0
                 }
                 else {
-                    phasesList.add(Phase(BREAK_ID, SHORT_BREAK_NAME, shortBreakDuration))
+                    phasesList.add(Phase(TimerService.TIMER_TYPE_SHORT_BREAK.toLong(), SHORT_BREAK_NAME, shortBreakDuration))
                     longBreakCounter++
                 }
             }
         }
         if(phasesList.isNotEmpty()) {
-            if(phasesList.last().taskId == BREAK_ID) phasesList.removeLast()
-
+            if(phasesList.last().taskId != TimerService.TIMER_TYPE_SHORT_BREAK.toLong() ||
+                phasesList.last().taskId != TimerService.TIMER_TYPE_LONG_BREAK.toLong()) phasesList.removeLast()
             updateCurrentPhase()
-            //initializes time left text views with full duration of the phase. Il will be then updated by the service only
-            setRemainingTime(_currentPhase.value!!.duration * TimerService.ONE_MINUTE_IN_MS.toInt())
         } else {
             _isPhasesListCompleted.value = true
         }
-        Log.d("debug", phasesList.toString())
     }
 
     /*
@@ -121,23 +118,34 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
         _isPlaying.value = playing
     }
 
-    fun updateCurrentPhase() {
+    private fun updateCurrentPhase() {
         _currentPhase.value = phasesList.first()
+        setInitialDuration(_currentPhase.value!!.duration)
     }
 
-    fun setRemainingTime(remainingTimeMillis: Int) {
+    /*
+        initializes time left text views with full duration of the phase. Il will be then updated by the service only
+         */
+    fun setInitialDuration(remainingTimeMillis: Int) {
         _remainingMinutes.value = remainingTimeMillis / TimerService.ONE_MINUTE_IN_MS.toInt()
         _remainingSeconds.value = (remainingTimeMillis % TimerService.ONE_MINUTE_IN_MS.toInt()) / ONE_SECOND_IN_MS
     }
 
-    fun insertCompletedPomodoro() {
+    fun advancePhase() {
         /*
         insert pomodoro into database if it is not a short or long break
          */
-        if(_currentPhase.value!!.taskId != BREAK_ID) {
+        if(_currentPhase.value!!.taskId != TimerService.TIMER_TYPE_LONG_BREAK.toLong() &&
+            _currentPhase.value!!.taskId != TimerService.TIMER_TYPE_SHORT_BREAK.toLong()) {
             viewModelScope.launch {
                 database.insertCompletedPomodoro(CompletedPomodoro(task = _currentPhase.value!!.taskId, duration = _currentPhase.value!!.duration))
             }
+        }
+        phasesList.removeFirst()
+        if(phasesList.isEmpty()) {
+            _isPhasesListCompleted.value = true
+        } else {
+            updateCurrentPhase()
         }
     }
 
@@ -149,32 +157,31 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
                 TimerService.PROGRESS_STATUS_RUNNING -> {
                     viewModel.setIsStarted(true)
                     viewModel.setIsPlaying(true)
-                    viewModel.setRemainingTime(msg.arg1)
+                    viewModel.setInitialDuration(msg.arg1)
                 }
                 TimerService.PROGRESS_STATUS_DELETED -> {
                     viewModel.setIsStarted(false)
                     viewModel.setIsPlaying(false)
-                    viewModel.setRemainingTime(msg.arg1)
+                    viewModel.setInitialDuration(msg.arg1)
                 }
                 TimerService.PROGRESS_STATUS_PAUSED -> {
                     viewModel.setIsStarted(true)
                     viewModel.setIsPlaying(false)
-                    viewModel.setRemainingTime(msg.arg1)
+                    viewModel.setInitialDuration(msg.arg1)
                 }
                 TimerService.PROGRESS_STATUS_COMPLETED -> {
                     viewModel.setIsStarted(false)
                     viewModel.setIsPlaying(false)
-                    viewModel.insertCompletedPomodoro()
+                    viewModel.advancePhase()
                 }
             }
         }
     }
 
     companion object {
-        private const val SHORT_BREAK_NAME = "Short break" // TODO strings
-        private const val LONG_BREAK_NAME = "Long break" // TODO strings
+        private const val SHORT_BREAK_NAME = "Short break"
+        private const val LONG_BREAK_NAME = "Long break"
         private const val LONG_BREAK_FREQUENCY = 3 //one long break each 4 pomodoros(0-3)
-        private const val BREAK_ID: Long = -1
         private const val ONE_SECOND_IN_MS = 1000
     }
 }

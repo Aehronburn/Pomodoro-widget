@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.os.IBinder
 import android.os.Message
 import android.os.Messenger
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -52,16 +51,21 @@ class TimerFragment : Fragment() {
         )
 
         activityViewModel.getTaskExtList(sessionId).observe(viewLifecycleOwner) {
-            if(it.isNotEmpty()) {
+            if(!viewModel.isInitialized) {
                 viewModel.createPhasesList(it)
+                viewModel.isInitialized = true
             }
-            Log.d("debug","task list changed")
         }
 
         binding.toggleStartPlayPause.setOnClickListener {
             if(viewModel.isStarted.value == false) {
-                mService?.send(Message.obtain(null, TimerService.ACTION_CREATE_TIMER, TimerService.TIMER_TYPE_POMODORO,
-                    TimerService.ONE_MINUTE_IN_MS.toInt() * viewModel.currentPhase.value!!.duration / 10))
+                val timerType = when(viewModel.currentPhase.value!!.taskId) {
+                    TimerService.TIMER_TYPE_SHORT_BREAK.toLong() -> TimerService.TIMER_TYPE_SHORT_BREAK
+                    TimerService.TIMER_TYPE_LONG_BREAK.toLong() -> TimerService.TIMER_TYPE_LONG_BREAK
+                    else -> TimerService.TIMER_TYPE_POMODORO
+                }
+                mService?.send(Message.obtain(null, TimerService.ACTION_CREATE_TIMER, timerType,
+                    TimerService.ONE_MINUTE_IN_MS.toInt() * viewModel.currentPhase.value!!.duration / 10)) //TODO REMOVE duration / 10, used only for quick testing
             } else {
                 val action = if(viewModel.isPlaying.value == true) TimerService.ACTION_PAUSE_TIMER else TimerService.ACTION_START_TIMER
                 mService?.send(Message.obtain(null, action))
