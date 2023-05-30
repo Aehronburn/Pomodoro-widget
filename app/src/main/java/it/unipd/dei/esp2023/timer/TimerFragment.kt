@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.IBinder
 import android.os.Message
 import android.os.Messenger
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -40,6 +41,9 @@ class TimerFragment : Fragment() {
 
         val sessionId = requireArguments().getLong(SessionDetailsFragment.ARGUMENT_SESSION_ID)
 
+        /*
+        updates pomodoros and breaks duration from preferences
+         */
         val preferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
         viewModel.setPhasesDurations(
             preferences.getInt(SettingsFragment.POMODORO_DURATION, SettingsFragment.DEFAULT_POMODORO_DURATION),
@@ -50,22 +54,27 @@ class TimerFragment : Fragment() {
         activityViewModel.getTaskExtList(sessionId).observe(viewLifecycleOwner) {
             if(it.isNotEmpty()) {
                 viewModel.createPhasesList(it)
-                viewModel.updateCurrentPhase()
-                viewModel.setRemainingTime(viewModel.currentPhase.value!!.duration * TimerService.ONE_MINUTE_IN_MS.toInt())
             }
+            Log.d("debug","task list changed")
         }
 
         binding.toggleStartPlayPause.setOnClickListener {
             if(viewModel.isStarted.value == false) {
-                mService?.send(Message.obtain(null, TimerService.ACTION_CREATE_TIMER, TimerService.TIMER_TYPE_POMODORO, TimerService.ONE_MINUTE_IN_MS.toInt()* viewModel.currentPhase.value!!.duration))
+                mService?.send(Message.obtain(null, TimerService.ACTION_CREATE_TIMER, TimerService.TIMER_TYPE_POMODORO,
+                    TimerService.ONE_MINUTE_IN_MS.toInt() * viewModel.currentPhase.value!!.duration / 10))
             } else {
                 val action = if(viewModel.isPlaying.value == true) TimerService.ACTION_PAUSE_TIMER else TimerService.ACTION_START_TIMER
                 mService?.send(Message.obtain(null, action))
             }
         }
+
         binding.resetButton.setOnClickListener {
             mService?.send(Message.obtain(null, TimerService.ACTION_RESET_TIMER, 0, 0))
         }
+
+        /*
+        ask for notification permission(Android 13) and bind to service
+         */
         if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU)
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) != PermissionChecker.PERMISSION_GRANTED)
                 ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.POST_NOTIFICATIONS), 12345)
@@ -78,6 +87,9 @@ class TimerFragment : Fragment() {
         return binding.root
     }
 
+    /*
+    unsubscribe from service "mailing list" and unbind from service
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         mService?.send(Message.obtain(null, TimerService.ACTION_DELETE_TIMER, 0, 0))

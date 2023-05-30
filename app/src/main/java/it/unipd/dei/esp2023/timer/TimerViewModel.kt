@@ -1,17 +1,29 @@
 package it.unipd.dei.esp2023.timer
 
+import android.app.Application
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.os.Messenger
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import it.unipd.dei.esp2023.database.CompletedPomodoro
+import it.unipd.dei.esp2023.database.PomodoroDatabase
+import it.unipd.dei.esp2023.database.PomodoroDatabaseDao
 import it.unipd.dei.esp2023.database.TaskExt
 import it.unipd.dei.esp2023.service.TimerService
+import kotlinx.coroutines.launch
 
+class TimerViewModel(application: Application) : AndroidViewModel(application) {
 
-class TimerViewModel : ViewModel() {
+    private val database: PomodoroDatabaseDao
+
+    init{
+        database = PomodoroDatabase.getInstance(application).databaseDao
+    }
 
     var replyMessenger: Messenger = Messenger(HandlerReplyMsg(this))
 
@@ -19,6 +31,9 @@ class TimerViewModel : ViewModel() {
     private var shortBreakDuration: Int = 0
     private var longBreakDuration: Int = 0
 
+    /*
+    list of pomodoros(one for each pomodoro of a task, interleaved with breaks) of a task list
+     */
     private val phasesList: MutableList<Phase> = mutableListOf()
 
     private val _remainingMinutes =  MutableLiveData<Int>(0)
@@ -31,16 +46,29 @@ class TimerViewModel : ViewModel() {
 
 
     /*
-    is the countdown timer started
+    is there already a countdown timer which has been created previously?
      */
     private val _isStarted = MutableLiveData<Boolean>(false)
     val isStarted: LiveData<Boolean>
         get() = _isStarted
 
+    /*
+    is the countdown timer running or paused?
+     */
     private val _isPlaying = MutableLiveData<Boolean>(false)
     val isPlaying: LiveData<Boolean>
         get() = _isPlaying
 
+    /*
+    are all tasks completed=
+     */
+    private var _isPhasesListCompleted = MutableLiveData<Boolean>(false)
+    val isPhasesListCompleted: LiveData<Boolean>
+        get() = _isPhasesListCompleted
+
+    /*
+    first phase of the phasesList
+     */
     private var _currentPhase = MutableLiveData<Phase>()
     val currentPhase: LiveData<Phase>
         get() = _currentPhase
@@ -64,7 +92,16 @@ class TimerViewModel : ViewModel() {
                 }
             }
         }
-        if(phasesList.last().taskId == BREAK_ID) phasesList.removeLast()
+        if(phasesList.isNotEmpty()) {
+            if(phasesList.last().taskId == BREAK_ID) phasesList.removeLast()
+
+            updateCurrentPhase()
+            //initializes time left text views with full duration of the phase. Il will be then updated by the service only
+            setRemainingTime(_currentPhase.value!!.duration * TimerService.ONE_MINUTE_IN_MS.toInt())
+        } else {
+            _isPhasesListCompleted.value = true
+        }
+        Log.d("debug", phasesList.toString())
     }
 
     /*
@@ -93,6 +130,17 @@ class TimerViewModel : ViewModel() {
         _remainingSeconds.value = (remainingTimeMillis % TimerService.ONE_MINUTE_IN_MS.toInt()) / ONE_SECOND_IN_MS
     }
 
+    fun insertCompletedPomodoro() {
+        /*
+        insert pomodoro into database if it is not a short or long break
+         */
+        if(_currentPhase.value!!.taskId != BREAK_ID) {
+            viewModelScope.launch {
+                database.insertCompletedPomodoro(CompletedPomodoro(task = _currentPhase.value!!.taskId, duration = _currentPhase.value!!.duration))
+            }
+        }
+    }
+
     // https://stackoverflow.com/questions/14351674/send-data-from-service-to-activity-android
     internal class HandlerReplyMsg(val viewModel: TimerViewModel) : Handler(Looper.myLooper()!!) {
         override fun handleMessage(msg: Message) {
@@ -116,6 +164,7 @@ class TimerViewModel : ViewModel() {
                 TimerService.PROGRESS_STATUS_COMPLETED -> {
                     viewModel.setIsStarted(false)
                     viewModel.setIsPlaying(false)
+                    viewModel.insertCompletedPomodoro()
                 }
             }
         }
