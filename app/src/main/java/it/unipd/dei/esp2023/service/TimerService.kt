@@ -271,9 +271,9 @@ class TimerService : Service() {
 
         const val ONE_MINUTE_IN_MS: Long = 1000*60
 
-        const val TIMER_TYPE_POMODORO = 0
-        const val TIMER_TYPE_SHORT_BREAK = 1
-        const val TIMER_TYPE_LONG_BREAK = 2
+        const val TIMER_TYPE_POMODORO = -1
+        const val TIMER_TYPE_SHORT_BREAK = -2
+        const val TIMER_TYPE_LONG_BREAK = -3
         fun DEFAULT_DURATION_FOR_TIMER_TYPE(timer_type: Int): Long{
             return when(timer_type){
                 TIMER_TYPE_SHORT_BREAK -> SettingsFragment.DEFAULT_SHORT_BREAK_DURATION
