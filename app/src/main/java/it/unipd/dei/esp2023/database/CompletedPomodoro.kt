@@ -9,7 +9,7 @@ import java.time.LocalDate
 @Entity(
         tableName = "completed_pomodoro",
         foreignKeys = [
-            ForeignKey(entity = Session::class,
+            ForeignKey(entity = Task::class,
             parentColumns = ["id"],
             childColumns = ["task"],
             onDelete = ForeignKey.SET_NULL,
