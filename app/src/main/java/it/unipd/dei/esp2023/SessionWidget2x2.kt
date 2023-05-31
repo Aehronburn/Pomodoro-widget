@@ -22,6 +22,7 @@ class SessionWidget2x2 : AppWidgetProvider() {
 
     override fun onEnabled(context: Context) {
         // Enter relevant functionality for when the first widget is created
+        //TODO: create content Resolver and populate the Recycler View of the Widget
     }
 
     override fun onDisabled(context: Context) {

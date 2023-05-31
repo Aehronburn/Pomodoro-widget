@@ -53,7 +53,8 @@
     <string name="timer_minutes_left">%02d</string>
     <string name="timer_seconds_left">%02d</string>
     <string name="all_tasks_completed_description">All tasks are completed.\nGood Job!</string>
-    <string name="appwidget_text">EXAMPLE</string>
+
+    <string name="appwidget_title">Sessions</string>
     <string name="add_widget">Add widget</string>
-    <string name="app_widget_description">This is an app widget description</string>
+    <string name="app_widget_description">Widget 2x2 che mostra la Lista di Sessioni</string>
 </resources>
