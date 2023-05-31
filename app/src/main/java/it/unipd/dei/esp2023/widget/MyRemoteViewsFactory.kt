@@ -2,6 +2,7 @@ package it.unipd.dei.esp2023.widget
 
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.net.Uri
 import android.util.Log
 import android.widget.RemoteViews
@@ -17,17 +18,12 @@ import it.unipd.dei.esp2023.database.Session
 class MyRemoteViewsFactory(private val context: Context, intent: Intent):
     RemoteViewsService.RemoteViewsFactory
 {
-    private val database = PomodoroDatabase.getInstance(context).databaseDao
-
-    private var myList: List<Session> = emptyList()
+    private var myCursor: Cursor? = null
 
     override fun onCreate() {
         val contentResolver = context.contentResolver
         val uri =  Uri.parse(SessionsContentProvider.URI)
-        val myCursor = contentResolver.query(uri, null, null, null, null )
-        while (myCursor!!.moveToNext()){
-            Log.d("debug_1", "${myCursor.count}")
-        }
+        myCursor = contentResolver.query(uri, null, null, null, null )
     }
 
     override fun onDataSetChanged() {
@@ -39,12 +35,17 @@ class MyRemoteViewsFactory(private val context: Context, intent: Intent):
     }
 
     override fun getCount(): Int {
-        return 3
+        return myCursor!!.count
     }
 
     override fun getViewAt(position: Int): RemoteViews {
+        myCursor!!.moveToPosition(position)
+        //name column
+        val name = myCursor!!.getString(1)
+
         //Equivalente del viewHolder
         val remoteViews = RemoteViews(context.packageName, R.layout.widget_list_item)
+        remoteViews.setTextViewText(R.id.widget_list_item_text, name)
 
         return remoteViews
     }
