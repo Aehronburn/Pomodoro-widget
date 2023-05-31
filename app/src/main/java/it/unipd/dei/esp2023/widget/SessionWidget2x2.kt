@@ -1,9 +1,10 @@
-package it.unipd.dei.esp2023
+package it.unipd.dei.esp2023.widget
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.widget.RemoteViews
+import it.unipd.dei.esp2023.R
 
 /**
  * Implementation of App Widget functionality.
@@ -22,7 +23,8 @@ class SessionWidget2x2 : AppWidgetProvider() {
 
     override fun onEnabled(context: Context) {
         // Enter relevant functionality for when the first widget is created
-        //TODO: create content Resolver and populate the Recycler View of the Widget
+        //TODO: create content Resolver and populate the List View of the Widget
+
     }
 
     override fun onDisabled(context: Context) {
