@@ -61,30 +61,6 @@ class SessionsFragment : Fragment() {
         viewModel.sessionList.observe(viewLifecycleOwner) {
             adapter.updateList(it)
 
-            //TODO temporary test of content provider, remove this
-            val resolver: ContentResolver by lazy {
-                requireContext().contentResolver
-            }
-            val uri = Uri.parse(SessionsContentProvider.URI)
-            /*
-            wrong uri
-            val uri = Uri.parse("content://it.unipd.dei.esp2023.SessionsContentProvider/session")
-            */
-            val cursor = resolver.query(uri, null, null, null, null)
-            cursor.use {
-                val count = cursor!!.count
-                Log.d("debug", "Conto $count")
-                Log.d("debug", cursor.columnNames.component1())
-                Log.d("debug", cursor.columnNames.component2())
-                Log.d("debug", cursor.columnNames.component3())
-                while (cursor.moveToNext()) {
-                    Log.d(
-                        "debug",
-                        cursor.getLong(0).toString() + cursor.getString(1) + cursor.getString(2)
-                    )
-                }
-            }
-            //end
         }
 
         return view
