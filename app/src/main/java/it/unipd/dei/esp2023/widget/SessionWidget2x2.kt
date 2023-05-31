@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.widget.RemoteViews
+import android.widget.Toast
 import it.unipd.dei.esp2023.R
 
 /**
@@ -24,11 +25,11 @@ class SessionWidget2x2 : AppWidgetProvider() {
     override fun onEnabled(context: Context) {
         // Enter relevant functionality for when the first widget is created
         //TODO: create content Resolver and populate the List View of the Widget
-
     }
 
     override fun onDisabled(context: Context) {
         // Enter relevant functionality for when the last widget is disabled
+        Toast.makeText(context!!, "Thanks for using our widget", Toast.LENGTH_LONG).show()
     }
 }
 
