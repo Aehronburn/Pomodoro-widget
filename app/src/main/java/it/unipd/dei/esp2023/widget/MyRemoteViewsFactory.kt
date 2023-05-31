@@ -27,7 +27,9 @@ class MyRemoteViewsFactory(private val context: Context, intent: Intent):
     }
 
     override fun onDataSetChanged() {
-        return
+        val contentResolver = context.contentResolver
+        val uri =  Uri.parse(SessionsContentProvider.URI)
+        myCursor = contentResolver.query(uri, null, null, null, null )
     }
 
     override fun onDestroy() {

@@ -17,7 +17,7 @@
         android:textSize="24sp"/>
 
     <ListView
-        android:id="@+id/SessionWidget2x2ID"
+        android:id="@+id/SessionWidget2x2ID_List"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />

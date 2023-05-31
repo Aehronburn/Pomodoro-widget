@@ -1,5 +1,7 @@
 package it.unipd.dei.esp2023.sessions
 
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.ContentResolver
 import android.net.Uri
 import android.os.Bundle
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
 import it.unipd.dei.esp2023.SessionsContentProvider
 import it.unipd.dei.esp2023.database.Session
 import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
+import it.unipd.dei.esp2023.widget.SessionWidget2x2
 
 class SessionsFragment : Fragment() {
 
@@ -61,6 +64,14 @@ class SessionsFragment : Fragment() {
         viewModel.sessionList.observe(viewLifecycleOwner) {
             adapter.updateList(it)
 
+            /*
+            Notify the widget that data has changed; this triggers onDataSetChanged()
+            in the Factory()
+             */
+            val myAppWidgetManager = AppWidgetManager.getInstance(requireContext())
+            myAppWidgetManager.notifyAppWidgetViewDataChanged(
+                myAppWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionWidget2x2::class.java)),
+                R.id.SessionWidget2x2ID_List)
         }
 
         return view

@@ -38,7 +38,8 @@
 
         <provider
             android:name=".SessionsContentProvider"
-            android:authorities="it.unipd.dei.esp2023.SessionsContentProvider"></provider>
+            android:authorities="it.unipd.dei.esp2023.SessionsContentProvider"
+            android:exported="true"></provider>
 
         <service
             android:name=".service.TimerService"

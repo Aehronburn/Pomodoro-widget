@@ -18,7 +18,7 @@ class SessionWidget2x2 : AppWidgetProvider() {
         // There may be multiple widgets active, so update all of them
         for (appWidgetId in appWidgetIds) {
             val views = RemoteViews(context.packageName, R.layout.session_widget2x2)
-            views.setRemoteAdapter(R.id.SessionWidget2x2ID, Intent(context, ListWidgetService::class.java))
+            views.setRemoteAdapter(R.id.SessionWidget2x2ID_List, Intent(context, ListWidgetService::class.java))
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
     }
