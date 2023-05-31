@@ -11,7 +11,7 @@
             android:id="@+id/appwidget_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="default"
+            android:text="hardcoded_default"
             android:textSize="24sp"/>
     </LinearLayout>
 

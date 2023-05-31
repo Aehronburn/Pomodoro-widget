@@ -39,7 +39,7 @@ class MyRemoteViewsFactory(private val context: Context, intent: Intent):
     }
 
     override fun getCount(): Int {
-        return myList.size
+        return 3
     }
 
     override fun getViewAt(position: Int): RemoteViews {
