@@ -1,18 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="viewModel"
             type="it.unipd.dei.esp2023.timer.TimerViewModel" />
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+        <import type="androidx.core.content.ContextCompat"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".timer.TimerFragment">
+
+
+        <TextView
+            android:id="@+id/minutes_left_text"
+            style="@style/TextAppearance.Material3.DisplayLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/timer_seconds_left(viewModel.remainingMinutes)}"
+            android:visibility="@{viewModel.isPhasesListCompleted == true ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.32"
+            tools:text="@tools:sample/lorem" />
+
+        <TextView
+            android:id="@+id/seconds_left_text"
+            style="@style/TextAppearance.Material3.DisplayMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/timer_seconds_left(viewModel.remainingSeconds)}"
+            android:visibility="@{viewModel.isPhasesListCompleted == true ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="@+id/minutes_left_text"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/minutes_left_text"
+            app:layout_constraintTop_toBottomOf="@+id/minutes_left_text"
+            tools:text="@tools:sample/lorem" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/phase_progress_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:max="@{viewModel.currentPhase.duration * 60}"
+            android:visibility="@{viewModel.isPhasesListCompleted == true ? View.INVISIBLE : View.VISIBLE}"
+            app:indicatorDirectionCircular="clockwise"
+            app:indicatorSize="@dimen/circular_progress_indicator_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3"
+            app:trackCornerRadius="4dp"
+            app:trackThickness="@dimen/progress_bar_track_thickness" />
 
         <TextView
             android:id="@+id/current_task_text"
@@ -27,32 +75,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/lorem" />
 
-        <TextView
-            android:id="@+id/minutes_left_text"
-            style="@style/TextAppearance.Material3.DisplayLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{@string/timer_seconds_left(viewModel.remainingMinutes)}"
-            android:visibility="@{viewModel.isPhasesListCompleted == true ? View.INVISIBLE : View.VISIBLE}"
-            app:layout_constraintBottom_toTopOf="@+id/toggle_start_play_pause"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/current_task_text"
-            app:layout_constraintVertical_chainStyle="spread"
-            tools:text="@tools:sample/lorem" />
-
-        <TextView
-            android:id="@+id/seconds_left_text"
-            style="@style/TextAppearance.Material3.DisplayMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{@string/timer_seconds_left(viewModel.remainingSeconds)}"
-            android:visibility="@{viewModel.isPhasesListCompleted == true ? View.INVISIBLE : View.VISIBLE}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.6"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/minutes_left_text"
-            tools:text="@tools:sample/lorem" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/toggle_start_play_pause"
@@ -66,7 +88,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/minutes_left_text" />
+            app:layout_constraintTop_toBottomOf="@+id/seconds_left_text" />
 
         <Button
             android:id="@+id/reset_button"
@@ -92,7 +114,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

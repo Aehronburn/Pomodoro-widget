@@ -57,6 +57,37 @@ class TimerFragment : Fragment() {
             }
         }
 
+        /*
+        cannot update progress with data binding with animation
+         */
+        viewModel.progress.observe(viewLifecycleOwner) {
+            binding.phaseProgressIndicator.setProgress(it, true)
+        }
+
+        /*
+        programmatically set progress bar colors based on current phase
+         */
+        viewModel.currentPhase.observe(viewLifecycleOwner) {
+            val trackColor: Int?
+            val indicatorColor: Int?
+            when(it.taskId) {
+                TimerService.TIMER_TYPE_SHORT_BREAK.toLong() -> {
+                    trackColor = R.color.short_break_progress_track
+                    indicatorColor = R.color.short_break_progress_indicator
+                }
+                TimerService.TIMER_TYPE_LONG_BREAK.toLong() -> {
+                    trackColor = R.color.long_break_progress_track
+                    indicatorColor = R.color.long_break_progress_indicator
+                }
+                else -> {
+                    trackColor = R.color.pomodoro_progress_track
+                    indicatorColor = R.color.pomodoro_progress_indicator
+                }
+            }
+            binding.phaseProgressIndicator.trackColor = resources.getColor(trackColor, context?.theme)
+            binding.phaseProgressIndicator.setIndicatorColor(resources.getColor(indicatorColor, context?.theme))
+        }
+
         binding.toggleStartPlayPause.setOnClickListener {
             /*
             we use the same button for either creating(and start) timer and play/pause. We distinguish using a boolean variable isStarted
