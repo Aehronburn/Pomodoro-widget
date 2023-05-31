@@ -4,33 +4,23 @@
     android:layout_height="match_parent"
     android:theme="@style/AppTheme.AppWidgetContainer">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <TextView
+        android:id="@+id/appwidget_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/appwidget_title"
+        android:text="@string/appwidget_title"
+        android:textSize="24sp"/>
 
-        <TextView
-            android:id="@+id/appwidget_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/appwidget_title"
-            android:text="@string/appwidget_title"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/SessionWidget2x2ID"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:textSize="24sp"
-            android:textStyle="bold|italic" />
+    <ListView
+        android:id="@+id/SessionWidget2x2ID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/SessionWidget2x2ID"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@+id/appwidget_title"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>

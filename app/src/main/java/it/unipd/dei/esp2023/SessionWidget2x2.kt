@@ -35,10 +35,10 @@ internal fun updateAppWidget(
     appWidgetManager: AppWidgetManager,
     appWidgetId: Int
 ) {
-    val widgetText = context.getString(R.string.appwidget_text)
+    val widgetText = context.getString(R.string.appwidget_title)
     // Construct the RemoteViews object
     val views = RemoteViews(context.packageName, R.layout.session_widget2x2)
-    views.setTextViewText(R.id.appwidget_text, widgetText)
+    views.setTextViewText(R.id.appwidget_title, widgetText)
 
     // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, views)
