@@ -10,4 +10,10 @@
     <!-- fab height: 56dp + small fab height: 40dp margin top: 16dp + margin bottom: 16dp + margin fabs: 24dp -->
     <dimen name="session_details_recyclerview_bottom_padding">152dp</dimen>
     <integer name="grid_column_count">1</integer>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">0dp</dimen>
 </resources>
