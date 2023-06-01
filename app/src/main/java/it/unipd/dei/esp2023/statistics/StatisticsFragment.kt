@@ -9,11 +9,16 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.patrykandpatrick.vico.core.axis.AxisPosition
+import com.patrykandpatrick.vico.core.axis.formatter.AxisValueFormatter
+import com.patrykandpatrick.vico.core.axis.formatter.DecimalFormatAxisValueFormatter
+import com.patrykandpatrick.vico.core.axis.horizontal.HorizontalAxis
+import com.patrykandpatrick.vico.core.axis.vertical.VerticalAxis
 import com.patrykandpatrick.vico.core.entry.FloatEntry
 import com.patrykandpatrick.vico.core.entry.entryModelOf
-import com.patrykandpatrick.vico.core.extension.setFieldValue
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.databinding.FragmentStatisticsBinding
+import java.math.RoundingMode
 
 class StatisticsFragment : Fragment() {
 
@@ -27,6 +32,25 @@ class StatisticsFragment : Fragment() {
         binding.todayAction.setOnClickListener {
             findNavController().navigate(R.id.action_statistics_fragment_to_sessions_fragment)
         }
+
+
+        /*
+        set x axis labels of week chart to week day
+         */
+        (binding.weekChart.bottomAxis as HorizontalAxis<AxisPosition.Horizontal.Bottom>).valueFormatter = weekDayAxisFormatter
+
+        /*
+        format y axis of chart with integers instead of floats
+        with(binding.weekChart.startAxis as VerticalAxis<AxisPosition.Vertical.Start>) {
+            //valueFormatter = startAxisFormatter
+            maxLabelCount = 7
+        }
+        with(binding.monthChart.startAxis as VerticalAxis<AxisPosition.Vertical.Start>) {
+            //valueFormatter = startAxisFormatter
+            maxLabelCount = 7
+        }
+
+         */
 
         /*
         today's statistics
@@ -65,14 +89,22 @@ class StatisticsFragment : Fragment() {
         month's statistics
          */
         viewModel.monthStats.observe(viewLifecycleOwner) {
-            val totalCompletedPomodoros = it.fold(0) { sum, singleStat ->  sum + singleStat.numCompleted}
-            binding.monthPomodorosCompleted.text = getString(R.string.pomodoros_completed, totalCompletedPomodoros)
+            val totalCompletedPomodoros =
+                it.fold(0) { sum, singleStat -> sum + singleStat.numCompleted }
+            binding.monthPomodorosCompleted.text =
+                getString(R.string.pomodoros_completed, totalCompletedPomodoros)
 
-            val totalFocusTime = it.fold(0) { sum, singleStat -> sum + singleStat.focusTime}
+            val totalFocusTime = it.fold(0) { sum, singleStat -> sum + singleStat.focusTime }
             val (focusTimeHours, focusTimeMinutes) = timeToHhMm(totalFocusTime)
-            binding.monthProductivityTime.text = getString(R.string.productivity_time, focusTimeHours, focusTimeMinutes)
+            binding.monthProductivityTime.text =
+                getString(R.string.productivity_time, focusTimeHours, focusTimeMinutes)
 
-            val eachDayCompletedPomodoros = it.map { singleStat -> FloatEntry(singleStat.dayNumber.toFloat(), singleStat.numCompleted.toFloat()) }
+            val eachDayCompletedPomodoros = it.map { singleStat ->
+                FloatEntry(
+                    singleStat.dayNumber.toFloat(),
+                    singleStat.numCompleted.toFloat()
+                )
+            }
             val entries = entryModelOf(eachDayCompletedPomodoros)
             binding.monthChart.setModel(entries)
         }
@@ -91,6 +123,19 @@ class StatisticsFragment : Fragment() {
         private fun timeToHhMm(time: Int) : Pair<Int, Int> {
             return Pair(time / 60, time % 60)
         }
+
+        /*
+        associate week day in number returned by database to string: (1, 2, 3...) -> ("Mon", "Tue", "Wed"...)
+         */
+        private val weekDayAxisFormatter = AxisValueFormatter<AxisPosition.Horizontal.Bottom> { x, _ ->
+            listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")[x.toInt() - 1]
+        }
+
+        /*
+        convert float y tick value to integer(pattern "#"), rounding to ceiling
+
+        private val startAxisFormatter = DecimalFormatAxisValueFormatter<AxisPosition.Vertical.Start>("#", RoundingMode.CEILING)
+         */
     }
 
 }

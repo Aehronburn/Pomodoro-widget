@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ColumnStyle">
+        <item name="color">@color/seed</item>
+        <item name="thickness">12dp</item>
+    </style>
+    <style name="ColumnChartStyle">
+        <item name="column1">@style/ColumnStyle</item>
+    </style>
+
+    <style name="LineStyle">
+        <item name="color">@color/seed</item>
+        <item name="lineThickness">4dp</item>
+    </style>
+    <style name="LineChartStyle">
+        <item name="line1Spec">@style/LineStyle</item>
+    </style>
+</resources>
