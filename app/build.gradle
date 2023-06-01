@@ -61,5 +61,9 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
 
-
+    //vico
+    // Includes the core logic for charts and other elements.
+    implementation "com.patrykandpatrick.vico:core:1.6.5"
+    // For the view system.
+    implementation "com.patrykandpatrick.vico:views:1.6.5"
 }

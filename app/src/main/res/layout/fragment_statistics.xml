@@ -58,6 +58,7 @@
 
                 <TextView
                     android:id="@+id/today_productivity_time"
+                    style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_medium"
@@ -119,6 +120,20 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <com.patrykandpatrick.vico.views.chart.ChartView
+                    android:id="@+id/week_chart"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_marginEnd="@dimen/margin_medium"
+                    app:chart="column"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/week_title"
+                    app:showBottomAxis="true"
+                    app:showStartAxis="true" />
+
                 <TextView
                     android:id="@+id/week_pomodoros_completed"
                     style="@style/TextAppearance.Material3.BodyMedium"
@@ -128,10 +143,11 @@
                     android:layout_marginTop="@dimen/margin_medium"
                     android:text="@string/pomodoros_completed"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/week_title" />
+                    app:layout_constraintTop_toBottomOf="@+id/week_chart" />
 
                 <TextView
                     android:id="@+id/week_productivity_time"
+                    style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_medium"
@@ -152,6 +168,8 @@
             android:layout_marginStart="@dimen/margin_medium"
             android:layout_marginTop="@dimen/margin_medium"
             android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_medium"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/week_card">
@@ -172,22 +190,37 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <com.patrykandpatrick.vico.views.chart.ChartView
+                    android:id="@+id/month_chart"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_marginEnd="@dimen/margin_medium"
+                    app:chart="line"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/month_title"
+                    app:showBottomAxis="true"
+                    app:showStartAxis="true" />
+
                 <TextView
                     android:id="@+id/month_pomodoros_completed"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_medium"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="@dimen/margin_medium"
                     android:text="@string/pomodoros_completed"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/month_title" />
+                    app:layout_constraintTop_toBottomOf="@+id/month_chart" />
 
                 <TextView
                     android:id="@+id/month_productivity_time"
+                    style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_medium"
+                    android:layout_marginStart="16dp"
                     android:layout_marginBottom="@dimen/margin_medium"
                     android:text="@string/productivity_time"
                     app:layout_constraintBottom_toBottomOf="parent"

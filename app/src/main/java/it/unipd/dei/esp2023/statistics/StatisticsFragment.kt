@@ -9,6 +9,9 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.patrykandpatrick.vico.core.entry.FloatEntry
+import com.patrykandpatrick.vico.core.entry.entryModelOf
+import com.patrykandpatrick.vico.core.extension.setFieldValue
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.databinding.FragmentStatisticsBinding
 
@@ -42,6 +45,9 @@ class StatisticsFragment : Fragment() {
             binding.todayProductivityImage.setImageDrawable(ResourcesCompat.getDrawable(resources, productivityImage, context?.theme))
         }
 
+        /*
+        week's statistics
+         */
         viewModel.weeksStats.observe(viewLifecycleOwner) {
             val totalCompletedPomodoros = it.fold(0) { sum, singleStat ->  sum + singleStat.numCompleted}
             binding.weekPomodorosCompleted.text = getString(R.string.pomodoros_completed, totalCompletedPomodoros)
@@ -49,8 +55,15 @@ class StatisticsFragment : Fragment() {
             val totalFocusTime = it.fold(0) { sum, singleStat -> sum + singleStat.focusTime}
             val (focusTimeHours, focusTimeMinutes) = timeToHhMm(totalFocusTime)
             binding.weekProductivityTime.text = getString(R.string.productivity_time, focusTimeHours, focusTimeMinutes)
+
+            val eachDayCompletedPomodoros = it.map { singleStat -> FloatEntry(singleStat.dayNumber.toFloat(), singleStat.numCompleted.toFloat()) }
+            val entries = entryModelOf(eachDayCompletedPomodoros)
+            binding.weekChart.setModel(entries)
         }
 
+        /*
+        month's statistics
+         */
         viewModel.monthStats.observe(viewLifecycleOwner) {
             val totalCompletedPomodoros = it.fold(0) { sum, singleStat ->  sum + singleStat.numCompleted}
             binding.monthPomodorosCompleted.text = getString(R.string.pomodoros_completed, totalCompletedPomodoros)
@@ -58,6 +71,10 @@ class StatisticsFragment : Fragment() {
             val totalFocusTime = it.fold(0) { sum, singleStat -> sum + singleStat.focusTime}
             val (focusTimeHours, focusTimeMinutes) = timeToHhMm(totalFocusTime)
             binding.monthProductivityTime.text = getString(R.string.productivity_time, focusTimeHours, focusTimeMinutes)
+
+            val eachDayCompletedPomodoros = it.map { singleStat -> FloatEntry(singleStat.dayNumber.toFloat(), singleStat.numCompleted.toFloat()) }
+            val entries = entryModelOf(eachDayCompletedPomodoros)
+            binding.monthChart.setModel(entries)
         }
 
         binding.viewModel = viewModel
