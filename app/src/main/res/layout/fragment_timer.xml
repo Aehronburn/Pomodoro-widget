@@ -59,7 +59,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.3"
-            app:trackCornerRadius="4dp"
+            app:trackCornerRadius="@dimen/progress_bar_indicator_radius"
             app:trackThickness="@dimen/progress_bar_track_thickness" />
 
         <TextView
