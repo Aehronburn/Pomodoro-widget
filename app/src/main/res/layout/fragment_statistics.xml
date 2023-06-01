@@ -43,7 +43,7 @@
                     android:layout_marginTop="@dimen/margin_medium"
                     android:text="@string/today_card_title"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                    app:layout_constraintTop_toBottomOf="@+id/today_productivity_image" />
 
                 <TextView
                     android:id="@+id/today_pomodoros_completed"
@@ -66,7 +66,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/today_pomodoros_completed" />
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/today_productivity_image"
                     android:layout_width="0dp"
                     android:layout_height="160dp"
                     android:scaleType="centerCrop"
@@ -184,7 +184,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/month_title" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/month_productivity_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_medium"
