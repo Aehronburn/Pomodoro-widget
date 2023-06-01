@@ -6,6 +6,6 @@
     android:previewImage="@android:drawable/ic_menu_add"
     android:widgetCategory="home_screen"
     android:resizeMode="horizontal|vertical"
-    android:updatePeriodMillis="0">
-
-</appwidget-provider>
+    android:updatePeriodMillis="0"
+    />
+<!-- updatePeriodMillis="0" => onUpdate is called only once -->

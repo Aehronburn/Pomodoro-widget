@@ -32,7 +32,7 @@
             android:name=".service.TimerService"
             android:enabled="true" />
         <receiver
-            android:name=".control_widget.ControlWidget"
+            android:name=".control_widget.ControlWidgetProvider"
             android:exported="true"
             >
             <intent-filter>

@@ -220,6 +220,14 @@ class TimerService : Service() {
     }
     private fun handleSubscribe(msg: Message) {
         boundMessengersList.add(msg.replyTo)
+        sendFirstUpdate(msg.replyTo)
+    }
+    private fun sendFirstUpdate(msgr: Messenger){
+        if(isPaused){
+            msgr.send(Message.obtain(null, INITIAL_STATUS_PAUSED, remainingTimerMs.toInt(), 0))
+        }else{
+            msgr.send(Message.obtain(null, if(remainingTimerMs>0) INITIAL_STATUS_RUNNING else INITIAL_STATUS_IDLE, remainingTimerMs.toInt(), 0))
+        }
     }
     private fun handleUnsubscribe(msg: Message) {
         // TODO a come fare unsubscribe ci pensiamo quando abbiamo anche un widget :P
@@ -286,5 +294,9 @@ class TimerService : Service() {
         const val PROGRESS_STATUS_PAUSED = 2
         const val PROGRESS_STATUS_DELETED = 3
         const val PROGRESS_STATUS_COMPLETED = 4
+
+        const val INITIAL_STATUS_IDLE = 100
+        const val INITIAL_STATUS_RUNNING = 101
+        const val INITIAL_STATUS_PAUSED = 102
     }
 }
