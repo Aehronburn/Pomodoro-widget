@@ -13,70 +13,88 @@ import it.unipd.dei.esp2023.service.TimerService
 
 
 class ControlWidgetProvider(): AppWidgetProvider() {
-    private var activeWidgetIds: MutableSet<Int> = mutableSetOf<Int>()
-    private var replyMessenger: Messenger = Messenger(ControlWidgetProviderReplyHandler(this))
-    private var sendMessenger: Messenger? = null
-    private var bound = false
-    private var currentStatus: Int = CURRENT_STATUS_IDLE
-    private var currentTimerRemainingMs: Int = -1
-    private var ctx: Context? = null
-
-    private val conn = object : ServiceConnection {
-        override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            sendMessenger = Messenger(service)
-            val subscribeMsg = Message.obtain(null, TimerService.ACTION_SUBSCRIBE, 0, 0)
-            subscribeMsg.replyTo = replyMessenger
-            sendMessenger?.send(subscribeMsg)
-            bound = true
-        }
-
-        override fun onServiceDisconnected(className: ComponentName) {
-            // se sono qui il service è crashato. spiaze.
-            // TODO rebind?
-            sendMessenger = null
-            bound = false
-        }
-    }
-
-    override fun onEnabled(context: Context?) {
-        // Bind to the service
-        // If for whatever reason activeWidgetIds is already filled, update the widgets
-        super.onEnabled(context)
-        if(context != null){
-            ctx=context
-        }
-        val intent = Intent(context, TimerService::class.java)
-        context?.applicationContext?.bindService(intent, conn, Context.BIND_AUTO_CREATE)
-
-    }
+    private var status: Int = CURRENT_STATUS_MISSING
+    private var remainingMs: Int = 0
     override fun onUpdate(context: Context?, appWidgetManager: AppWidgetManager?, appWidgetIds: IntArray?) {
+        android.util.Log.d("WIDGET", "onUpdate")
         super.onUpdate(context, appWidgetManager, appWidgetIds)
-        println("RICEVUTO onUpdate")
-        if(context != null){
-            ctx=context
+        if(status == CURRENT_STATUS_MISSING){
+            android.util.Log.d("WIDGET", "CURRENT_STATUS_MISSING")
+            if(context!=null){
+                val binder: IBinder? = peekService(context, Intent(context, TimerService::class.java))
+                if(binder!=null){
+                    Messenger(binder).send(Message.obtain(null, TimerService.ACTION_WIDGET_INFO, 0, 0))
+                }else{
+                    /* Se peekService ritorna null vuol dire che il service non è bound a niente (quindi sicuramente non al fragment del timer).
+                    *  Questo può avvenire solo quando lo stato del timer è 'IDLE', quindi lo imposto a mano
+                    */
+                    status = CURRENT_STATUS_IDLE
+                }
+            }else{
+                // per qualche motivo non ho un context e non ho potuto richiedere info, metto lo status a Idle
+                status = CURRENT_STATUS_IDLE
+            }
         }
-        if(appWidgetIds != null){
-            activeWidgetIds.addAll(appWidgetIds.toSet())
-        }
-        println("appWidgetIds da aggiornare: |${activeWidgetIds.joinToString(" ")}|")
         if(context == null || appWidgetManager == null || appWidgetIds == null){
             return
         }
-        for (id in activeWidgetIds) {
+        for (id in appWidgetIds) {
             updateControlWidget(context, appWidgetManager, id)
         }
     }
-
-    override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
-        super.onDeleted(context, appWidgetIds)
-        if(context != null){
-            ctx=context
-        }
-        if(appWidgetIds != null){
-            activeWidgetIds.removeAll(appWidgetIds.toSet())
-        }
-    }
     private fun updateControlWidget(context: Context, appWidgetManager: AppWidgetManager, widgetId: Int){
+        if(status == CURRENT_STATUS_MISSING){
+            /*
+            * Ho già mandato richiesta di info, per il momento non faccio niente
+            * Tutti i widget che hanno già dentro qualcosa restano riempiti,
+            * quelli che richiedono update (appena aggiunti) aspettano.
+            * */
+            return
+        }
+        if(status == CURRENT_STATUS_IDLE){
+            val views = RemoteViews(context.packageName, R.layout.control_widget_idle)
+            appWidgetManager.updateAppWidget(widgetId, views)
+            return
+        }
+        val views = RemoteViews(context.packageName, R.layout.control_widget)
+        // region single widget construction logic
+
+        views.setTextViewText(R.id.timeTv, when(status){
+            CURRENT_STATUS_IDLE -> "IDLE"
+            CURRENT_STATUS_RUNNING -> "RUNNING"
+            CURRENT_STATUS_PAUSED -> "PAUSED"
+            else -> "pippo"
+        })
+        // endregion
+        appWidgetManager.updateAppWidget(widgetId, views)
+    }
+
+    override fun onReceive(context: Context?, intent: Intent?) {
+        android.util.Log.d("WIDGET", "onReceive")
+        // https://stackoverflow.com/a/61129553
+        if(intent?.extras != null){
+            android.util.Log.d("WIDGET", "extras")
+            status = intent.extras!!.getInt(EXTRAS_KEY_STATUS, CURRENT_STATUS_MISSING)
+            remainingMs = intent.extras!!.getInt(EXTRAS_KEY_MS, 0)
+        }
+        android.util.Log.d("WIDGET", "after extras: $status $remainingMs")
+        super.onReceive(context, intent)
+    }
+
+    companion object {
+        const val CURRENT_STATUS_MISSING = -1
+        const val CURRENT_STATUS_IDLE = 0
+        const val CURRENT_STATUS_RUNNING = 1
+        const val CURRENT_STATUS_PAUSED = 2
+
+        const val EXTRAS_KEY_STATUS = "STATUS"
+        const val EXTRAS_KEY_MS = "MS"
+
+    }
+
+
+    /*
+        private fun updateControlWidget(context: Context, appWidgetManager: AppWidgetManager, widgetId: Int){
         val views = RemoteViews(context.packageName, R.layout.control_widget)
         // region single widget construction logic
 
@@ -84,16 +102,6 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         // endregion
         appWidgetManager.updateAppWidget(widgetId, views)
     }
-
-    override fun onDisabled(context: Context?) {
-        // Unbind from the service
-        super.onDisabled(context)
-        if(context != null){
-            ctx=context
-        }
-        context?.applicationContext?.unbindService(conn)
-    }
-
     fun triggerUpdate(){
         // https://stackoverflow.com/questions/3570146/is-it-possible-to-throw-an-intent-for-appwidget-update-programmatically
         println("chiamata triggerUpdate() ${ctx==null}")
@@ -104,46 +112,9 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         println(AppWidgetManager.getInstance(ctx!!).getAppWidgetIds( ComponentName(ctx!!.packageName, ControlWidgetProvider::class.java.name)).joinToString ( " " ))
         ctx!!.sendBroadcast(brIntent)
     }
-    internal class ControlWidgetProviderReplyHandler(private val cwp: ControlWidgetProvider) : Handler(Looper.myLooper()!!) {
-        override fun handleMessage(msg: Message) {
-            super.handleMessage(msg)
-            println("MESSAGGIO RICEVUTO: ${msg.what}")
-            when(msg.what){
-                TimerService.PROGRESS_STATUS_RUNNING -> {
-                    cwp.currentStatus = CURRENT_STATUS_RUNNING
-                    cwp.currentTimerRemainingMs = msg.arg1
-                }
-                TimerService.PROGRESS_STATUS_DELETED -> {
-                    cwp.currentStatus = CURRENT_STATUS_IDLE
-                    cwp.currentTimerRemainingMs = 0
-                }
-                TimerService.PROGRESS_STATUS_PAUSED -> {
-                    cwp.currentStatus = CURRENT_STATUS_PAUSED
-                    cwp.currentTimerRemainingMs = msg.arg1
-                }
-                TimerService.PROGRESS_STATUS_COMPLETED -> {
-                    cwp.currentStatus = CURRENT_STATUS_IDLE
-                    cwp.currentTimerRemainingMs = 0
-                }
-                TimerService.INITIAL_STATUS_IDLE -> {
-                    cwp.currentStatus = CURRENT_STATUS_IDLE
-                    cwp.currentTimerRemainingMs = 0
-                }
-                TimerService.INITIAL_STATUS_RUNNING -> {
-                    cwp.currentStatus = CURRENT_STATUS_RUNNING
-                    cwp.currentTimerRemainingMs = msg.arg1
-                }
-                TimerService.INITIAL_STATUS_PAUSED -> {
-                    cwp.currentStatus = CURRENT_STATUS_PAUSED
-                    cwp.currentTimerRemainingMs = msg.arg1
-                }
-            }
-            cwp.triggerUpdate()
-        }
-    }
     companion object {
         const val CURRENT_STATUS_IDLE = 0
         const val CURRENT_STATUS_RUNNING = 1
         const val CURRENT_STATUS_PAUSED = 2
-    }
+    }*/
 }

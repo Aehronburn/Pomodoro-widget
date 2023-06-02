@@ -1,13 +1,17 @@
 package it.unipd.dei.esp2023.service
 
 import android.app.*
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.*
+import android.service.controls.Control
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.Builder
 import it.unipd.dei.esp2023.MainActivity
 import it.unipd.dei.esp2023.R
+import it.unipd.dei.esp2023.control_widget.ControlWidgetProvider
 import it.unipd.dei.esp2023.settings.SettingsFragment
 
 class TimerService : Service() {
@@ -19,7 +23,8 @@ class TimerService : Service() {
     private var lastInitialDuration: Long = DEFAULT_DURATION_FOR_TIMER_TYPE(TIMER_TYPE_POMODORO)
     private var timerType: Int = 0
     private var remainingTimerMs: Long = 0
-    private var boundMessengersList: MutableList<Messenger> = mutableListOf<Messenger>() //TODO mettere set invece di list
+    // private var boundMessengersList: MutableList<Messenger> = mutableListOf<Messenger>() //TODO mettere set invece di list
+    private var boundFragmentMessenger: Messenger? = null
     /*
         From Jared's reply to https://stackoverflow.com/a/25821942:
         "Also please keep in mind if you want it to update pretty and not erase it and re-create
@@ -67,7 +72,9 @@ class TimerService : Service() {
                 ACTION_UNSUBSCRIBE -> {
                     handleUnsubscribe(msg)
                 }
-                Int.MAX_VALUE->super.handleMessage(msg)
+                ACTION_WIDGET_INFO -> {
+                    handleWidgetInfo(msg)
+                }
                 else -> super.handleMessage(msg)
             }
         }
@@ -115,9 +122,28 @@ class TimerService : Service() {
         notificationManager.notify(TIMER_SERVICE_NOTIFICATION_ID, createNotification())
     }
     private fun sendProgress(status: Int, progress: Int = 0){
-        for(rec in boundMessengersList){
-            rec.send(Message.obtain(null, status, progress, 0))
-        }
+        boundFragmentMessenger?.send(Message.obtain(null, status, progress, 0))
+        sendWidgetUpdate(status, progress)
+    }
+    private fun sendWidgetUpdate(status: Int, progress: Int){
+        val brIntent = Intent()
+        brIntent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+        // https://stackoverflow.com/a/6446264
+        brIntent.putExtra(
+            AppWidgetManager.EXTRA_APPWIDGET_IDS,
+            AppWidgetManager.getInstance(this).getAppWidgetIds( ComponentName(this.packageName, ControlWidgetProvider::class.java.name))
+        )
+        brIntent.putExtra(ControlWidgetProvider.EXTRAS_KEY_STATUS, when(status){
+            PROGRESS_STATUS_RUNNING->{ControlWidgetProvider.CURRENT_STATUS_RUNNING}
+            PROGRESS_STATUS_PAUSED->{ControlWidgetProvider.CURRENT_STATUS_PAUSED}
+            PROGRESS_STATUS_DELETED->{ControlWidgetProvider.CURRENT_STATUS_IDLE}
+            PROGRESS_STATUS_COMPLETED->{ControlWidgetProvider.CURRENT_STATUS_IDLE}
+            INITIAL_STATUS_IDLE->{ControlWidgetProvider.CURRENT_STATUS_IDLE}
+            INITIAL_STATUS_RUNNING->{ControlWidgetProvider.CURRENT_STATUS_RUNNING}
+            INITIAL_STATUS_PAUSED->{ControlWidgetProvider.CURRENT_STATUS_PAUSED}
+            else->{ControlWidgetProvider.CURRENT_STATUS_IDLE}
+        })
+        sendBroadcast(brIntent)
     }
     private fun cancelTimer(){
         currentTimer?.cancel()
@@ -129,8 +155,10 @@ class TimerService : Service() {
     }
     private fun onTickCountDownTimer(millisUntilFinished: Long){
         remainingTimerMs = millisUntilFinished
-        updateNotification()
-        sendProgress(PROGRESS_STATUS_RUNNING, millisUntilFinished.toInt())
+        if(remainingTimerMs>0){
+            updateNotification()
+            sendProgress(PROGRESS_STATUS_RUNNING, millisUntilFinished.toInt())
+        }
     }
     private fun onFinishCountDownTimer(){
         cancelTimer()
@@ -146,6 +174,13 @@ class TimerService : Service() {
             override fun onTick(millisUntilFinished: Long) = onTickCountDownTimer(millisUntilFinished)
             override fun onFinish() = onFinishCountDownTimer()
         }
+    }
+    private fun handleWidgetInfo(ignored: Message){
+        if(!isForeground){
+            sendWidgetUpdate(INITIAL_STATUS_IDLE, 0)
+            return
+        }
+        sendWidgetUpdate(if(isPaused) INITIAL_STATUS_PAUSED else INITIAL_STATUS_RUNNING, remainingTimerMs.toInt())
     }
     private fun handleCreateTimer(msg: Message){
         if(isForeground){
@@ -219,7 +254,7 @@ class TimerService : Service() {
         sendProgress(PROGRESS_STATUS_DELETED, remainingTimerMs.toInt())
     }
     private fun handleSubscribe(msg: Message) {
-        boundMessengersList.add(msg.replyTo)
+        boundFragmentMessenger = msg.replyTo
         sendFirstUpdate(msg.replyTo)
     }
     private fun sendFirstUpdate(msgr: Messenger){
@@ -229,8 +264,8 @@ class TimerService : Service() {
             msgr.send(Message.obtain(null, if(remainingTimerMs>0) INITIAL_STATUS_RUNNING else INITIAL_STATUS_IDLE, remainingTimerMs.toInt(), 0))
         }
     }
-    private fun handleUnsubscribe(msg: Message) {
-        // TODO a come fare unsubscribe ci pensiamo quando abbiamo anche un widget :P
+    private fun handleUnsubscribe(ignored: Message) {
+        boundFragmentMessenger = null
     }
 
     // region lifecycle
@@ -274,6 +309,7 @@ class TimerService : Service() {
         const val ACTION_RESET_TIMER = 5
         const val ACTION_SUBSCRIBE = 6
         const val ACTION_UNSUBSCRIBE = 7
+        const val ACTION_WIDGET_INFO = 8
 
         const val TIMER_TICK_DURATION: Long = 1000
 
@@ -298,5 +334,7 @@ class TimerService : Service() {
         const val INITIAL_STATUS_IDLE = 100
         const val INITIAL_STATUS_RUNNING = 101
         const val INITIAL_STATUS_PAUSED = 102
+
+        // TODO togliere un po' di stati, ne bastano meno
     }
 }
