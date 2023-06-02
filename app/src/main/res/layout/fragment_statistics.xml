@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_medium"
                     android:layout_marginTop="@dimen/margin_medium"
-                    android:text="@string/pomodoros_completed"
+                    android:text="@{@string/pomodoros_completed(viewModel.todayCompleted)}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/today_title" />
 
@@ -62,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_medium"
-                    android:text="@string/productivity_time"
+                    android:text="@{@string/productivity_time(viewModel.todayFocusTime.first, viewModel.todayFocusTime.second)}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/today_pomodoros_completed" />
 
@@ -142,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_medium"
                     android:layout_marginTop="@dimen/margin_medium"
-                    android:text="@string/pomodoros_completed"
+                    android:text="@{@string/pomodoros_completed(viewModel.weekCompleted)}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/week_chart" />
 
@@ -153,7 +153,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_medium"
                     android:layout_marginBottom="@dimen/margin_medium"
-                    android:text="@string/productivity_time"
+                    android:text="@{@string/productivity_time(viewModel.weekFocusTime.first, viewModel.weekFocusTime.second)}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/week_pomodoros_completed" />
@@ -213,7 +213,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="@dimen/margin_medium"
-                    android:text="@string/pomodoros_completed"
+                    android:text="@{@string/pomodoros_completed(viewModel.monthCompleted)}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/month_chart" />
 
@@ -224,7 +224,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginBottom="@dimen/margin_medium"
-                    android:text="@string/productivity_time"
+                    android:text="@{@string/productivity_time(viewModel.monthFocusTime.first, viewModel.monthFocusTime.second)}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/month_pomodoros_completed" />
