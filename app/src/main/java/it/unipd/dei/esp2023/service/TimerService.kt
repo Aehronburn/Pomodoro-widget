@@ -252,7 +252,7 @@ class TimerService : Service() {
         isPaused = true
         remainingTimerMs = if(msg.arg1 != 0) msg.arg1.toLong() else lastInitialDuration
         updateNotification()
-        sendProgress(PROGRESS_STATUS_DELETED, remainingTimerMs.toInt())
+        sendProgress(PROGRESS_STATUS_PAUSED, remainingTimerMs.toInt())
     }
     private fun handleSubscribe(msg: Message) {
         boundFragmentMessenger = msg.replyTo
