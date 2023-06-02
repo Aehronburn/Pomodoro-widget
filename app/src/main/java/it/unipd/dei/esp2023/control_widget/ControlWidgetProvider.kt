@@ -1,11 +1,10 @@
 package it.unipd.dei.esp2023.control_widget
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
 import android.os.*
 import android.widget.RemoteViews
 import it.unipd.dei.esp2023.R
@@ -15,6 +14,36 @@ import it.unipd.dei.esp2023.service.TimerService
 class ControlWidgetProvider(): AppWidgetProvider() {
     private var status: Int = CURRENT_STATUS_MISSING
     private var remainingMs: Int = 0
+
+    override fun onReceive(context: Context?, intent: Intent?) {
+        android.util.Log.d("WIDGET", "onReceive")
+        if(INTENT_ACTION_PAUSE == intent?.action){
+            val binder: IBinder? = peekService(context, Intent(context, TimerService::class.java))
+            if(binder!=null){
+                Messenger(binder).send(Message.obtain(null, TimerService.ACTION_PAUSE_TIMER, 0, 0))
+            }
+        }
+        if(INTENT_ACTION_PLAY == intent?.action){
+            val binder: IBinder? = peekService(context, Intent(context, TimerService::class.java))
+            if(binder!=null){
+                Messenger(binder).send(Message.obtain(null, TimerService.ACTION_START_TIMER, 0, 0))
+            }
+        }
+        if(INTENT_ACTION_RESET == intent?.action){
+            val binder: IBinder? = peekService(context, Intent(context, TimerService::class.java))
+            if(binder!=null){
+                Messenger(binder).send(Message.obtain(null, TimerService.ACTION_RESET_TIMER, 0, 0))
+            }
+        }
+        // https://stackoverflow.com/a/61129553
+        if(intent?.extras != null){
+            android.util.Log.d("WIDGET", "extras")
+            status = intent.extras!!.getInt(EXTRAS_KEY_STATUS, CURRENT_STATUS_MISSING)
+            remainingMs = intent.extras!!.getInt(EXTRAS_KEY_MS, 0)
+        }
+        android.util.Log.d("WIDGET", "after extras: $status $remainingMs")
+        super.onReceive(context, intent)
+    }
     override fun onUpdate(context: Context?, appWidgetManager: AppWidgetManager?, appWidgetIds: IntArray?) {
         android.util.Log.d("WIDGET", "onUpdate")
         super.onUpdate(context, appWidgetManager, appWidgetIds)
@@ -59,26 +88,36 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         val views = RemoteViews(context.packageName, R.layout.control_widget)
         // region single widget construction logic
 
+        // https://stackoverflow.com/a/14798107
+        views.setOnClickPendingIntent(R.id.resetBtn, getResetIntent(context))
+        views.setOnClickPendingIntent(R.id.controlBtn, when(status){
+            CURRENT_STATUS_PAUSED -> getPlayIntent(context)
+            CURRENT_STATUS_RUNNING -> getPauseIntent(context)
+            else -> null
+        })
         views.setTextViewText(R.id.timeTv, when(status){
             CURRENT_STATUS_IDLE -> "IDLE"
             CURRENT_STATUS_RUNNING -> "RUNNING"
             CURRENT_STATUS_PAUSED -> "PAUSED"
             else -> "pippo"
-        })
+        } +" ${remainingMs/1000}")
         // endregion
         appWidgetManager.updateAppWidget(widgetId, views)
     }
 
-    override fun onReceive(context: Context?, intent: Intent?) {
-        android.util.Log.d("WIDGET", "onReceive")
-        // https://stackoverflow.com/a/61129553
-        if(intent?.extras != null){
-            android.util.Log.d("WIDGET", "extras")
-            status = intent.extras!!.getInt(EXTRAS_KEY_STATUS, CURRENT_STATUS_MISSING)
-            remainingMs = intent.extras!!.getInt(EXTRAS_KEY_MS, 0)
-        }
-        android.util.Log.d("WIDGET", "after extras: $status $remainingMs")
-        super.onReceive(context, intent)
+    private fun getPauseIntent(ctx: Context): PendingIntent{
+        return getPendingIntentFromActionString(ctx, INTENT_ACTION_PAUSE)
+    }
+    private fun getResetIntent(ctx: Context): PendingIntent{
+        return getPendingIntentFromActionString(ctx, INTENT_ACTION_RESET)
+    }
+    private fun getPlayIntent(ctx: Context): PendingIntent{
+        return getPendingIntentFromActionString(ctx, INTENT_ACTION_PLAY)
+    }
+    private fun getPendingIntentFromActionString(ctx: Context, action: String): PendingIntent{
+        val intent = Intent(ctx, javaClass)
+        intent.action = action
+        return PendingIntent.getBroadcast(ctx, 0, intent, PendingIntent.FLAG_IMMUTABLE)
     }
 
     companion object {
@@ -90,6 +129,9 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         const val EXTRAS_KEY_STATUS = "STATUS"
         const val EXTRAS_KEY_MS = "MS"
 
+        const val INTENT_ACTION_PAUSE = "PAUSE_TIMER"
+        const val INTENT_ACTION_PLAY = "PLAY_TIMER"
+        const val INTENT_ACTION_RESET = "RESET_TIMER"
     }
 
 

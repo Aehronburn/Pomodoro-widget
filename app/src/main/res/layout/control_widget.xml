@@ -8,4 +8,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/timeTv"/>
+    <Button
+        android:id="@+id/controlBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Play Pause"/>
+    <Button
+        android:id="@+id/resetBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reset"/>
 </LinearLayout>

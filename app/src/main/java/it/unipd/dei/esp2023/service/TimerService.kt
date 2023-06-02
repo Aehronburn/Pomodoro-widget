@@ -143,6 +143,7 @@ class TimerService : Service() {
             INITIAL_STATUS_PAUSED->{ControlWidgetProvider.CURRENT_STATUS_PAUSED}
             else->{ControlWidgetProvider.CURRENT_STATUS_IDLE}
         })
+        brIntent.putExtra(ControlWidgetProvider.EXTRAS_KEY_MS, remainingTimerMs.toInt())
         sendBroadcast(brIntent)
     }
     private fun cancelTimer(){
