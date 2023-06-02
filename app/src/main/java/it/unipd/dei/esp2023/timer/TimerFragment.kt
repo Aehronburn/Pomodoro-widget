@@ -63,6 +63,13 @@ class TimerFragment : Fragment() {
         }
 
         /*
+        set progress indicator max to max of phase duration
+         */
+        viewModel.currentPhase.observe(viewLifecycleOwner) {
+            binding.phaseProgressIndicator.max = it.duration * 60
+        }
+
+        /*
         cannot update progress with data binding with animation, so we do it here by calling setProgress(..., animate = true)
          */
         viewModel.progress.observe(viewLifecycleOwner) {

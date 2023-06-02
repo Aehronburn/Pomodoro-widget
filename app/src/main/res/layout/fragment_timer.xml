@@ -50,7 +50,6 @@
             android:id="@+id/phase_progress_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:max="@{viewModel.currentPhase.duration * 60}"
             android:visibility="@{viewModel.isPhasesListCompleted == true ? View.INVISIBLE : View.VISIBLE}"
             app:indicatorDirectionCircular="clockwise"
             app:indicatorSize="@dimen/circular_progress_indicator_size"
