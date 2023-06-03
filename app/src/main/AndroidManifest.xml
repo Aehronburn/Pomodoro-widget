@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="31">
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -23,14 +24,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
             android:authorities="it.unipd.dei.esp2023.SessionsContentProvider"
             android:name=".SessionsContentProvider">
-
         </provider>
+
         <service
             android:name=".service.TimerService"
             android:enabled="true" />
+
+        <receiver android:name=".statistics_widget.StatisticsAppWidgetProvider"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/statistics_widget_info" />
+        </receiver>
     </application>
 
 </manifest>
