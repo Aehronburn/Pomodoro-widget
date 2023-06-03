@@ -5,6 +5,7 @@
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_medium_large">24dp</dimen>
     <dimen name="margin_medium_small">12dp</dimen>
+    <dimen name="colum_width">16dp</dimen>
     <!-- fab height: 56dp + margin top: 16dp + margin bottom: 16dp -->
     <dimen name="session_recyclerview_bottom_padding">88dp</dimen>
     <!-- fab height: 56dp + small fab height: 40dp margin top: 16dp + margin bottom: 16dp + margin fabs: 24dp -->

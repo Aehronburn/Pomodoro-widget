@@ -2,10 +2,17 @@
 <resources>
     <style name="ColumnStyle">
         <item name="color">@color/seed</item>
-        <item name="thickness">12dp</item>
+        <item name="thickness">@dimen/colum_width</item>
     </style>
     <style name="ColumnChartStyle">
         <item name="column1">@style/ColumnStyle</item>
+    </style>
+    <style name="ColumnChartBottomAxisStyle">
+        <item name="showGuideline">false</item>
+        <item name="showTick">false</item>
+    </style>
+    <style name="ColumnChartStartAxisStyle">
+        <item name="showTick">false</item>
     </style>
 
     <style name="LineStyle">
@@ -14,5 +21,12 @@
     </style>
     <style name="LineChartStyle">
         <item name="line1Spec">@style/LineStyle</item>
+    </style>
+    <style name="LineChartBottomAxisStyle">
+        <item name="horizontalAxisTickPosition">center</item>
+    </style>
+    <style name="LineChartStartAxisStyle">
+        <item name="showGuideline">false</item>
+        <item name="showTick">false</item>
     </style>
 </resources>
