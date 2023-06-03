@@ -26,7 +26,6 @@ class SessionDetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
         enterTransition = MaterialFade()
         exitTransition = MaterialFade()
     }
