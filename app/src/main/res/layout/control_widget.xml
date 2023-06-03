@@ -4,18 +4,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#555">
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/timeTv"/>
-    <Button
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:id="@+id/timeTv"
+        />
+    <ImageButton
         android:id="@+id/controlBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Play Pause"/>
-    <Button
+        android:background="@null"
+        />
+    <ImageButton
         android:id="@+id/resetBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Reset"/>
+        android:src="@drawable/restart_alt_fill0_wght400_grad0_opsz48"
+        android:background="@null"
+        />
 </LinearLayout>

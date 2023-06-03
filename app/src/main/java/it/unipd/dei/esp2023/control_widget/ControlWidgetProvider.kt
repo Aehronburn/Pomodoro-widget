@@ -9,6 +9,7 @@ import android.os.*
 import android.widget.RemoteViews
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.service.TimerService
+import kotlin.math.roundToInt
 
 
 class ControlWidgetProvider(): AppWidgetProvider() {
@@ -95,12 +96,16 @@ class ControlWidgetProvider(): AppWidgetProvider() {
             CURRENT_STATUS_RUNNING -> getPauseIntent(context)
             else -> null
         })
-        views.setTextViewText(R.id.timeTv, when(status){
-            CURRENT_STATUS_IDLE -> "IDLE"
-            CURRENT_STATUS_RUNNING -> "RUNNING"
-            CURRENT_STATUS_PAUSED -> "PAUSED"
-            else -> "pippo"
-        } +" ${remainingMs/1000}")
+        // https://stackoverflow.com/a/3625940
+        views.setInt(R.id.controlBtn, "setImageResource", when(status){
+            CURRENT_STATUS_PAUSED -> R.drawable.play_arrow_fill1_wght400_grad0_opsz48
+            CURRENT_STATUS_RUNNING -> R.drawable.pause_fill1_wght400_grad0_opsz48
+            else -> 0
+        })
+        val totSec: Int = (remainingMs / 1000.0).roundToInt()
+        val sec: Int = totSec % 60
+        val min: Int = totSec / 60
+        views.setTextViewText(R.id.timeTv, "${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}")
         // endregion
         appWidgetManager.updateAppWidget(widgetId, views)
     }
