@@ -1,12 +1,10 @@
 package it.unipd.dei.esp2023.sessions
 
-import android.content.ContentResolver
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -15,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
-import it.unipd.dei.esp2023.SessionsContentProvider
+import com.google.android.material.transition.MaterialFadeThrough
 import it.unipd.dei.esp2023.database.Session
 import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
 
@@ -23,6 +21,20 @@ class SessionsFragment : Fragment() {
 
 
     private val viewModel: SessionsViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = MaterialFadeThrough()
+        exitTransition = MaterialFadeThrough()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        /*
+        The recyclerView needs to load its items first
+         */
+        postponeEnterTransition()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,31 +72,10 @@ class SessionsFragment : Fragment() {
          */
         viewModel.sessionList.observe(viewLifecycleOwner) {
             adapter.updateList(it)
-
-            //TODO temporary test of content provider, remove this
-            val resolver: ContentResolver by lazy {
-                requireContext().contentResolver
-            }
-            val uri = Uri.parse(SessionsContentProvider.URI)
             /*
-            wrong uri
-            val uri = Uri.parse("content://it.unipd.dei.esp2023.SessionsContentProvider/session")
-            */
-            val cursor = resolver.query(uri, null, null, null, null)
-            cursor.use {
-                val count = cursor!!.count
-                Log.d("debug", "Conto $count")
-                Log.d("debug", cursor.columnNames.component1())
-                Log.d("debug", cursor.columnNames.component2())
-                Log.d("debug", cursor.columnNames.component3())
-                while (cursor.moveToNext()) {
-                    Log.d(
-                        "debug",
-                        cursor.getLong(0).toString() + cursor.getString(1) + cursor.getString(2)
-                    )
-                }
-            }
-            //end
+            now the animation can start
+             */
+            (view.parent as ViewGroup).doOnPreDraw { startPostponedEnterTransition() }
         }
 
         return view
