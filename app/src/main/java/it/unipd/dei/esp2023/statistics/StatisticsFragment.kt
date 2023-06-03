@@ -26,7 +26,7 @@ class StatisticsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enterTransition = MaterialFadeThrough()
-        exitTransition = MaterialFadeThrough()
+        //exitTransition = MaterialFadeThrough()
     }
 
     override fun onCreateView(
