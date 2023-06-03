@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.*
 import android.widget.RemoteViews
+import it.unipd.dei.esp2023.MainActivity
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.service.TimerService
 import kotlin.math.roundToInt
@@ -83,6 +84,10 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         }
         if(status == CURRENT_STATUS_IDLE){
             val views = RemoteViews(context.packageName, R.layout.control_widget_idle)
+            views.setOnClickPendingIntent(
+                R.id.idleControlWidgetLayoutRoot,
+                PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
+            )
             appWidgetManager.updateAppWidget(widgetId, views)
             return
         }
