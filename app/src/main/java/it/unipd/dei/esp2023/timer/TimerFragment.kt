@@ -19,6 +19,7 @@ import androidx.core.content.PermissionChecker
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import com.google.android.material.transition.MaterialFade
 import it.unipd.dei.esp2023.MainViewModel
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.databinding.FragmentTimerBinding
@@ -31,6 +32,12 @@ class TimerFragment : Fragment() {
     private val viewModel: TimerViewModel by viewModels()
 
     private val activityViewModel: MainViewModel by activityViewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = MaterialFade()
+        exitTransition = MaterialFade()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
