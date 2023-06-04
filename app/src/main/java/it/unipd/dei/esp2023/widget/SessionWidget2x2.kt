@@ -1,5 +1,6 @@
 package it.unipd.dei.esp2023.widget
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
@@ -19,6 +20,16 @@ class SessionWidget2x2 : AppWidgetProvider() {
         for (appWidgetId in appWidgetIds) {
             val views = RemoteViews(context.packageName, R.layout.session_widget2x2)
             views.setRemoteAdapter(R.id.SessionWidget2x2ID_List, Intent(context, ListWidgetService::class.java))
+
+            /*
+            Listening for this particular intent
+             */
+            val intent = Intent(context, SessionWidget2x2::class.java)
+            intent.action = "clicking_item"
+            val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+            views.setPendingIntentTemplate(R.id.SessionWidget2x2ID_List, pendingIntent)
+
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
     }
@@ -29,6 +40,15 @@ class SessionWidget2x2 : AppWidgetProvider() {
     override fun onDisabled(context: Context) {
         // Enter relevant functionality for when the last widget is disabled
         Toast.makeText(context!!, "Thanks for using our widget", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onReceive(context: Context, intent: Intent) {
+        super.onReceive(context, intent)
+
+        if(intent?.action == "clicking_item") {
+            val position = intent.getIntExtra("pos", -1)
+            Toast.makeText(context!!, "Clicked number $position", Toast.LENGTH_LONG).show()
+        }
     }
 }
 
