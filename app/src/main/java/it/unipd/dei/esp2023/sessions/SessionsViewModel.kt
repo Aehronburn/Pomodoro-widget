@@ -17,7 +17,7 @@ class SessionsViewModel(application: Application) : AndroidViewModel(application
 
     init {
         database = PomodoroDatabase.getInstance(application).databaseDao
-        sessionList = database.getSessionList()
+        sessionList = database.getSessionListASC()
     }
 
     fun insertSession(name: String) {

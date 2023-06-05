@@ -3,6 +3,7 @@ package it.unipd.dei.esp2023.database
 import android.database.Cursor
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import java.time.LocalDate
 
 @Dao
 interface PomodoroDatabaseDao {
@@ -93,10 +94,10 @@ interface PomodoroDatabaseDao {
     @Query("SELECT sum(duration) as focus_time from completed_pomodoro WHERE completion_date = :dateStr")
     fun getCompletedTimeFromDate(dateStr: String): LiveData<Int>
     fun getTodayCompletedNumber(): LiveData<Int> {
-        return getCompletedNumberFromDate("date()")
+        return getCompletedNumberFromDate(LocalDate.now().toString())
     }
     fun getTodayCompletedTime(): LiveData<Int> {
-        return getCompletedTimeFromDate("date()")
+        return getCompletedTimeFromDate(LocalDate.now().toString())
     }
     @Query("""
         SELECT 0 as dayNumber, :description as dayDescription, count(*) as numCompleted, sum(duration) as focusTime 
@@ -105,7 +106,7 @@ interface PomodoroDatabaseDao {
     fun getSingleDayStatisticsFromDate(dateStr: String, description: String = "Today"): LiveData<SingleStat>
 
     fun getTodayStatistics(): LiveData<SingleStat> {
-        return getSingleDayStatisticsFromDate("date()")
+        return getSingleDayStatisticsFromDate(LocalDate.now().toString())
     }
     @Query("""
         WITH month(day_number) AS (
