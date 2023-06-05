@@ -58,14 +58,6 @@ interface PomodoroDatabaseDao {
     @Query("SELECT * FROM completed_pomodoro WHERE id = :pomodoroId")
     fun getCompletedPomodoroFromId(pomodoroId: Long): LiveData<CompletedPomodoro>
 
-    /*
-    Unlike getSessionList(), which returns a LiveData, getSessionListCursor returns a non
-    observable snapshot of the available sessions in the session table as a Cursor object, since it
-     is intended to be returned by a contentProvider and not to be used by a UI component.
-     Column id is renamed to _id because the CursorAdapter of a ListView requires it.
-     */
-    @Query("SELECT id as _id, name, creation_date FROM session")
-    fun getSessionListCursor(): Cursor
     @Query("SELECT * FROM session ORDER BY creation_date DESC")
     fun getSessionList(): LiveData<List<Session>>
     @Query("SELECT * FROM session ORDER BY creation_date ASC")
@@ -166,5 +158,57 @@ interface PomodoroDatabaseDao {
         val newOrder: Int = getMaxTaskOrderFromSessionId(sessionId) + 1
         insertTask(Task(0, sessionId, taskName, newOrder, pomCount))
     }
+
+    //region Cursors
+    /*
+    Unlike getSessionList(), which returns a LiveData, getSessionListCursor returns a non
+    observable snapshot of the available sessions in the session table as a Cursor object, since it
+     is intended to be returned by a contentProvider and not to be used by a UI component.
+     Column id is renamed to _id because the CursorAdapter of a ListView requires it.
+     */
+    @Query("SELECT id as _id, name, creation_date FROM session")
+    fun getSessionListCursor(): Cursor
+
+    @Query("""
+        SELECT 0 as dayNumber, :description as dayDescription, count(*) as numCompleted, sum(duration) as focusTime 
+        FROM completed_pomodoro WHERE completion_date= :dateStr
+        """)
+    fun getTodayStatisticsCursor(dateStr: String = LocalDate.now().toString(), description: String = "Today"): Cursor
+
+    @Query("""
+        WITH week(display_order, number, name) AS(
+            VALUES (1, 1,'Mon'),
+                (2, 2,'Tue'),
+                (3, 3,'Wed'),
+                (4, 4,'Thu'),
+                (5, 5,'Fri'),
+                (6, 6,'Sat'),
+                (CASE WHEN :firstDayMonday=0 THEN 0 ELSE 7 END, 0, 'Sun')
+        )
+        SELECT week.display_order as dayNumber, 
+            week.name as dayDescription, count(C.id) as numCompleted, 
+            coalesce(sum(duration), 0) as focusTime
+        FROM week LEFT JOIN completed_pomodoro C ON C.completion_date = 
+            CASE WHEN :firstDayMonday = 0 THEN 
+                date('now', '-6 days', 'weekday '||week.number)
+            ELSE 
+                date('now', '-7 days', 'weekday 0', '+1 days', 'weekday '|| week.number ) 
+            END
+        GROUP BY week.number
+        ORDER BY week.display_order
+    """)
+    fun getCurrentWeekStatisticsCursor(firstDayMonday: Boolean = true) : Cursor
+
+    @Query("""
+        WITH month(day_number) AS (
+            VALUES (1),(2),(3),(4),(5),(6),(7),(8),(9),(10),(11),(12),(13),(14),(15),(16),(17),(18),(19),(20),(21),(22),(23),(24),(25),(26),(27),(28),(29),(30),(31)
+        ) SELECT month.day_number as dayNumber, month.day_number as dayDescription, count(C.id) as numCompleted, coalesce(sum(duration), 0) as focusTime
+        FROM month LEFT JOIN completed_pomodoro C ON C.completion_date = date('now', 'start of month', '+' || (day_number-1) || ' days')
+        where month.day_number <= julianday('now', 'start of month', '+1 month') - julianday('now', 'start of month')
+        GROUP BY month.day_number;
+    """)
+    fun getCurrentMonthStatisticsCursor(): Cursor
+
+    //endregion
 }
 

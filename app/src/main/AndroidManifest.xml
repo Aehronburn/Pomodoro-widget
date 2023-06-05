@@ -26,8 +26,13 @@
         </activity>
 
         <provider
-            android:authorities="it.unipd.dei.esp2023.SessionsContentProvider"
-            android:name=".SessionsContentProvider">
+            android:authorities="it.unipd.dei.esp2023.content_providers.SessionsContentProvider"
+            android:name=".content_providers.SessionsContentProvider">
+        </provider>
+
+        <provider
+            android:authorities="it.unipd.dei.esp2023.content_providers.StatisticsContentProvider"
+            android:name=".content_providers.StatisticsContentProvider">
         </provider>
 
         <service
