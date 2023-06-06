@@ -31,10 +31,8 @@ class StatisticsContentProvider : ContentProvider() {
         selectionArgs: Array<out String>?,
         sortOrder: String?
     ): Cursor {
-        return when(uriMatcher.match(uri)) {
-            1 -> {
-                database.getTodayStatisticsCursor()
-            }
+        return when (uriMatcher.match(uri)) {
+            1 -> database.getTodayStatisticsCursor()
             2 -> database.getCurrentWeekStatisticsCursor()
             3 -> database.getCurrentMonthStatisticsCursor()
             else -> throw IllegalArgumentException()

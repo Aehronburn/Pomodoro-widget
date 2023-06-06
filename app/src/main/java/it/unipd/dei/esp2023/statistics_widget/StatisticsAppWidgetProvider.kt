@@ -11,8 +11,12 @@ import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.content_providers.StatisticsContentProvider
+import it.unipd.dei.esp2023.statistics.StatisticsViewModel
 
 class StatisticsAppWidgetProvider : AppWidgetProvider() {
+
+    private var todayCompleted = 0
+    private var todayFocusTime = 0
 
     override fun onUpdate(
         context: Context,
@@ -24,12 +28,20 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
             val contentResolver = context.contentResolver
             val todayStats = contentResolver.query(
                 Uri.parse("content://" + StatisticsContentProvider.AUTHORITY + "/" + StatisticsContentProvider.TODAY_PATH),
-                null, null, null, null)
+                null, null, null, null
+            )
+            todayStats!!.moveToNext()
+            todayCompleted = todayStats.getInt(2)
+            todayFocusTime = todayStats.getInt(3)
+            val (todayFocusHours, todayFocusMinutes) = StatisticsViewModel.timeToHhMm(todayFocusTime)
+            todayStats.close()
 
-            println("today stats " + todayStats?.columnNames?.component1() + " " + todayStats?.columnNames?.component2())
-            todayStats?.close()
+            println("update called $todayFocusHours $todayFocusMinutes")
 
-            val views = RemoteViews(context.packageName, R.layout.statistics_widget)
+            val views = RemoteViews(context.packageName, R.layout.statistics_widget).apply {
+                setTextViewText(R.id.today_completed_text_widget, todayCompleted.toString())
+                setTextViewText(R.id.today_focus_time_text_widget, context.getString(R.string.stats_widget_today_focus_time, todayFocusHours, todayFocusMinutes))
+            }
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
     }
@@ -45,7 +57,12 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
         println("MAX_WIDTH " + newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH))
         println("MIN_HEIGHT " + newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT))
         println("MAX_HEIGHT " + newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT))
-        println("SIZES " + newOptions.getParcelableArrayList(AppWidgetManager.OPTION_APPWIDGET_SIZES, SizeF::class.java))
+        println(
+            "SIZES " + newOptions.getParcelableArrayList(
+                AppWidgetManager.OPTION_APPWIDGET_SIZES,
+                SizeF::class.java
+            )
+        )
         println(" ")
 
     }

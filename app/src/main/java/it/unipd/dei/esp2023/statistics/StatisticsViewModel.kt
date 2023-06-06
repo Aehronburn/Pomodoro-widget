@@ -83,7 +83,7 @@ class StatisticsViewModel(application: Application) : AndroidViewModel(applicati
         /*
         Given time in minutes, returns the number of hours and number of minutes that do not make into an hour
          */
-        private fun timeToHhMm(time: Int) : Pair<Int, Int> {
+        fun timeToHhMm(time: Int) : Pair<Int, Int> {
             return Pair(time / 60, time % 60)
         }
     }

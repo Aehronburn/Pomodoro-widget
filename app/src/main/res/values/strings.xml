@@ -18,7 +18,7 @@
     <string name="duration_slider_end">10</string>
     <string name="today_card_title">Today</string>
     <string name="pomodoros_completed">completed pomodoros: %d</string>
-    <string name="productivity_time">productivity time: %dh %dmin</string>
+    <string name="productivity_time">productivity time: %dh : %dmin</string>
     <string name="today_card_action">Let\'s concentrate</string>
     <string name="week_card_title">This week</string>
     <string name="month_card_title">This month</string>
@@ -55,4 +55,6 @@
     <string name="all_tasks_completed_description">All tasks are completed.\nGood Job!</string>
 
     <string name="statistics_widget_description">Monitor your productivity</string>
+    <string name="stats_widget_today_title">Today</string>
+    <string name="stats_widget_today_focus_time">%dh% dmin</string>
 </resources>
