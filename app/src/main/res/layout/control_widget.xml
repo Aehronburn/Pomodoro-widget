@@ -1,27 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/controlWidgetLayoutRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#555">
+    android:gravity="center"
+    android:background="?android:attr/colorBackground"
+    android:theme="@style/AppTheme">
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:id="@+id/timeTv"
         />
     <ImageButton
         android:id="@+id/controlBtn"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@null"
+        android:background="?colorTertiaryContainer"
+        app:tint="?colorOnTertiaryContainer"
         />
     <ImageButton
         android:id="@+id/resetBtn"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="?colorPrimaryContainer"
+        app:tint="?colorOnPrimaryContainer"
         android:src="@drawable/restart_alt_fill0_wght400_grad0_opsz48"
-        android:background="@null"
         />
+    <!--
+    android:background="#FCCC"
+    android:iconTint= "#FCCC"
+    app:tint="#FCCC"
+    android:backgroundTint="#FCCC"
+    android:tintMode="multiply"
+    android:backgroundTintMode="multiply"
+     -->
 </LinearLayout>
