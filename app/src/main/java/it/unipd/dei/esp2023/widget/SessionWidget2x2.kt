@@ -3,13 +3,18 @@ package it.unipd.dei.esp2023.widget
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.RemoteViews
 import android.widget.Toast
 import it.unipd.dei.esp2023.R
 
 class SessionWidget2x2 : AppWidgetProvider() {
+    companion object{
+        lateinit var intent: Intent
+    }
     override fun onUpdate(
         context: Context,
         appWidgetManager: AppWidgetManager,
@@ -22,11 +27,13 @@ class SessionWidget2x2 : AppWidgetProvider() {
             views.setRemoteAdapter(R.id.SessionWidget2x2ID_List, Intent(context, ListWidgetService::class.java))
 
             /*
-            Listening for this particular intent
+            Here I specify the general template for the clicking action intent
+            Inside the MyRemoteViewsFactory I will particularize it for the specific text clicked
              */
-            val intent = Intent(context, SessionWidget2x2::class.java)
+            intent = Intent(context, SessionWidget2x2::class.java)
             intent.action = "clicking_item"
-            val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+            val pendingIntent = PendingIntent.getBroadcast(context, 0, intent,
+                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
 
             views.setPendingIntentTemplate(R.id.SessionWidget2x2ID_List, pendingIntent)
 
@@ -45,9 +52,11 @@ class SessionWidget2x2 : AppWidgetProvider() {
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
 
+        Log.d("my_debug", "Received! ${intent.action}")
+
         if(intent?.action == "clicking_item") {
-            val position = intent.getIntExtra("pos", -1)
-            Toast.makeText(context!!, "Clicked number $position", Toast.LENGTH_LONG).show()
+            val name = intent.getStringExtra("name")
+            Log.d("my_debug", "with name $name")
         }
     }
 }
@@ -65,3 +74,4 @@ internal fun updateAppWidget(
     // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, views)
 }
+
