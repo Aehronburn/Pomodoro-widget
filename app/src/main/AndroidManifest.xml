@@ -15,6 +15,7 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
+            android:launchMode="singleTop"
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

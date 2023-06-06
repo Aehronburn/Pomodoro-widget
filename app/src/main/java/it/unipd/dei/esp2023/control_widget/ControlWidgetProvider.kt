@@ -10,6 +10,7 @@ import android.widget.RemoteViews
 import it.unipd.dei.esp2023.MainActivity
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.service.TimerService
+import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
 import kotlin.math.roundToInt
 
 
@@ -18,7 +19,6 @@ class ControlWidgetProvider(): AppWidgetProvider() {
     private var remainingMs: Int = 0
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        android.util.Log.d("WIDGET", "onReceive")
         if(INTENT_ACTION_PAUSE == intent?.action){
             val binder: IBinder? = peekService(context, Intent(context, TimerService::class.java))
             if(binder!=null){
@@ -39,18 +39,14 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         }
         // https://stackoverflow.com/a/61129553
         if(intent?.extras != null){
-            android.util.Log.d("WIDGET", "extras")
             status = intent.extras!!.getInt(EXTRAS_KEY_STATUS, CURRENT_STATUS_MISSING)
             remainingMs = intent.extras!!.getInt(EXTRAS_KEY_MS, 0)
         }
-        android.util.Log.d("WIDGET", "after extras: $status $remainingMs")
         super.onReceive(context, intent)
     }
     override fun onUpdate(context: Context?, appWidgetManager: AppWidgetManager?, appWidgetIds: IntArray?) {
-        android.util.Log.d("WIDGET", "onUpdate")
         super.onUpdate(context, appWidgetManager, appWidgetIds)
         if(status == CURRENT_STATUS_MISSING){
-            android.util.Log.d("WIDGET", "CURRENT_STATUS_MISSING")
             if(context!=null){
                 val binder: IBinder? = peekService(context, Intent(context, TimerService::class.java))
                 if(binder!=null){
@@ -111,6 +107,18 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         val sec: Int = totSec % 60
         val min: Int = totSec / 60
         views.setTextViewText(R.id.timeTv, "${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}")
+
+        val intentBundle = Bundle()
+        intentBundle.putLong(SessionDetailsFragment.ARGUMENT_SESSION_ID, 1 /* TODO */)
+        views.setOnClickPendingIntent(
+            R.id.controlWidgetLayoutRoot,
+            PendingIntent.getActivity(
+                context,
+                0,
+                Intent(context, MainActivity::class.java),
+                PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+            )
+        )
         // endregion
         appWidgetManager.updateAppWidget(widgetId, views)
     }

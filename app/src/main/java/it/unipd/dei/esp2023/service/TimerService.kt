@@ -17,6 +17,7 @@ import it.unipd.dei.esp2023.settings.SettingsFragment
 class TimerService : Service() {
 
     private lateinit var mMessenger: Messenger
+    private var isCompleted: Boolean = false
     private var isForeground: Boolean = false
     private var isPaused: Boolean = false
     private var currentTimer: CountDownTimer? = null
@@ -82,9 +83,12 @@ class TimerService : Service() {
 
     private fun enterForeground(){
         startForeground(TIMER_SERVICE_NOTIFICATION_ID, createNotification())
+        isForeground = true
     }
     private fun exitForeground(removeNotificationBehaviour: Int = STOP_FOREGROUND_REMOVE){
         stopForeground(removeNotificationBehaviour)
+        isForeground = false
+        isCompleted = false
     }
     private fun getTimerTypeString(): String{
         return when(timerType){
@@ -95,14 +99,14 @@ class TimerService : Service() {
     }
     private fun createNotification(): Notification {
         return notificationBuilder
-            .setContentTitle(getString(R.string.service_notification_title))
+            .setContentTitle(if (isCompleted) getString(R.string.service_notification_title_completed) else getString(R.string.service_notification_title))
             .setContentText(
-                getString(
+                if (isCompleted) (getString(R.string.service_notification_text_progress_completed, getTimerTypeString())) else (getString(
                     if(isPaused) R.string.service_notification_text_progress_paused else R.string.service_notification_text_progress_running,
                     getTimerTypeString(),
                     remainingTimerMs/ONE_MINUTE_IN_MS,
                     (remainingTimerMs%ONE_MINUTE_IN_MS)/1000
-                )
+                ))
             )
             .setSmallIcon(R.mipmap.ic_launcher)
             .setOngoing(true)
@@ -113,9 +117,9 @@ class TimerService : Service() {
                     Intent(this, MainActivity::class.java),
                     PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
                 )
-            ) // TODO aprire nel fragment del timer invece che nell'homepage dell'app
+            )
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
-            .setOnlyAlertOnce(true)
+            .setOnlyAlertOnce(!isCompleted)
             .build()
     }
     private fun updateNotification(){
@@ -159,15 +163,18 @@ class TimerService : Service() {
         if(remainingTimerMs>0){
             updateNotification()
             sendProgress(PROGRESS_STATUS_RUNNING, millisUntilFinished.toInt())
+            isCompleted = false
         }
     }
     private fun onFinishCountDownTimer(){
         cancelTimer()
-        if(isForeground){
+        /*if(isForeground){
             exitForeground()
-        }
+        }*/
         isPaused = false
+        isCompleted = true
         remainingTimerMs = 0
+        updateNotification()
         sendProgress(PROGRESS_STATUS_COMPLETED)
     }
     private fun createNewTimer(msDuration: Long, msInterval: Long = TIMER_TICK_DURATION): CountDownTimer{
@@ -225,12 +232,14 @@ class TimerService : Service() {
                 enterForeground()
             }
             isPaused = true
+            isCompleted = false
             updateNotification()
             sendProgress(PROGRESS_STATUS_PAUSED, remainingTimerMs.toInt())
         }else{
-            if(isForeground){
+            /*if(isForeground){
                 exitForeground()
-            }
+            }*/
+            isCompleted = true
             isPaused = false
             sendProgress(PROGRESS_STATUS_COMPLETED)
         }
@@ -242,6 +251,7 @@ class TimerService : Service() {
         }
         remainingTimerMs = 0
         isPaused = false
+        isCompleted = false
         sendProgress(PROGRESS_STATUS_DELETED)
     }
     private fun handleResetTimer(msg: Message) {
@@ -250,6 +260,7 @@ class TimerService : Service() {
             enterForeground()
         }
         isPaused = true
+        isCompleted = false
         remainingTimerMs = if(msg.arg1 != 0) msg.arg1.toLong() else lastInitialDuration
         updateNotification()
         sendProgress(PROGRESS_STATUS_PAUSED, remainingTimerMs.toInt())
@@ -274,7 +285,7 @@ class TimerService : Service() {
     {
         super.onCreate()
         notificationManager = getSystemService(NotificationManager::class.java)
-        val channel = NotificationChannel(TIMER_SERVICE_NOTIFICATION_CHANNEL_ID, TIMER_SERVICE_NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW)
+        val channel = NotificationChannel(TIMER_SERVICE_NOTIFICATION_CHANNEL_ID, TIMER_SERVICE_NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
         notificationManager.createNotificationChannel(channel)
 
         mMessenger = Messenger(IncomingHandler(this))
@@ -299,7 +310,7 @@ class TimerService : Service() {
 
     companion object{
         const val TIMER_SERVICE_NOTIFICATION_CHANNEL_ID = "PomodoroTimer"
-        const val TIMER_SERVICE_NOTIFICATION_CHANNEL_NAME = "Pomodoro Timer notification channel"
+        const val TIMER_SERVICE_NOTIFICATION_CHANNEL_NAME = "Pomodoro Timer notifications" // Used in the settings page for the app (notifications settings)
 
         const val TIMER_SERVICE_NOTIFICATION_ID = 1
 
