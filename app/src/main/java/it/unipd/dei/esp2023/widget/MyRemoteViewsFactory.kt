@@ -47,6 +47,8 @@ class MyRemoteViewsFactory(private val context: Context, intent: Intent):
 
     override fun getViewAt(position: Int): RemoteViews {
         myCursor!!.moveToPosition(position)
+        //"id" column
+        val id = myCursor!!.getLong(0)
         //"name" column
         val name = myCursor!!.getString(1)
 
@@ -60,6 +62,7 @@ class MyRemoteViewsFactory(private val context: Context, intent: Intent):
          */
         val intent = SessionWidget2x2.intent
         intent.putExtra("name", name)
+        intent.putExtra("id", id)
         remoteViews.setOnClickFillInIntent(R.id.widget_list_item_text, intent)
 
         return remoteViews

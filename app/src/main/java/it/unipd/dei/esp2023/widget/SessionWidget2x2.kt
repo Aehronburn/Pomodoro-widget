@@ -3,13 +3,16 @@ package it.unipd.dei.esp2023.widget
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.widget.RemoteViews
 import android.widget.Toast
+import androidx.navigation.NavDeepLinkBuilder
+import it.unipd.dei.esp2023.MainActivity
 import it.unipd.dei.esp2023.R
+import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
 
 class SessionWidget2x2 : AppWidgetProvider() {
     companion object{
@@ -56,7 +59,19 @@ class SessionWidget2x2 : AppWidgetProvider() {
 
         if(intent?.action == "clicking_item") {
             val name = intent.getStringExtra("name")
-            Log.d("my_debug", "with name $name")
+            val id = intent.getLongExtra("id", -1L)
+            Log.d("my_debug", "with name $name and id $id")
+
+            val bundle = Bundle()
+            bundle.putLong(SessionDetailsFragment.ARGUMENT_SESSION_ID, id)
+            bundle.putString(SessionDetailsFragment.ARGUMENT_SESSION_NAME, name)
+
+            val pendingIntent = NavDeepLinkBuilder(context)
+                .setGraph(R.navigation.navigation_graph)
+                .setDestination(R.id.sessionDetails)
+                .setArguments(bundle)
+                .createPendingIntent()
+                .send()
         }
     }
 }

@@ -35,6 +35,9 @@
         android:name="it.unipd.dei.esp2023.session_details.SessionDetailsFragment"
         android:label="{sessionName}"
         tools:layout="@layout/fragment_session_details">
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="myapp://example.com/text" />
         <argument
             android:name="sessionId"
             app:argType="long" />
