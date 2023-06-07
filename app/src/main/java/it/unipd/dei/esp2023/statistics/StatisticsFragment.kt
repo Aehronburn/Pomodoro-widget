@@ -55,15 +55,10 @@ class StatisticsFragment : Fragment() {
             viewModel.setTodayCompleted(it.numCompleted)
             viewModel.setTodayFocusTime(it.focusTime)
 
-            val productivityImage = when (it.numCompleted) {
-                0 -> R.drawable.pomodoro_artwork_sleeping
-                in 1..4 -> R.drawable.pomodoro_artwork_working
-                else -> R.drawable.pomodoro_artwork_completed
-            }
             binding.todayProductivityImage.setImageDrawable(
                 ResourcesCompat.getDrawable(
                     resources,
-                    productivityImage,
+                    getProductivityImage(it.numCompleted),
                     context?.theme
                 )
             )
@@ -125,6 +120,16 @@ class StatisticsFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         return binding.root
+    }
+
+    companion object {
+        fun getProductivityImage(numCompleted: Int) : Int {
+            return when (numCompleted) {
+                0 -> R.drawable.pomodoro_artwork_sleeping
+                in 1..4 -> R.drawable.pomodoro_artwork_working
+                else -> R.drawable.pomodoro_artwork_completed
+            }
+        }
     }
 
 }

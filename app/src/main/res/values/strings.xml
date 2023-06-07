@@ -59,4 +59,12 @@
     <string name="stats_widget_week_title">This week</string>
     <string name="stats_widget_month_title">This month</string>
     <string name="stats_widget_focus_time">%dh% dmin</string>
+    <string name="stats_widget_productivity_image_description">Image showing productivity status</string>
+
+    <string name="fake_widget_today_completed">3</string>
+    <string name="fake_widget_today_focustime">1h 15min</string>
+    <string name="fake_widget_week_completed">6</string>
+    <string name="fake_widget_week_focustime">2h 30min</string>
+    <string name="fake_widget_month_completed">12</string>
+    <string name="fake_widget_month_focustime">5h 0min</string>
 </resources>

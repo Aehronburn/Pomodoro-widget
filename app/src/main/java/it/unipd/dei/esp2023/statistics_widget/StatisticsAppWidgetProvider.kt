@@ -4,9 +4,13 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.net.Uri
+import android.os.Build
+import android.util.SizeF
 import android.widget.RemoteViews
+import androidx.annotation.RequiresApi
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.content_providers.StatisticsContentProvider
+import it.unipd.dei.esp2023.statistics.StatisticsFragment
 import it.unipd.dei.esp2023.statistics.StatisticsViewModel
 
 class StatisticsAppWidgetProvider : AppWidgetProvider() {
@@ -20,15 +24,16 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
     private var monthCompleted = 0
     private var monthFocusTime = 0
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onUpdate(
         context: Context,
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
         appWidgetIds.forEach { appWidgetId ->
-
             val contentResolver = context.contentResolver
 
+            //region retrieving statistics from StatisticsContentProvider
             /*
             today stats
              */
@@ -41,6 +46,7 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
             todayFocusTime = todayStats.getInt(3)
             todayStats.close()
             val (todayFocusHours, todayFocusMinutes) = StatisticsViewModel.timeToHhMm(todayFocusTime)
+            val productivityImage = StatisticsFragment.getProductivityImage(todayCompleted)
 
             /*
             week stats
@@ -56,7 +62,6 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
             weekStats.close()
             val (weekFocusHours, weekFocusMinutes) = StatisticsViewModel.timeToHhMm(weekFocusTime)
 
-
             /*
             month stats
              */
@@ -70,8 +75,23 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
             }
             monthStats.close()
             val (monthFocusHours, monthFocusMinutes) = StatisticsViewModel.timeToHhMm(monthFocusTime)
+            //endregion
 
-            val views = RemoteViews(context.packageName, R.layout.statistics_widget).apply {
+            //region remoteViews
+            val smallView = RemoteViews(context.packageName, R.layout.statistics_widget_small).apply {
+                setTextViewText(R.id.today_completed_text_widget, todayCompleted.toString())
+                setTextViewText(R.id.today_focus_time_text_widget, context.getString(R.string.stats_widget_focus_time, todayFocusHours, todayFocusMinutes))
+            }
+
+            val mediumView = RemoteViews(context.packageName, R.layout.statistics_widget_medium).apply {
+                setTextViewText(R.id.today_completed_text_widget, todayCompleted.toString())
+                setTextViewText(R.id.today_focus_time_text_widget, context.getString(R.string.stats_widget_focus_time, todayFocusHours, todayFocusMinutes))
+
+                setTextViewText(R.id.week_completed_text_widget, weekCompleted.toString())
+                setTextViewText(R.id.week_focus_time_text_widget, context.getString(R.string.stats_widget_focus_time, weekFocusHours, weekFocusMinutes))
+            }
+
+            val largeView = RemoteViews(context.packageName, R.layout.statistics_widget_large).apply {
                 setTextViewText(R.id.today_completed_text_widget, todayCompleted.toString())
                 setTextViewText(R.id.today_focus_time_text_widget, context.getString(R.string.stats_widget_focus_time, todayFocusHours, todayFocusMinutes))
 
@@ -81,7 +101,30 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
                 setTextViewText(R.id.month_completed_text_widget, monthCompleted.toString())
                 setTextViewText(R.id.month_focus_time_text_widget, context.getString(R.string.stats_widget_focus_time, monthFocusHours, monthFocusMinutes))
             }
-            appWidgetManager.updateAppWidget(appWidgetId, views)
+
+            val extraLargeView = RemoteViews(context.packageName, R.layout.statistics_widget_extralarge).apply {
+                setTextViewText(R.id.today_completed_text_widget, todayCompleted.toString())
+                setTextViewText(R.id.today_focus_time_text_widget, context.getString(R.string.stats_widget_focus_time, todayFocusHours, todayFocusMinutes))
+
+                setTextViewText(R.id.week_completed_text_widget, weekCompleted.toString())
+                setTextViewText(R.id.week_focus_time_text_widget, context.getString(R.string.stats_widget_focus_time, weekFocusHours, weekFocusMinutes))
+
+                setTextViewText(R.id.month_completed_text_widget, monthCompleted.toString())
+                setTextViewText(R.id.month_focus_time_text_widget, context.getString(R.string.stats_widget_focus_time, monthFocusHours, monthFocusMinutes))
+
+                setImageViewResource(R.id.productivity_image_widget, productivityImage)
+            }
+            //endregion
+
+            val viewMapping: Map<SizeF,RemoteViews> = mapOf(
+                SizeF(80f, 50f) to smallView,
+                SizeF(80f, 120f) to mediumView,
+                SizeF(80f, 225f) to largeView,
+                SizeF(80f, 460f) to extraLargeView
+            )
+
+            val remoteViews = RemoteViews(viewMapping)
+            appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
         }
     }
 
