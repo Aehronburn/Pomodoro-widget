@@ -31,7 +31,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.32"
-            tools:text="@tools:sample/lorem" />
+            tools:text="24" />
 
         <TextView
             android:id="@+id/seconds_left_text"
@@ -44,7 +44,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/minutes_left_text"
             app:layout_constraintTop_toBottomOf="@+id/minutes_left_text"
-            tools:text="@tools:sample/lorem" />
+            tools:text="59" />
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/phase_progress_indicator"
@@ -72,7 +72,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@tools:sample/lorem" />
+            tools:text="task 1" />
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
