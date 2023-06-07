@@ -70,6 +70,8 @@
         android:background="@drawable/rounded_corner_control"
         android:contentDescription="@string/toggle_start_play_pause_description"
         android:padding="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         />
     <ImageButton
         android:id="@+id/resetBtn"
@@ -81,6 +83,8 @@
         android:src="@drawable/restart_alt_fill0_wght400_grad0_opsz48"
         android:contentDescription="@string/reset_timer_button_description"
         android:padding="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
         />
 </RelativeLayout>
 

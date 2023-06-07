@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.*
@@ -121,14 +122,27 @@ class ControlWidgetProvider(): AppWidgetProvider() {
                 context,
                 0,
                 Intent(context, MainActivity::class.java),
-                PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+                PendingIntent.FLAG_IMMUTABLE
             )
         )
-        views.setInt(R.id.controlBtn, "setColorFilter", MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnTertiaryContainer, Color.BLACK))
-        views.setInt(R.id.resetBtn, "setColorFilter", MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnPrimaryContainer, Color.BLACK))
+
+        //context.setTheme(if(isUsingNightModeResources(context)) R.style.AppTheme else R.style.AppTheme)
+        //views.setInt(R.id.controlBtn, "setColorFilter", MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnError, Color.CYAN))
+        //views.setInt(R.id.controlBtn, "setColorFilter", com.google.android.material.R.attr.colorOnPrimaryContainer)
+        //views.setInt(R.id.resetBtn, "setColorFilter", MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnPrimaryContainer, Color.CYAN))
+        // views.setInt(R.id.controlBtn, "setColorFilter", R.color.md_theme_dark_onTertiaryContainer)
         // endregion
         appWidgetManager.updateAppWidget(widgetId, views)
     }
+    /*private fun isUsingNightModeResources(context: Context): Boolean {
+        return when (context.resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> true
+            Configuration.UI_MODE_NIGHT_NO -> false
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> false
+            else -> false
+        }
+    }*/
 
     private fun getPauseIntent(ctx: Context): PendingIntent{
         return getPendingIntentFromActionString(ctx, INTENT_ACTION_PAUSE)
