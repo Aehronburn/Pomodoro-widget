@@ -25,7 +25,7 @@
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/circle_stroke"
+        android:src="@drawable/circle_stroke_small"
         android:contentDescription="@string/circle_control_widget_background_description"
         />
     <LinearLayout
@@ -45,7 +45,7 @@
             android:paddingVertical="0dp"
             android:fontFamily="monospace"
             android:includeFontPadding="false"
-            style="@style/TextAppearance.Material3.DisplayLarge"
+            style="@style/TextAppearance.Material3.DisplayMedium"
             tools:text="00"
             />
         <TextView
@@ -58,73 +58,8 @@
             android:paddingVertical="0dp"
             android:fontFamily="monospace"
             android:includeFontPadding="false"
-            style="@style/TextAppearance.Material3.DisplayMedium"
+            style="@style/TextAppearance.Material3.DisplaySmall"
             tools:text="00"
             />
     </LinearLayout>
-    <!--ImageButton
-        android:id="@+id/controlBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/rounded_corner_control"
-        android:contentDescription="@string/toggle_start_play_pause_description"
-        android:padding="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        /-->
-    <!--ImageButton
-        android:id="@+id/resetBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:background="@drawable/rounded_corner_reset"
-        android:src="@drawable/restart_alt_fill0_wght400_grad0_opsz48"
-        android:contentDescription="@string/reset_timer_button_description"
-        android:padding="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="10dp"
-        /-->
 </RelativeLayout>
-
-<!-- LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:id="@+id/controlWidgetLayoutRoot"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical"
-android:gravity="center"
-android:background="?android:attr/colorBackground"
-android:theme="@style/AppTheme">
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
-    android:id="@+id/timeTv"
-    />
-<ImageButton
-    android:id="@+id/controlBtn"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="?colorTertiaryContainer"
-    app:tint="?colorOnTertiaryContainer"
-    />
-<ImageButton
-    android:id="@+id/resetBtn"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="?colorPrimaryContainer"
-    app:tint="?colorOnPrimaryContainer"
-    android:src="@drawable/restart_alt_fill0_wght400_grad0_opsz48"
-    />
-
-// android:background="#FCCC"
-// android:iconTint= "#FCCC"
-// app:tint="#FCCC"
-// android:backgroundTint="#FCCC"
-// android:tintMode="multiply"
-// android:backgroundTintMode="multiply"
->
-</LinearLayout -->
