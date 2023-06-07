@@ -5,8 +5,13 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
+import android.graphics.Color
 import android.os.*
+import android.util.TypedValue
 import android.widget.RemoteViews
+import androidx.annotation.ColorInt
+import com.google.android.material.color.MaterialColors
 import it.unipd.dei.esp2023.MainActivity
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.service.TimerService
@@ -106,8 +111,8 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         val totSec: Int = (remainingMs / 1000.0).roundToInt()
         val sec: Int = totSec % 60
         val min: Int = totSec / 60
-        views.setTextViewText(R.id.timeTv, "${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}")
-
+        views.setTextViewText(R.id.minTv, min.toString().padStart(2, '0'))
+        views.setTextViewText(R.id.secTv, sec.toString().padStart(2, '0'))
         val intentBundle = Bundle()
         intentBundle.putLong(SessionDetailsFragment.ARGUMENT_SESSION_ID, 1 /* TODO */)
         views.setOnClickPendingIntent(
@@ -119,6 +124,8 @@ class ControlWidgetProvider(): AppWidgetProvider() {
                 PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
             )
         )
+        views.setInt(R.id.controlBtn, "setColorFilter", MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnTertiaryContainer, Color.BLACK))
+        views.setInt(R.id.resetBtn, "setColorFilter", MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnPrimaryContainer, Color.BLACK))
         // endregion
         appWidgetManager.updateAppWidget(widgetId, views)
     }
