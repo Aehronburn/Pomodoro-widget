@@ -5,14 +5,9 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
-import android.content.res.Resources
-import android.graphics.Color
 import android.os.*
-import android.util.TypedValue
+import android.util.SizeF
 import android.widget.RemoteViews
-import androidx.annotation.ColorInt
-import com.google.android.material.color.MaterialColors
 import it.unipd.dei.esp2023.MainActivity
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.service.TimerService
@@ -93,18 +88,38 @@ class ControlWidgetProvider(): AppWidgetProvider() {
             appWidgetManager.updateAppWidget(widgetId, views)
             return
         }
-        val views = RemoteViews(context.packageName, R.layout.control_widget)
+        val largeViews = RemoteViews(context.packageName, R.layout.control_widget_large)
+        val mediumViews = RemoteViews(context.packageName, R.layout.control_widget_medium)
+        val smallViews = RemoteViews(context.packageName, R.layout.control_widget_small)
+
         // region single widget construction logic
 
         // https://stackoverflow.com/a/14798107
-        views.setOnClickPendingIntent(R.id.resetBtn, getResetIntent(context))
-        views.setOnClickPendingIntent(R.id.controlBtn, when(status){
+        largeViews.setOnClickPendingIntent(R.id.resetBtn, getResetIntent(context))
+        mediumViews.setOnClickPendingIntent(R.id.resetBtn, getResetIntent(context))
+
+        largeViews.setOnClickPendingIntent(R.id.controlBtn, when(status){
+            CURRENT_STATUS_PAUSED -> getPlayIntent(context)
+            CURRENT_STATUS_RUNNING -> getPauseIntent(context)
+            else -> null
+        })
+        mediumViews.setOnClickPendingIntent(R.id.controlBtn, when(status){
             CURRENT_STATUS_PAUSED -> getPlayIntent(context)
             CURRENT_STATUS_RUNNING -> getPauseIntent(context)
             else -> null
         })
         // https://stackoverflow.com/a/3625940
-        views.setInt(R.id.controlBtn, "setImageResource", when(status){
+        largeViews.setInt(R.id.controlBtn, "setImageResource", when(status){
+            CURRENT_STATUS_PAUSED -> R.drawable.play_arrow_fill1_wght400_grad0_opsz48
+            CURRENT_STATUS_RUNNING -> R.drawable.pause_fill1_wght400_grad0_opsz48
+            else -> 0
+        })
+        mediumViews.setInt(R.id.controlBtn, "setImageResource", when(status){
+            CURRENT_STATUS_PAUSED -> R.drawable.play_arrow_fill1_wght400_grad0_opsz48
+            CURRENT_STATUS_RUNNING -> R.drawable.pause_fill1_wght400_grad0_opsz48
+            else -> 0
+        })
+        smallViews.setInt(R.id.controlBtn, "setImageResource", when(status){
             CURRENT_STATUS_PAUSED -> R.drawable.play_arrow_fill1_wght400_grad0_opsz48
             CURRENT_STATUS_RUNNING -> R.drawable.pause_fill1_wght400_grad0_opsz48
             else -> 0
@@ -112,11 +127,17 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         val totSec: Int = (remainingMs / 1000.0).roundToInt()
         val sec: Int = totSec % 60
         val min: Int = totSec / 60
-        views.setTextViewText(R.id.minTv, min.toString().padStart(2, '0'))
-        views.setTextViewText(R.id.secTv, sec.toString().padStart(2, '0'))
-        val intentBundle = Bundle()
-        intentBundle.putLong(SessionDetailsFragment.ARGUMENT_SESSION_ID, 1 /* TODO */)
-        views.setOnClickPendingIntent(
+        largeViews.setTextViewText(R.id.minTv, min.toString().padStart(2, '0'))
+        largeViews.setTextViewText(R.id.secTv, sec.toString().padStart(2, '0'))
+
+        mediumViews.setTextViewText(R.id.minTv, min.toString().padStart(2, '0'))
+        mediumViews.setTextViewText(R.id.secTv, sec.toString().padStart(2, '0'))
+
+        smallViews.setTextViewText(R.id.minTv, min.toString().padStart(2, '0'))
+        smallViews.setTextViewText(R.id.secTv, sec.toString().padStart(2, '0'))
+
+
+        largeViews.setOnClickPendingIntent(
             R.id.controlWidgetLayoutRoot,
             PendingIntent.getActivity(
                 context,
@@ -125,6 +146,29 @@ class ControlWidgetProvider(): AppWidgetProvider() {
                 PendingIntent.FLAG_IMMUTABLE
             )
         )
+        mediumViews.setOnClickPendingIntent(
+            R.id.controlWidgetLayoutRoot,
+            PendingIntent.getActivity(
+                context,
+                0,
+                Intent(context, MainActivity::class.java),
+                PendingIntent.FLAG_IMMUTABLE
+            )
+        )
+        smallViews.setOnClickPendingIntent(
+            R.id.controlWidgetLayoutRoot,
+            PendingIntent.getActivity(
+                context,
+                0,
+                Intent(context, MainActivity::class.java),
+                PendingIntent.FLAG_IMMUTABLE
+            )
+        )
+        val layoutMap: RemoteViews = RemoteViews(mapOf(
+            SizeF(40f, 40f) to smallViews,
+            SizeF(150f, 150f) to mediumViews,
+            SizeF(280f, 280f) to largeViews
+        ))
 
         //context.setTheme(if(isUsingNightModeResources(context)) R.style.AppTheme else R.style.AppTheme)
         //views.setInt(R.id.controlBtn, "setColorFilter", MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnError, Color.CYAN))
@@ -132,7 +176,7 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         //views.setInt(R.id.resetBtn, "setColorFilter", MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnPrimaryContainer, Color.CYAN))
         // views.setInt(R.id.controlBtn, "setColorFilter", R.color.md_theme_dark_onTertiaryContainer)
         // endregion
-        appWidgetManager.updateAppWidget(widgetId, views)
+        appWidgetManager.updateAppWidget(widgetId, layoutMap)
     }
     /*private fun isUsingNightModeResources(context: Context): Boolean {
         return when (context.resources.configuration.uiMode and
