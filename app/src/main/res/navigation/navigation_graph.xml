@@ -37,7 +37,7 @@
         tools:layout="@layout/fragment_session_details">
         <deepLink
             android:id="@+id/deepLink"
-            app:uri="myapp://example.com/text" />
+            app:uri="myapp://example.com/da_cambiare" />
         <argument
             android:name="sessionId"
             app:argType="long" />
