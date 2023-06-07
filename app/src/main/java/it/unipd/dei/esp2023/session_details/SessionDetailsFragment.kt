@@ -1,5 +1,7 @@
 package it.unipd.dei.esp2023.session_details
 
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import it.unipd.dei.esp2023.MainViewModel
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.database.TaskExt
+import it.unipd.dei.esp2023.widget.SessionWidget2x2
 
 class SessionDetailsFragment : Fragment() {
     private val sessionDetailsViewModel: SessionDetailsViewModel by viewModels()
@@ -73,6 +76,17 @@ class SessionDetailsFragment : Fragment() {
                 list ->
             theAdapter.setTaskList(list)
             startSessionFAB.isEnabled = list.isNotEmpty()
+
+            /*
+            Necessario per non far piantare il widget in caso di modifica dei task
+            e successivo kill dell'applicazione
+            Notify the widget that data has changed; this triggers onDataSetChanged()
+            in the Factory()
+             */
+            val myAppWidgetManager = AppWidgetManager.getInstance(requireContext())
+            myAppWidgetManager.notifyAppWidgetViewDataChanged(
+                myAppWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionWidget2x2::class.java)),
+                R.id.SessionWidget2x2ID_List)
         }
 
         return view
