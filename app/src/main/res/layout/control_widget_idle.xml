@@ -8,8 +8,10 @@
     android:background="?android:attr/colorBackground"
     android:theme="@style/AppTheme"
     >
-<TextView
+<ImageView
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Questo widget è in idle"/>
+    android:layout_height="match_parent"
+    android:src="@drawable/ic_launcher_foreground"
+    android:background="#00000000"
+    />
 </LinearLayout>
