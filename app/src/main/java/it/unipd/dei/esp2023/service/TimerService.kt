@@ -148,6 +148,7 @@ class TimerService : Service() {
             else->{ControlWidgetProvider.CURRENT_STATUS_IDLE}
         })
         brIntent.putExtra(ControlWidgetProvider.EXTRAS_KEY_MS, remainingTimerMs.toInt())
+        brIntent.putExtra(ControlWidgetProvider.EXTRAS_KEY_TYPE, timerType)
         sendBroadcast(brIntent)
     }
     private fun cancelTimer(){

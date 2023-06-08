@@ -4,11 +4,8 @@
     android:shape="oval"
     >
     <stroke
-        android:width="3dp"
-        android:color="?colorTertiaryContainer"/>
-    <!-- TODO colore dinamico -->
-    <!--fill
-        android:color="#00000000"/-->
+        android:width="5dp"
+        android:color="@color/long_break_progress_indicator"/>
     <size
         android:width="120dp"
         android:height="120dp"/>

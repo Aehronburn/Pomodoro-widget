@@ -5,19 +5,20 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.*
 import android.util.SizeF
 import android.widget.RemoteViews
 import it.unipd.dei.esp2023.MainActivity
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.service.TimerService
-import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
 import kotlin.math.roundToInt
 
 
 class ControlWidgetProvider(): AppWidgetProvider() {
     private var status: Int = CURRENT_STATUS_MISSING
     private var remainingMs: Int = 0
+    private var timerType: Int = TimerService.TIMER_TYPE_POMODORO
 
     override fun onReceive(context: Context?, intent: Intent?) {
         if(INTENT_ACTION_PAUSE == intent?.action){
@@ -42,6 +43,7 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         if(intent?.extras != null){
             status = intent.extras!!.getInt(EXTRAS_KEY_STATUS, CURRENT_STATUS_MISSING)
             remainingMs = intent.extras!!.getInt(EXTRAS_KEY_MS, 0)
+            timerType = intent.extras!!.getInt(EXTRAS_KEY_TYPE, TimerService.TIMER_TYPE_POMODORO)
         }
         super.onReceive(context, intent)
     }
@@ -110,21 +112,31 @@ class ControlWidgetProvider(): AppWidgetProvider() {
             CURRENT_STATUS_RUNNING -> getPauseIntent(context)
             else -> null
         })
+
+        val controlBtnResource = when(status){
+            CURRENT_STATUS_PAUSED -> R.drawable.play_arrow_fill1_wght400_grad0_opsz48
+            CURRENT_STATUS_RUNNING -> R.drawable.pause_fill1_wght400_grad0_opsz48
+            else -> 0
+        }
         // https://stackoverflow.com/a/3625940
-        largeViews.setInt(R.id.controlBtn, "setImageResource", when(status){
-            CURRENT_STATUS_PAUSED -> R.drawable.play_arrow_fill1_wght400_grad0_opsz48
-            CURRENT_STATUS_RUNNING -> R.drawable.pause_fill1_wght400_grad0_opsz48
-            else -> 0
+        largeViews.setInt(R.id.controlBtn, "setImageResource", controlBtnResource)
+        mediumViews.setInt(R.id.controlBtn, "setImageResource", controlBtnResource)
+        smallViews.setInt(R.id.controlBtn, "setImageResource", controlBtnResource)
+
+        largeViews.setInt(R.id.bgCircle, "setImageResource", when(timerType){
+            TimerService.TIMER_TYPE_SHORT_BREAK -> R.drawable.circle_stroke_large_short
+            TimerService.TIMER_TYPE_LONG_BREAK -> R.drawable.circle_stroke_large_long
+            else -> R.drawable.circle_stroke_large_pom
         })
-        mediumViews.setInt(R.id.controlBtn, "setImageResource", when(status){
-            CURRENT_STATUS_PAUSED -> R.drawable.play_arrow_fill1_wght400_grad0_opsz48
-            CURRENT_STATUS_RUNNING -> R.drawable.pause_fill1_wght400_grad0_opsz48
-            else -> 0
+        mediumViews.setInt(R.id.bgCircle, "setImageResource", when(timerType){
+            TimerService.TIMER_TYPE_SHORT_BREAK -> R.drawable.circle_stroke_medium_short
+            TimerService.TIMER_TYPE_LONG_BREAK -> R.drawable.circle_stroke_medium_long
+            else -> R.drawable.circle_stroke_medium_pom
         })
-        smallViews.setInt(R.id.controlBtn, "setImageResource", when(status){
-            CURRENT_STATUS_PAUSED -> R.drawable.play_arrow_fill1_wght400_grad0_opsz48
-            CURRENT_STATUS_RUNNING -> R.drawable.pause_fill1_wght400_grad0_opsz48
-            else -> 0
+        smallViews.setInt(R.id.bgCircle, "setImageResource", when(timerType){
+            TimerService.TIMER_TYPE_SHORT_BREAK -> R.drawable.circle_stroke_small_short
+            TimerService.TIMER_TYPE_LONG_BREAK -> R.drawable.circle_stroke_small_long
+            else -> R.drawable.circle_stroke_small_pom
         })
         val totSec: Int = (remainingMs / 1000.0).roundToInt()
         val sec: Int = totSec % 60
@@ -140,42 +152,24 @@ class ControlWidgetProvider(): AppWidgetProvider() {
 
         tinyViews.setTextViewText(R.id.tv, "${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}")
 
-        largeViews.setOnClickPendingIntent(
-            R.id.controlWidgetLayoutRoot,
-            PendingIntent.getActivity(
-                context,
-                0,
-                Intent(context, MainActivity::class.java),
-                PendingIntent.FLAG_IMMUTABLE
-            )
+        val openIntent = PendingIntent.getActivity(
+            context,
+            0,
+            Intent(context, MainActivity::class.java),
+            PendingIntent.FLAG_IMMUTABLE
         )
-        mediumViews.setOnClickPendingIntent(
-            R.id.controlWidgetLayoutRoot,
-            PendingIntent.getActivity(
-                context,
-                0,
-                Intent(context, MainActivity::class.java),
-                PendingIntent.FLAG_IMMUTABLE
-            )
-        )
-        smallViews.setOnClickPendingIntent(
-            R.id.controlWidgetLayoutRoot,
-            PendingIntent.getActivity(
-                context,
-                0,
-                Intent(context, MainActivity::class.java),
-                PendingIntent.FLAG_IMMUTABLE
-            )
-        )
-        tinyViews.setOnClickPendingIntent(
-            R.id.controlWidgetLayoutRoot,
-            PendingIntent.getActivity(
-                context,
-                0,
-                Intent(context, MainActivity::class.java),
-                PendingIntent.FLAG_IMMUTABLE
-            )
-        )
+        largeViews.setOnClickPendingIntent(R.id.controlWidgetLayoutRoot, openIntent)
+        mediumViews.setOnClickPendingIntent(R.id.controlWidgetLayoutRoot, openIntent)
+        smallViews.setOnClickPendingIntent(R.id.controlWidgetLayoutRoot, openIntent)
+        tinyViews.setOnClickPendingIntent(R.id.controlWidgetLayoutRoot, openIntent)
+
+        val controlColor = Color.CYAN
+        val resetColor = Color.CYAN
+        largeViews.setInt(R.id.controlBtn, "setColorFilter", controlColor)
+        mediumViews.setInt(R.id.controlBtn, "setColorFilter", controlColor)
+        largeViews.setInt(R.id.resetBtn, "setColorFilter", resetColor)
+        mediumViews.setInt(R.id.resetBtn, "setColorFilter", resetColor)
+
         val layoutMap = RemoteViews(mapOf(
             SizeF(60f, 60f) to tinyViews,
             SizeF(100f, 100f) to smallViews,
@@ -224,6 +218,7 @@ class ControlWidgetProvider(): AppWidgetProvider() {
 
         const val EXTRAS_KEY_STATUS = "STATUS"
         const val EXTRAS_KEY_MS = "MS"
+        const val EXTRAS_KEY_TYPE = "TYPE"
 
         const val INTENT_ACTION_PAUSE = "PAUSE_TIMER"
         const val INTENT_ACTION_PLAY = "PLAY_TIMER"
