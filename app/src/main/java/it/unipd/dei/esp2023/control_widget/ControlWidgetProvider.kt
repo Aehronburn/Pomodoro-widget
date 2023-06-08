@@ -163,13 +163,6 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         smallViews.setOnClickPendingIntent(R.id.controlWidgetLayoutRoot, openIntent)
         tinyViews.setOnClickPendingIntent(R.id.controlWidgetLayoutRoot, openIntent)
 
-        val controlColor = Color.CYAN
-        val resetColor = Color.CYAN
-        largeViews.setInt(R.id.controlBtn, "setColorFilter", controlColor)
-        mediumViews.setInt(R.id.controlBtn, "setColorFilter", controlColor)
-        largeViews.setInt(R.id.resetBtn, "setColorFilter", resetColor)
-        mediumViews.setInt(R.id.resetBtn, "setColorFilter", resetColor)
-
         val layoutMap = RemoteViews(mapOf(
             SizeF(60f, 60f) to tinyViews,
             SizeF(100f, 100f) to smallViews,
@@ -177,11 +170,6 @@ class ControlWidgetProvider(): AppWidgetProvider() {
             SizeF(270f, 270f) to largeViews
         ))
 
-        //context.setTheme(if(isUsingNightModeResources(context)) R.style.AppTheme else R.style.AppTheme)
-        //views.setInt(R.id.controlBtn, "setColorFilter", MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnError, Color.CYAN))
-        //views.setInt(R.id.controlBtn, "setColorFilter", com.google.android.material.R.attr.colorOnPrimaryContainer)
-        //views.setInt(R.id.resetBtn, "setColorFilter", MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnPrimaryContainer, Color.CYAN))
-        // views.setInt(R.id.controlBtn, "setColorFilter", R.color.md_theme_dark_onTertiaryContainer)
         // endregion
         appWidgetManager.updateAppWidget(widgetId, layoutMap)
     }
