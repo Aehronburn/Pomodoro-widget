@@ -91,6 +91,8 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         val largeViews = RemoteViews(context.packageName, R.layout.control_widget_large)
         val mediumViews = RemoteViews(context.packageName, R.layout.control_widget_medium)
         val smallViews = RemoteViews(context.packageName, R.layout.control_widget_small)
+        val tinyViews = RemoteViews(context.packageName, R.layout.control_widget_tiny)
+
 
         // region single widget construction logic
 
@@ -136,6 +138,7 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         smallViews.setTextViewText(R.id.minTv, min.toString().padStart(2, '0'))
         smallViews.setTextViewText(R.id.secTv, sec.toString().padStart(2, '0'))
 
+        tinyViews.setTextViewText(R.id.tv, "${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}")
 
         largeViews.setOnClickPendingIntent(
             R.id.controlWidgetLayoutRoot,
@@ -164,10 +167,20 @@ class ControlWidgetProvider(): AppWidgetProvider() {
                 PendingIntent.FLAG_IMMUTABLE
             )
         )
-        val layoutMap: RemoteViews = RemoteViews(mapOf(
-            SizeF(40f, 40f) to smallViews,
-            SizeF(150f, 150f) to mediumViews,
-            SizeF(280f, 280f) to largeViews
+        tinyViews.setOnClickPendingIntent(
+            R.id.controlWidgetLayoutRoot,
+            PendingIntent.getActivity(
+                context,
+                0,
+                Intent(context, MainActivity::class.java),
+                PendingIntent.FLAG_IMMUTABLE
+            )
+        )
+        val layoutMap = RemoteViews(mapOf(
+            SizeF(60f, 60f) to tinyViews,
+            SizeF(100f, 100f) to smallViews,
+            SizeF(170f, 170f) to mediumViews,
+            SizeF(270f, 270f) to largeViews
         ))
 
         //context.setTheme(if(isUsingNightModeResources(context)) R.style.AppTheme else R.style.AppTheme)
