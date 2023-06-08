@@ -2,7 +2,9 @@ package it.unipd.dei.esp2023.statistics_widget
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.util.SizeF
@@ -24,6 +26,16 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
 
     private var monthCompleted = 0
     private var monthFocusTime = 0
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    override fun onReceive(context: Context?, intent: Intent?) {
+        if(intent?.action == Intent.ACTION_DATE_CHANGED || intent?.action == Intent.ACTION_TIME_CHANGED) {
+            val ids = AppWidgetManager.getInstance(context).getAppWidgetIds(ComponentName(context!!, StatisticsAppWidgetProvider::class.java))
+            onUpdate(context, AppWidgetManager.getInstance(context), ids)
+        } else {
+            super.onReceive(context, intent)
+        }
+    }
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onUpdate(
