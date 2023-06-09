@@ -69,7 +69,7 @@
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/today_productivity_image"
                     android:layout_width="0dp"
-                    android:layout_height="160dp"
+                    android:layout_height="@dimen/statistics_productivity_image_height"
                     android:scaleType="centerCrop"
                     app:layout_constraintBottom_toTopOf="@+id/today_title"
                     app:layout_constraintEnd_toEndOf="parent"
