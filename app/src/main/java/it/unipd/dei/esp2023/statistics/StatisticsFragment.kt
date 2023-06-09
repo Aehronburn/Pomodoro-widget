@@ -118,7 +118,7 @@ class StatisticsFragment : Fragment() {
             binding.monthChart.setModel(entries)
 
             val max = eachDayCompletedPomodoros.maxOfOrNull { entry -> entry.y.toInt() } ?: 0
-            (binding.weekChart.startAxis as VerticalAxis<AxisPosition.Vertical.Start>).maxLabelCount = max
+            (binding.monthChart.startAxis as VerticalAxis<AxisPosition.Vertical.Start>).maxLabelCount = max
         }
 
         binding.viewModel = viewModel

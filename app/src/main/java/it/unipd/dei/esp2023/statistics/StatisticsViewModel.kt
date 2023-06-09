@@ -71,10 +71,10 @@ class StatisticsViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun setMonthCompleted(completed: Int) {
-        _weekCompleted.value = completed
+        _monthCompleted.value = completed
     }
     fun setMonthFocusTime(focusTime: Int) {
-        _weekFocusTime.value = timeToHhMm(focusTime)
+        _monthFocusTime.value = timeToHhMm(focusTime)
     }
     //endregion
 
