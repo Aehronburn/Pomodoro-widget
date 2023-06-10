@@ -25,6 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
             android:authorities="it.unipd.dei.esp2023.content_providers.SessionsContentProvider"
             android:name=".content_providers.SessionsContentProvider">
@@ -40,6 +41,7 @@
             android:enabled="true" />
 
         <receiver android:name=".statistics_widget.StatisticsAppWidgetProvider"
+            android:label="@string/stats_widget_label"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -51,6 +53,7 @@
 
         <receiver
             android:name=".control_widget.ControlWidgetProvider"
+            android:label="@string/control_widget_label"
             android:exported="true"
             >
             <intent-filter>
