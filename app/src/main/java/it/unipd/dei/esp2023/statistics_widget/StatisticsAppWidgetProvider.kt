@@ -47,7 +47,7 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
             val contentResolver = context.contentResolver
 
             val pendingIntent = NavDeepLinkBuilder(context).setGraph(R.navigation.navigation_graph)
-                .setDestination(R.id.statistics_fragment).createPendingIntent()
+                .setDestination(R.id.sessions_fragment).createPendingIntent()
 
             //region retrieving statistics from StatisticsContentProvider
             /*
