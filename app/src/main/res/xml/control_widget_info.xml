@@ -5,7 +5,7 @@
     android:description="@string/control_widget_description"
     android:targetCellHeight="2"
     android:targetCellWidth="2"
-    android:previewLayout="@layout/control_widget_idle"
+    android:previewLayout="@layout/control_widget_preview"
     android:previewImage="@mipmap/ic_launcher"
     android:widgetCategory="home_screen"
     android:resizeMode="horizontal|vertical"
