@@ -16,6 +16,7 @@
         tools:targetApi="31">
 
         <activity
+            android:launchMode="singleTop"
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -24,7 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <provider
             android:authorities="it.unipd.dei.esp2023.content_providers.SessionsContentProvider"
             android:name=".content_providers.SessionsContentProvider">
@@ -49,6 +49,17 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/statistics_widget_info" />
         </receiver>
 
+        <receiver
+            android:name=".control_widget.ControlWidgetProvider"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/control_widget_info"/>
+        </receiver>
     </application>
 
 </manifest>
