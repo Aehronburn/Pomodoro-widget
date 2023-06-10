@@ -1,6 +1,7 @@
 package it.unipd.dei.esp2023.widget
 
 import android.app.PendingIntent
+import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
@@ -35,9 +36,14 @@ class MyRemoteViewsFactory(private val context: Context, intent: Intent):
         val contentResolver = context.contentResolver
         val uri =  Uri.parse(SessionsContentProvider.URI)
         myCursor = contentResolver.query(uri, null, null, null, null )
+        Log.d("my_debug", "OnDataSetChanged(); \n Actual cursor is $myCursor \n")
+
+        updateAppWidget(context, AppWidgetManager.getInstance(context), SessionWidget2x2.id)
+
     }
 
     override fun onDestroy() {
+        Log.d("my_debug", "destroyed factory")
         return
     }
 
@@ -60,6 +66,8 @@ class MyRemoteViewsFactory(private val context: Context, intent: Intent):
         It's important to refer to the same intent of the SessionWidget2x2 class, to be able to modify
         its extras and pass the name of the current session
          */
+
+        //TODO: Probabilmente è questo che non viene richiamato
         val intent = SessionWidget2x2.intent
         intent.putExtra("name", name)
         intent.putExtra("id", id)

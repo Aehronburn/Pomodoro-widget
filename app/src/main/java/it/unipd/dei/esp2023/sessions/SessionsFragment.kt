@@ -21,6 +21,7 @@ import it.unipd.dei.esp2023.SessionsContentProvider
 import it.unipd.dei.esp2023.database.Session
 import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
 import it.unipd.dei.esp2023.widget.SessionWidget2x2
+import it.unipd.dei.esp2023.widget.updateAppWidget
 
 class SessionsFragment : Fragment() {
 
@@ -58,12 +59,12 @@ class SessionsFragment : Fragment() {
             else createNewSessionFAB.extend()
         }
 
+
         /*
         update list of RecyclerView everytime a session is added/deleted
          */
         viewModel.sessionList.observe(viewLifecycleOwner) {
             adapter.updateList(it)
-
             /*
             Notify the widget that data has changed; this triggers onDataSetChanged()
             in the Factory()

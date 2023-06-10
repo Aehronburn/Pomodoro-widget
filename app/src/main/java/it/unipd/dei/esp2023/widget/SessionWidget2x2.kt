@@ -10,13 +10,13 @@ import android.util.Log
 import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.navigation.NavDeepLinkBuilder
-import it.unipd.dei.esp2023.MainActivity
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
 
 class SessionWidget2x2 : AppWidgetProvider() {
     companion object{
         lateinit var intent: Intent
+        var id: Int = 0
     }
     override fun onUpdate(
         context: Context,
@@ -24,10 +24,15 @@ class SessionWidget2x2 : AppWidgetProvider() {
         appWidgetIds: IntArray
     )
     {
+        id = appWidgetIds[0]
+        Log.d("my_debug", "Il mio widget id è $id")
         // There may be multiple widgets active, so update all of them
         for (appWidgetId in appWidgetIds) {
-            val views = RemoteViews(context.packageName, R.layout.session_widget2x2)
-            views.setRemoteAdapter(R.id.SessionWidget2x2ID_List, Intent(context, ListWidgetService::class.java))
+            val remoteViews = RemoteViews(context.packageName, R.layout.session_widget2x2)
+            //Remove all items in case app has been forced closed
+            remoteViews.removeAllViews(R.id.SessionWidget2x2ID_List)
+
+            remoteViews.setRemoteAdapter(R.id.SessionWidget2x2ID_List, Intent(context, ListWidgetService::class.java))
 
             /*
             Here I specify the general template for the clicking action intent
@@ -36,11 +41,11 @@ class SessionWidget2x2 : AppWidgetProvider() {
             intent = Intent(context, SessionWidget2x2::class.java)
             intent.action = "clicking_item"
             val pendingIntent = PendingIntent.getBroadcast(context, 0, intent,
-                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
+                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 
-            views.setPendingIntentTemplate(R.id.SessionWidget2x2ID_List, pendingIntent)
+            remoteViews.setPendingIntentTemplate(R.id.SessionWidget2x2ID_List, pendingIntent)
 
-            appWidgetManager.updateAppWidget(appWidgetId, views)
+            appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
         }
     }
 
@@ -66,7 +71,7 @@ class SessionWidget2x2 : AppWidgetProvider() {
             bundle.putLong(SessionDetailsFragment.ARGUMENT_SESSION_ID, id)
             bundle.putString(SessionDetailsFragment.ARGUMENT_SESSION_NAME, name)
 
-            val pendingIntent = NavDeepLinkBuilder(context)
+            NavDeepLinkBuilder(context)
                 .setGraph(R.navigation.navigation_graph)
                 .setDestination(R.id.sessionDetails)
                 .setArguments(bundle)
@@ -81,12 +86,20 @@ internal fun updateAppWidget(
     appWidgetManager: AppWidgetManager,
     appWidgetId: Int
 ) {
-    val widgetText = context.getString(R.string.appwidget_title)
-    // Construct the RemoteViews object
-    val views = RemoteViews(context.packageName, R.layout.session_widget2x2)
-    views.setTextViewText(R.id.appwidget_title, widgetText)
+    val remoteViews = RemoteViews(context.packageName, R.layout.session_widget2x2)
+    //Remove all items in case app has been forced closed
+    remoteViews.removeAllViews(R.id.SessionWidget2x2ID_List)
+
+    remoteViews.setRemoteAdapter(R.id.SessionWidget2x2ID_List, Intent(context, ListWidgetService::class.java))
+
+    SessionWidget2x2.intent = Intent(context, SessionWidget2x2::class.java)
+    SessionWidget2x2.intent.action = "clicking_item"
+    val pendingIntent = PendingIntent.getBroadcast(context, 0, SessionWidget2x2.intent,
+        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+
+    remoteViews.setPendingIntentTemplate(R.id.SessionWidget2x2ID_List, pendingIntent)
 
     // Instruct the widget manager to update the widget
-    appWidgetManager.updateAppWidget(appWidgetId, views)
+    appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
 }
 
