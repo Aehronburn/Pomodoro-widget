@@ -7,6 +7,10 @@
     android:minHeight="110dp"
     android:previewImage="@drawable/example_appwidget_preview"
 
+    android:maxResizeHeight="582dp"
+    android:maxResizeWidth="730dp"
+    android:resizeMode="horizontal | vertical"
+
     android:previewLayout="@layout/session_widget2x2"
     android:targetCellWidth="2"
     android:targetCellHeight="2"
