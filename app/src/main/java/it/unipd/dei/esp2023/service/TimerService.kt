@@ -6,13 +6,13 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.*
-import android.service.controls.Control
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.Builder
 import it.unipd.dei.esp2023.MainActivity
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.control_widget.ControlWidgetProvider
 import it.unipd.dei.esp2023.settings.SettingsFragment
+import it.unipd.dei.esp2023.statistics_widget.StatisticsAppWidgetProvider
 
 class TimerService : Service() {
 
@@ -130,6 +130,9 @@ class TimerService : Service() {
         sendWidgetUpdate(status, progress)
     }
     private fun sendWidgetUpdate(status: Int, progress: Int){
+        /*
+        update control widgets
+         */
         val brIntent = Intent()
         brIntent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
         // https://stackoverflow.com/a/6446264
@@ -150,6 +153,16 @@ class TimerService : Service() {
         brIntent.putExtra(ControlWidgetProvider.EXTRAS_KEY_MS, remainingTimerMs.toInt())
         brIntent.putExtra(ControlWidgetProvider.EXTRAS_KEY_TYPE, timerType)
         sendBroadcast(brIntent)
+
+        /*
+        update statistics widgets
+         */
+        val ids = AppWidgetManager.getInstance(this).getAppWidgetIds(ComponentName(this, StatisticsAppWidgetProvider::class.java))
+        val statsUpdateIntent = Intent(this, StatisticsAppWidgetProvider::class.java).apply {
+            action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+        }
+        sendBroadcast(statsUpdateIntent)
     }
     private fun cancelTimer(){
         currentTimer?.cancel()

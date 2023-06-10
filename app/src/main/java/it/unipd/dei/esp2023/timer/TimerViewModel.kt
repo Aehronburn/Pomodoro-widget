@@ -84,17 +84,6 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
         get() = _currentPhase
 
     /*
-    observe it to know when to update the statistics widget
-     */
-    private var _pomodoroCompleted = MutableLiveData<Boolean>(false)
-    val pomodoroCompleted: LiveData<Boolean>
-        get() = _pomodoroCompleted
-
-    fun setPomodoroNotCompleted() {
-        _pomodoroCompleted.value = false
-    }
-
-    /*
     creates a list of phases from the task list of the session.
     After a task pomodoro a short break is added. After 4 task pomodoros a log break is added.
      */
@@ -171,7 +160,6 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
             _currentPhase.value!!.taskId != TimerService.TIMER_TYPE_SHORT_BREAK.toLong()) {
             viewModelScope.launch {
                 database.insertCompletedPomodoro(CompletedPomodoro(task = _currentPhase.value!!.taskId, duration = _currentPhase.value!!.duration))
-                _pomodoroCompleted.value = true
             }
         }
         phasesList.removeFirst()
