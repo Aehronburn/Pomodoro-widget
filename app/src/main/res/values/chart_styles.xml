@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="ColumnStyle">
-        <item name="color">@color/seed</item>
+        <item name="color">?android:attr/colorPrimary</item>
         <item name="thickness">@dimen/colum_width</item>
     </style>
     <style name="ColumnChartStyle">
@@ -16,7 +16,7 @@
     </style>
 
     <style name="LineStyle">
-        <item name="color">@color/seed</item>
+        <item name="color">?android:attr/colorPrimary</item>
         <item name="lineThickness">4dp</item>
     </style>
     <style name="LineChartStyle">
