@@ -152,6 +152,7 @@ class TimerService : Service() {
         })
         brIntent.putExtra(ControlWidgetProvider.EXTRAS_KEY_MS, remainingTimerMs.toInt())
         brIntent.putExtra(ControlWidgetProvider.EXTRAS_KEY_TYPE, timerType)
+        brIntent.putExtra(ControlWidgetProvider.WIDGET_TYPE, ControlWidgetProvider.WIDGET_TYPE_CONTROL)
         sendBroadcast(brIntent)
 
         /*

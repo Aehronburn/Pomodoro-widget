@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.navigation.NavDeepLinkBuilder
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.content_providers.StatisticsContentProvider
+import it.unipd.dei.esp2023.control_widget.ControlWidgetProvider
 import it.unipd.dei.esp2023.statistics.StatisticsFragment
 import it.unipd.dei.esp2023.statistics.StatisticsViewModel
 
@@ -33,6 +34,13 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
             val ids = AppWidgetManager.getInstance(context).getAppWidgetIds(ComponentName(context!!, StatisticsAppWidgetProvider::class.java))
             onUpdate(context, AppWidgetManager.getInstance(context), ids)
         } else {
+            /*
+            if the update was referring to ControlWidgetProvider do nothing
+             */
+            if(intent != null &&
+                intent.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE &&
+                intent.getStringExtra(ControlWidgetProvider.WIDGET_TYPE) == ControlWidgetProvider.WIDGET_TYPE_CONTROL)
+                return
             super.onReceive(context, intent)
         }
     }

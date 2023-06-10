@@ -5,7 +5,6 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.*
 import android.util.SizeF
 import android.widget.RemoteViews
@@ -211,6 +210,9 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         const val INTENT_ACTION_PAUSE = "PAUSE_TIMER"
         const val INTENT_ACTION_PLAY = "PLAY_TIMER"
         const val INTENT_ACTION_RESET = "RESET_TIMER"
+
+        const val WIDGET_TYPE = "WIDGET_TYPE"
+        const val WIDGET_TYPE_CONTROL = "WIDGET_TYPE_CONTROL"
     }
 
 
