@@ -1,5 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@android:id/background"
+    android:background="?android:attr/colorBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/AppTheme.AppWidgetContainer">
@@ -7,20 +9,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-    <TextView
-        android:id="@+id/appwidget_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/appwidget_title"
-        android:text="@string/appwidget_title"
-        android:textSize="24sp"/>
+        android:orientation="vertical"
+        android:padding="@dimen/margin_small">
 
-    <ListView
-        android:id="@+id/SessionWidget2x2ID_List"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        <TextView
+            android:id="@+id/appwidget_title"
+            style="@style/TextAppearance.Material3.TitleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/appwidget_title"
+            android:text="@string/appwidget_title" />
+
+        <ListView
+            android:id="@+id/SessionWidget2x2ID_List"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </RelativeLayout>
