@@ -63,15 +63,4 @@ class MainActivity : AppCompatActivity() {
         appBar.setNavigationOnClickListener { navController.navigateUp() }
 
     }
-
-    /*
-    override fun onDestroy() {
-        val intent = Intent(this, SessionWidget2x2::class.java)
-        intent.action = "forced_quit"
-        sendBroadcast(intent)
-        super.onDestroy()
-    }
-
-    */
-
 }

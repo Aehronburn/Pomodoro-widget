@@ -2,13 +2,11 @@ package it.unipd.dei.esp2023.sessions
 
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RemoteViews
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -20,7 +18,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
 import it.unipd.dei.esp2023.database.Session
 import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
 import it.unipd.dei.esp2023.widget.SessionWidget2x2
-import it.unipd.dei.esp2023.widget.deleteListWidget
 import it.unipd.dei.esp2023.widget.updateAppWidget
 
 class SessionsFragment : Fragment() {

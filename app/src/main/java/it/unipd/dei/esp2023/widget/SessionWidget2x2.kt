@@ -126,21 +126,4 @@ internal fun updateAppWidget(
     appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
 }
 
-internal fun deleteListWidget(
-    context: Context,
-    appWidgetManager: AppWidgetManager,
-    appWidgetId: Int)
-{
-    //Remove old list
-    val remoteViews = RemoteViews(context.packageName, R.layout.session_widget2x2)
-    remoteViews.removeAllViews(R.id.SessionWidget2x2ID_List)
-
-    //Put new Adapter
-    remoteViews.setRemoteAdapter(R.id.SessionWidget2x2ID_List, Intent(context, ListWidgetService::class.java))
-
-
-    // Instruct the widget manager to update the widget
-    appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
-}
-
 
