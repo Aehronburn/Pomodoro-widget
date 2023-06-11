@@ -2,6 +2,7 @@ package it.unipd.dei.esp2023.widget
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
@@ -10,6 +11,7 @@ import android.os.Build
 import android.util.Log
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
+import android.widget.Toast
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.SessionsContentProvider
 
@@ -36,9 +38,15 @@ class MyRemoteViewsFactory(private val context: Context, intent: Intent):
         val contentResolver = context.contentResolver
         val uri =  Uri.parse(SessionsContentProvider.URI)
         myCursor = contentResolver.query(uri, null, null, null, null )
-        //Log.d("my_debug", "OnDataSetChanged(); \n Actual cursor is $myCursor \n")
 
-        updateAppWidget(context, AppWidgetManager.getInstance(context), SessionWidget2x2.id)
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        val ids = appWidgetManager.getAppWidgetIds(ComponentName(context, SessionWidget2x2::class.java)) ?: intArrayOf(-1)
+        try {
+            val id = ids[0]
+            updateAppWidget(context, appWidgetManager, id)
+        }
+        catch(e: ArrayIndexOutOfBoundsException){
+        }
 
     }
 

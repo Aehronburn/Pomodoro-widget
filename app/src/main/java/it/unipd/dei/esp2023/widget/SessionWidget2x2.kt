@@ -18,7 +18,6 @@ import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
 class SessionWidget2x2 : AppWidgetProvider() {
     companion object{
         lateinit var intent: Intent
-        var id: Int = 0
     }
     override fun onUpdate(
         context: Context,
@@ -26,8 +25,6 @@ class SessionWidget2x2 : AppWidgetProvider() {
         appWidgetIds: IntArray
     )
     {
-        id = appWidgetIds[0]
-        //Log.d("my_debug", "Il mio widget id è $id")
         // There may be multiple widgets active, so update all of them
         for (appWidgetId in appWidgetIds) {
             val remoteViews = RemoteViews(context.packageName, R.layout.session_widget2x2)
@@ -36,10 +33,6 @@ class SessionWidget2x2 : AppWidgetProvider() {
 
             remoteViews.setRemoteAdapter(R.id.SessionWidget2x2ID_List, Intent(context, ListWidgetService::class.java))
 
-            /*
-            Here I specify the general template for the clicking action intent
-            Inside the MyRemoteViewsFactory I will particularize it for the specific text clicked
-             */
             intent = Intent(context, SessionWidget2x2::class.java)
             intent.action = "clicking_item"
             val pendingIntent = PendingIntent.getBroadcast(context, 0, intent,
@@ -47,7 +40,12 @@ class SessionWidget2x2 : AppWidgetProvider() {
 
             remoteViews.setPendingIntentTemplate(R.id.SessionWidget2x2ID_List, pendingIntent)
 
-            val createSessionPendingIntent = NavDeepLinkBuilder(context).setGraph(R.navigation.navigation_graph).setDestination(R.id.create_new_session_dialog).createPendingIntent()
+            val createSessionPendingIntent =
+                NavDeepLinkBuilder(context).
+                setGraph(R.navigation.navigation_graph).
+                setDestination(R.id.create_new_session_dialog).
+                createPendingIntent()
+
             remoteViews.setOnClickPendingIntent(R.id.create_new_session_widget_button, createSessionPendingIntent)
 
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
@@ -64,13 +62,9 @@ class SessionWidget2x2 : AppWidgetProvider() {
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
-
-        //Log.d("my_debug", "Received! ${intent.action}")
-
         if(intent?.action == "clicking_item") {
             val name = intent.getStringExtra("name")
             val id = intent.getLongExtra("id", -1L)
-            //Log.d("my_debug", "with name $name and id $id \n")
 
             val bundle = Bundle()
             bundle.putLong(SessionDetailsFragment.ARGUMENT_SESSION_ID, id)

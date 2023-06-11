@@ -91,9 +91,9 @@ class SessionsFragment : Fragment() {
         val appWidgetManager = AppWidgetManager.getInstance(context)
         val ids = appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionWidget2x2::class.java)) ?: intArrayOf(-1)
         try {
-            SessionWidget2x2.id = ids[0]
+            val id = ids[0]
             val context = requireContext()
-            updateAppWidget(context, appWidgetManager, SessionWidget2x2.id)
+            updateAppWidget(context, appWidgetManager, id)
         }
         catch(e: ArrayIndexOutOfBoundsException){
             Toast.makeText(context, "Try my awesome Widget", Toast.LENGTH_SHORT).show()
