@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <capability android:name="actions.intent.GET_SERVICE_OBSERVATION">
+        <app-widget
+            android:identifier="GET_SERVICE_OBSERVATION"
+            android:targetClass="it.unipd.dei.esp2023.stastics_widget.StatisticsAppWidgetProvider"
+            android:targetPackage="it.unipd.dei.esp2023">
+
+            <extra android:name="hasTts" android:value="false"/>
+        </app-widget>
+    </capability>
+</shortcuts>

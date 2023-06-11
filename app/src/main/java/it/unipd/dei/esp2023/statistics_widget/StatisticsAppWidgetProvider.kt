@@ -29,6 +29,7 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onReceive(context: Context?, intent: Intent?) {
+        println("AAAAAAAAAA onReceive pazzo sgravato epico esagerato\n\n\n")
         if(intent?.action == Intent.ACTION_DATE_CHANGED || intent?.action == Intent.ACTION_TIME_CHANGED) {
             val ids = AppWidgetManager.getInstance(context).getAppWidgetIds(ComponentName(context!!, StatisticsAppWidgetProvider::class.java))
             onUpdate(context, AppWidgetManager.getInstance(context), ids)

@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "it.unipd.dei.esp2023"
-        minSdk 26
+        minSdk 31
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -66,4 +66,9 @@ dependencies {
     implementation "com.patrykandpatrick.vico:core:1.6.5"
     // For the view system.
     implementation "com.patrykandpatrick.vico:views:1.6.5"
+
+    // Assistant
+    implementation "com.google.assistant.appactions:widgets:0.0.1"
+    implementation "androidx.core:core:1.6.0"
+    implementation 'androidx.core:core-google-shortcuts:1.0.0'
 }

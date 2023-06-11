@@ -23,6 +23,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
 
         <provider
@@ -38,6 +41,16 @@
         <service
             android:name=".service.TimerService"
             android:enabled="true" />
+
+        <service
+            android:name=".statistics_widget.StatisticsAppWidgetProvider"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action
+                    android:name="com.google.assistant.appactions.widgets.PIN_APP_WIDGET" />
+            </intent-filter>
+        </service>
 
         <receiver android:name=".statistics_widget.StatisticsAppWidgetProvider"
             android:exported="false">
