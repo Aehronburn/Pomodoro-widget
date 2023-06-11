@@ -7,8 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="?android:attr/colorBackground"
-    android:theme="@style/AppTheme"
+    android:theme="@style/AppWidgetTheme"
 
     tools:ignore="RtlHardcoded">
     <!-- Ignoro il warning che mi dice di sostituire layout_alignParentRight con layout_alignParentEnd perchè

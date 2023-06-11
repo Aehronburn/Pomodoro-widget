@@ -31,6 +31,12 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
+    <style name="AppWidgetTheme" parent="Theme.Material3.DynamicColors.DayNight">
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="android:backgroundTint">@android:color/system_accent2_50</item>
+        <item name="android:backgroundTintMode">multiply</item>
+    </style>
+
     <style name="RoundedCornerImage">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>
