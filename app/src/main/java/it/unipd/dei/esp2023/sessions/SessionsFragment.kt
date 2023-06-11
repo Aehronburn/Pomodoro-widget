@@ -82,14 +82,17 @@ class SessionsFragment : Fragment() {
 
     override fun onResume() {
         /*
-
+            It's necessary to update the widget from here and NOT erroneously from the observation
+            of the LiveData. In fact when user swipes up the app and kills it, the LiveData gets
+            destroyed and eventually recreated on another launch. However, it's not the same
+            so Widget doesn't get updated anymore
         */
         val appWidgetManager = AppWidgetManager.getInstance(context)
-        val ids = appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionWidget2x2::class.java)) ?: intArrayOf(0)
+        val ids = appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionWidget2x2::class.java)) ?: intArrayOf(-1)
         SessionWidget2x2.id = ids[0]
 
         val context = requireContext()
-        if(id!=0){
+        if(id!=-1){
             updateAppWidget(context, appWidgetManager, SessionWidget2x2.id)
         }
         Log.d("my_debug", "Resumed!")
