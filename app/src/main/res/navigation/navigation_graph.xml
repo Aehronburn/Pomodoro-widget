@@ -46,10 +46,10 @@
             app:argType="string" />
         <action
             android:id="@+id/action_sessionDetails_to_timerFragment"
-            app:destination="@id/timerFragment" />
+            app:destination="@id/timer_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/timerFragment"
+        android:id="@+id/timer_fragment"
         android:name="it.unipd.dei.esp2023.timer.TimerFragment"
         android:label="Timer"
         tools:layout="@layout/fragment_timer" >
@@ -57,4 +57,9 @@
             android:name="sessionId"
             app:argType="long" />
     </fragment>
+    <dialog
+        android:id="@+id/create_new_session_dialog"
+        android:name="it.unipd.dei.esp2023.sessions.CreateNewSessionDialog"
+        android:label="create_new_session_dialog"
+        tools:layout="@layout/fragment_dialog_create_new_session"/>
 </navigation>

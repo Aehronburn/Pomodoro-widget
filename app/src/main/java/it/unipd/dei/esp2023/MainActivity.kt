@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.sessions_fragment -> bottomNavigationBarView.visibility = View.VISIBLE
                 R.id.settings_fragment -> bottomNavigationBarView.visibility = View.VISIBLE
                 R.id.statistics_fragment -> bottomNavigationBarView.visibility = View.VISIBLE
+                R.id.create_new_session_dialog -> bottomNavigationBarView.visibility = View.VISIBLE
                 else -> bottomNavigationBarView.visibility = View.GONE
             }
         }
