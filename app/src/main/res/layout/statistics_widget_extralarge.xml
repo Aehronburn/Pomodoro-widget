@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@android:id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/colorBackground"
     android:orientation="vertical"
     android:padding="@dimen/margin_medium"
-    android:theme="@style/AppTheme">
+    android:theme="@style/AppWidgetTheme">
 
     <LinearLayout
         android:id="@+id/statistics_widget_container"
@@ -28,127 +26,154 @@
             app:srcCompat="@drawable/pomodoro_artwork_working" />
 
         <LinearLayout
-            android:id="@+id/today_section_widget"
+            android:id="@+id/productivity_section"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/margin_medium_large"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/today_title_widget"
-                style="@style/TextAppearance.Material3.TitleSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/stats_widget_today_title" />
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_weight="3"
+            android:background="@drawable/rounded_corners"
+            android:clipToOutline="true"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_medium_small">
 
             <LinearLayout
-                android:id="@+id/today_stats_widget"
+                android:id="@+id/today_section_widget"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@android:color/system_accent1_50"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/today_completed_text_widget"
-                    style="@style/TextAppearance.Material3.DisplayMedium"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/today_title_widget"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="10"
-                    android:text="@string/fake_widget_today_completed" />
+                    android:background="@android:color/system_accent1_50"
+                    android:text="@string/stats_widget_today_title" />
 
-                <TextView
-                    android:id="@+id/today_focus_time_text_widget"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/today_stats_widget"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_weight="1"
-                    android:text="@string/fake_widget_today_focustime"
-                    android:textAlignment="textEnd" />
+                    android:background="@android:color/system_accent1_50"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/today_completed_text_widget"
+                        style="@style/TextAppearance.Material3.DisplayMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="10"
+                        android:background="@android:color/system_accent1_50"
+                        android:text="@string/fake_widget_today_completed" />
+
+                    <TextView
+                        android:id="@+id/today_focus_time_text_widget"
+                        style="@style/TextAppearance.Material3.BodyMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:layout_weight="1"
+                        android:background="@android:color/system_accent1_50"
+                        android:text="@string/fake_widget_today_focustime"
+                        android:textAlignment="textEnd" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/week_section_widget"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/week_title_widget"
-                style="@style/TextAppearance.Material3.TitleSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/stats_widget_week_title" />
 
             <LinearLayout
-                android:id="@+id/week_stats_widget"
+                android:id="@+id/week_section_widget"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@android:color/system_accent1_50"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/week_completed_text_widget"
-                    style="@style/TextAppearance.Material3.DisplayMedium"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/week_title_widget"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="10"
-                    android:text="@string/fake_widget_week_completed" />
+                    android:background="@android:color/system_accent1_50"
+                    android:text="@string/stats_widget_week_title" />
 
-                <TextView
-                    android:id="@+id/week_focus_time_text_widget"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/week_stats_widget"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_weight="1"
-                    android:text="@string/fake_widget_week_focustime"
-                    android:textAlignment="textEnd" />
+                    android:background="@android:color/system_accent1_50"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/week_completed_text_widget"
+                        style="@style/TextAppearance.Material3.DisplayMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="10"
+                        android:background="@android:color/system_accent1_50"
+                        android:text="@string/fake_widget_week_completed" />
+
+                    <TextView
+                        android:id="@+id/week_focus_time_text_widget"
+                        style="@style/TextAppearance.Material3.BodyMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:layout_weight="1"
+                        android:background="@android:color/system_accent1_50"
+                        android:text="@string/fake_widget_week_focustime"
+                        android:textAlignment="textEnd" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/month_section_widget"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/month_title_widget"
-                style="@style/TextAppearance.Material3.TitleSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/stats_widget_month_title" />
 
             <LinearLayout
-                android:id="@+id/month_stats_widget"
+                android:id="@+id/month_section_widget"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@android:color/system_accent1_50"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/month_completed_text_widget"
-                    style="@style/TextAppearance.Material3.DisplayMedium"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/month_title_widget"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="10"
-                    android:text="@string/fake_widget_month_completed" />
+                    android:background="@android:color/system_accent1_50"
+                    android:text="@string/stats_widget_month_title" />
 
-                <TextView
-                    android:id="@+id/month_focus_time_text_widget"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/month_stats_widget"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_weight="1"
-                    android:text="@string/fake_widget_month_focustime"
-                    android:textAlignment="textEnd" />
+                    android:background="@android:color/system_accent1_50"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/month_completed_text_widget"
+                        style="@style/TextAppearance.Material3.DisplayMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="10"
+                        android:background="@android:color/system_accent1_50"
+                        android:text="@string/fake_widget_month_completed" />
+
+                    <TextView
+                        android:id="@+id/month_focus_time_text_widget"
+                        style="@style/TextAppearance.Material3.BodyMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:layout_weight="1"
+                        android:background="@android:color/system_accent1_50"
+                        android:text="@string/fake_widget_month_focustime"
+                        android:textAlignment="textEnd" />
+                </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

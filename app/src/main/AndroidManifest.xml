@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
+        android:name=".PomodoroTimerApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -16,6 +17,7 @@
         tools:targetApi="31">
 
         <activity
+            android:launchMode="singleTop"
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -53,6 +55,7 @@
         </service>
 
         <receiver android:name=".statistics_widget.StatisticsAppWidgetProvider"
+            android:label="@string/stats_widget_label"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -62,6 +65,18 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/statistics_widget_info" />
         </receiver>
 
+        <receiver
+            android:name=".control_widget.ControlWidgetProvider"
+            android:label="@string/control_widget_label"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/control_widget_info"/>
+        </receiver>
     </application>
 
 </manifest>

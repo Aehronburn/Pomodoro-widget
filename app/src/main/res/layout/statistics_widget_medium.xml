@@ -5,10 +5,9 @@
     android:id="@android:id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/colorBackground"
     android:orientation="vertical"
     android:padding="@dimen/margin_medium"
-    android:theme="@style/AppTheme">
+    android:theme="@style/AppWidgetTheme">
 
     <LinearLayout
         android:id="@+id/statistics_widget_container"

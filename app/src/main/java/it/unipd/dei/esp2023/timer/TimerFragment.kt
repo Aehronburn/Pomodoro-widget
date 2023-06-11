@@ -1,7 +1,6 @@
 package it.unipd.dei.esp2023.timer
 
 import android.Manifest
-import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -27,7 +26,6 @@ import it.unipd.dei.esp2023.databinding.FragmentTimerBinding
 import it.unipd.dei.esp2023.service.TimerService
 import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
 import it.unipd.dei.esp2023.settings.SettingsFragment
-import it.unipd.dei.esp2023.statistics_widget.StatisticsAppWidgetProvider
 
 class TimerFragment : Fragment() {
 
@@ -107,22 +105,6 @@ class TimerFragment : Fragment() {
             }
             binding.phaseProgressIndicator.trackColor = resources.getColor(trackColor, context?.theme)
             binding.phaseProgressIndicator.setIndicatorColor(resources.getColor(indicatorColor, context?.theme))
-        }
-
-        /*
-        notify the statistics widget provider to update widgets
-         */
-        viewModel.pomodoroCompleted.observe(viewLifecycleOwner) {
-            if(it != false) {
-                val context = requireContext()
-                val ids = AppWidgetManager.getInstance(context).getAppWidgetIds(ComponentName(context, StatisticsAppWidgetProvider::class.java))
-                val intent = Intent(context, StatisticsAppWidgetProvider::class.java).apply {
-                    action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-                    putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
-                }
-                context.sendBroadcast(intent)
-                viewModel.setPomodoroNotCompleted()
-            }
         }
 
         binding.toggleStartPlayPause.setOnClickListener {

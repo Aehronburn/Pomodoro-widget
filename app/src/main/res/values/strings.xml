@@ -44,11 +44,14 @@
     <string name="delete_task_content_decription">Delete the task</string>
     <string name="toggle_start_play_pause_description">Starts the timer if not started, or toggles play/pause</string>
     <string name="reset_timer_button_description">Resets the current timer</string>
+    <string name="circle_control_widget_background_description">Resets the current timer</string>
 
     <string name="delete_task_content_description">Delete the task</string>
     <string name="service_notification_title">Pomodoro timer running</string>
+    <string name="service_notification_title_completed">Pomodoro timer completed</string>
     <string name="service_notification_text_progress_running">%1$s in progress: %2$d min %3$d sec remaining</string>
     <string name="service_notification_text_progress_paused">%1$s paused: %2$d min %3$d sec remaining</string>
+    <string name="service_notification_text_progress_completed">%1$s completed</string>
 
     <string name="timer_minutes_left">%02d</string>
     <string name="timer_seconds_left">%02d</string>
@@ -61,10 +64,15 @@
     <string name="stats_widget_focus_time">%dh% dmin</string>
     <string name="stats_widget_productivity_image_description">Image showing productivity status</string>
 
+    <string name="control_widget_description">Check the timer in the Pomodoro Timer app</string>
+
     <string name="fake_widget_today_completed">3</string>
     <string name="fake_widget_today_focustime">1h 15min</string>
     <string name="fake_widget_week_completed">6</string>
     <string name="fake_widget_week_focustime">2h 30min</string>
     <string name="fake_widget_month_completed">12</string>
     <string name="fake_widget_month_focustime">5h 0min</string>
+
+    <string name="stats_widget_label">Statistics</string>
+    <string name="control_widget_label">Countdown timer</string>
 </resources>
