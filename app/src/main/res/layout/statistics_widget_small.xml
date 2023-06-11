@@ -6,9 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:attr/colorBackground"
+    android:backgroundTint="@android:color/system_accent2_50"
+    android:backgroundTintMode="multiply"
     android:orientation="vertical"
     android:padding="@dimen/margin_medium"
-    android:backgroundTint="@android:color/system_accent1_10"
     android:theme="@style/AppTheme">
 
     <LinearLayout
