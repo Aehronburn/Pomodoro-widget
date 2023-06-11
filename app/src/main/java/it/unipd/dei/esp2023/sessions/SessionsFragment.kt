@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -89,13 +90,15 @@ class SessionsFragment : Fragment() {
         */
         val appWidgetManager = AppWidgetManager.getInstance(context)
         val ids = appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionWidget2x2::class.java)) ?: intArrayOf(-1)
-        SessionWidget2x2.id = ids[0]
-
-        val context = requireContext()
-        if(id!=-1){
+        try {
+            SessionWidget2x2.id = ids[0]
+            val context = requireContext()
             updateAppWidget(context, appWidgetManager, SessionWidget2x2.id)
         }
-        Log.d("my_debug", "Resumed!")
+        catch(e: ArrayIndexOutOfBoundsException){
+            Toast.makeText(context, "Try my awesome Widget", Toast.LENGTH_SHORT).show()
+        }
+
         super.onResume()
     }
 
