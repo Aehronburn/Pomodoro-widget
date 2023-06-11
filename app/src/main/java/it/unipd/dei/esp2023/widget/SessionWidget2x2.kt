@@ -45,6 +45,9 @@ class SessionWidget2x2 : AppWidgetProvider() {
 
             remoteViews.setPendingIntentTemplate(R.id.SessionWidget2x2ID_List, pendingIntent)
 
+            val createSessionPendingIntent = NavDeepLinkBuilder(context).setGraph(R.navigation.navigation_graph).setDestination(R.id.create_new_session_dialog).createPendingIntent()
+            remoteViews.setOnClickPendingIntent(R.id.create_new_session_widget_button, createSessionPendingIntent)
+
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
         }
     }
