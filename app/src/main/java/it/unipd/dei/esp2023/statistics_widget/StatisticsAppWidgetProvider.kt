@@ -16,6 +16,7 @@ import it.unipd.dei.esp2023.content_providers.StatisticsContentProvider
 import it.unipd.dei.esp2023.control_widget.ControlWidgetProvider
 import it.unipd.dei.esp2023.statistics.StatisticsFragment
 import it.unipd.dei.esp2023.statistics.StatisticsViewModel
+import com.google.assistant.appactions.widgets.AppActionsWidgetExtension
 
 class StatisticsAppWidgetProvider : AppWidgetProvider() {
 
@@ -27,10 +28,18 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
 
     private var monthCompleted = 0
     private var monthFocusTime = 0
-
+    private fun setTextToSpeech(
+        context: Context, widgetId: Int
+    ) {
+        val appActionsWidgetExtension: AppActionsWidgetExtension =
+            AppActionsWidgetExtension.newBuilder(AppWidgetManager.getInstance(context))
+                .setResponseSpeech(context.getString(R.string.stats_widget_assistant_speech))
+                .setResponseText(context.getString(R.string.stats_widget_assistant_text))
+                .build()
+        appActionsWidgetExtension.updateWidget(widgetId)
+    }
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onReceive(context: Context?, intent: Intent?) {
-        println("AAAAAAAAAA onReceive pazzo sgravato epico esagerato\n\n\n")
         if(intent?.action == Intent.ACTION_DATE_CHANGED || intent?.action == Intent.ACTION_TIME_CHANGED) {
             val ids = AppWidgetManager.getInstance(context).getAppWidgetIds(ComponentName(context!!, StatisticsAppWidgetProvider::class.java))
             onUpdate(context, AppWidgetManager.getInstance(context), ids)
@@ -53,6 +62,11 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
         appWidgetIds: IntArray
     ) {
         appWidgetIds.forEach { appWidgetId ->
+            val isAssistantWidget = !appWidgetManager.getAppWidgetOptions(appWidgetId).getString(AppActionsWidgetExtension.EXTRA_APP_ACTIONS_BII).isNullOrBlank()
+            if(isAssistantWidget){
+                setTextToSpeech(context, appWidgetId)
+            }
+
             val contentResolver = context.contentResolver
 
             val pendingIntent = NavDeepLinkBuilder(context).setGraph(R.navigation.navigation_graph)
@@ -220,8 +234,8 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
                 SizeF(80f, 225f) to largeView,
                 SizeF(80f, 460f) to extraLargeView
             )
-
             val remoteViews = RemoteViews(viewMapping)
+
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
         }
     }

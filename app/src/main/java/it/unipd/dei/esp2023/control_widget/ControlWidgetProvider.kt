@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.*
 import android.util.SizeF
 import android.widget.RemoteViews
+import com.google.assistant.appactions.widgets.AppActionsWidgetExtension
 import it.unipd.dei.esp2023.MainActivity
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.service.TimerService
@@ -81,6 +82,9 @@ class ControlWidgetProvider(): AppWidgetProvider() {
             return
         }
         if(status == CURRENT_STATUS_IDLE){
+            if(!appWidgetManager.getAppWidgetOptions(widgetId).getString(AppActionsWidgetExtension.EXTRA_APP_ACTIONS_BII).isNullOrBlank()){
+                setIdleTextToSpeech(context, widgetId)
+            }
             val views = RemoteViews(context.packageName, R.layout.control_widget_idle)
             views.setOnClickPendingIntent(
                 R.id.idleControlWidgetLayoutRoot,
@@ -88,6 +92,9 @@ class ControlWidgetProvider(): AppWidgetProvider() {
             )
             appWidgetManager.updateAppWidget(widgetId, views)
             return
+        }
+        if(!appWidgetManager.getAppWidgetOptions(widgetId).getString(AppActionsWidgetExtension.EXTRA_APP_ACTIONS_BII).isNullOrBlank()){
+            setActiveTextToSpeech(context, widgetId)
         }
         val largeViews = RemoteViews(context.packageName, R.layout.control_widget_large)
         val mediumViews = RemoteViews(context.packageName, R.layout.control_widget_medium)
@@ -195,6 +202,26 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         val intent = Intent(ctx, javaClass)
         intent.action = action
         return PendingIntent.getBroadcast(ctx, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+    }
+    private fun setIdleTextToSpeech(
+        context: Context, widgetId: Int
+    ) {
+        setTextToSpeech(context, widgetId, context.getString(R.string.control_widget_assistant_speech_idle), context.getString(R.string.control_widget_assistant_text_idle))
+    }
+    private fun setActiveTextToSpeech(
+        context: Context, widgetId: Int
+    ) {
+        setTextToSpeech(context, widgetId, context.getString(R.string.control_widget_assistant_speech_active), context.getString(R.string.control_widget_assistant_text_active))
+    }
+    private fun setTextToSpeech(
+        context: Context, widgetId: Int, speech: String, text: String
+    ) {
+        val appActionsWidgetExtension: AppActionsWidgetExtension =
+            AppActionsWidgetExtension.newBuilder(AppWidgetManager.getInstance(context))
+                .setResponseSpeech(speech)
+                .setResponseText(text)
+                .build()
+        appActionsWidgetExtension.updateWidget(widgetId)
     }
 
     companion object {

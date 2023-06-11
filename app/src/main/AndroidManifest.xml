@@ -53,6 +53,14 @@
                     android:name="com.google.assistant.appactions.widgets.PIN_APP_WIDGET" />
             </intent-filter>
         </service>
+        <!-- service
+            android:name=".control_widget.ControlWidgetProvider"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.assistant.appactions.widgets.PIN_APP_WIDGET" />
+            </intent-filter>
+        </service -->
 
         <receiver android:name=".statistics_widget.StatisticsAppWidgetProvider"
             android:label="@string/stats_widget_label"
@@ -61,6 +69,7 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
                 <action android:name="android.intent.action.TIME_SET"/>
                 <action android:name="android.intent.action.DATE_CHANGED"/>
+                <action android:name="com.google.assistant.appactions.widgets.COMPLETE_PIN_APP_WIDGET" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/statistics_widget_info" />
         </receiver>
@@ -72,11 +81,29 @@
             >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.google.assistant.appactions.widgets.COMPLETE_PIN_APP_WIDGET" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/control_widget_info"/>
         </receiver>
+
+        <!-- https://developer.android.com/guide/app-actions/widgets#pinning -->
+        <!-- receiver android:name="com.google.assistant.appactions.widgets.pinappwidget.PinAppWidgetBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.assistant.appactions.widgets.COMPLETE_PIN_APP_WIDGET" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.google.assistant.appactions.widgets.pinappwidget.PinAppWidgetService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action
+                    android:name="com.google.assistant.appactions.widgets.PIN_APP_WIDGET" />
+            </intent-filter>
+        </service -->
     </application>
 
 </manifest>

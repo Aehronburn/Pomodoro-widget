@@ -75,4 +75,14 @@
 
     <string name="stats_widget_label">Statistics</string>
     <string name="control_widget_label">Countdown timer</string>
+
+    <!-- https://developer.android.com/guide/app-actions/widgets#tts_requirements -->
+    <string name="stats_widget_assistant_text">Here are your statistics for the last period.</string>
+    <string name="stats_widget_assistant_speech">Here are your statistics for the last period.</string>
+
+    <string name="control_widget_assistant_text_idle">Here is your widget, open the app to start a timer.</string>
+    <string name="control_widget_assistant_speech_idle">Open the app to start a timer.</string>
+    <string name="control_widget_assistant_text_active">The timer is running.</string>
+    <string name="control_widget_assistant_speech_active">The timer is running.</string>
+
 </resources>
