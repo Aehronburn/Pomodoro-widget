@@ -83,26 +83,6 @@ class SessionWidget2x2 : AppWidgetProvider() {
                 .createPendingIntent()
                 .send()
         }
-
-        if(intent?.action== "forced_quit"){
-            Log.d("my_debug", "Received! ${intent.action}")
-
-            Toast.makeText(context!!, "Do not force quit app", Toast.LENGTH_LONG).show()
-            Toast.makeText(context!!, "Please restart widget", Toast.LENGTH_LONG).show()
-
-            val remoteViews = RemoteViews(context.packageName, R.layout.session_widget2x2)
-            //Remove all items in case app has been forced closed
-            remoteViews.removeAllViews(R.id.SessionWidget2x2ID_List)
-
-            val appWidgetManager = AppWidgetManager.getInstance(context)
-            val ids = appWidgetManager.getAppWidgetIds(ComponentName(context, SessionWidget2x2::class.java)) ?: intArrayOf(0)
-            id = ids[0]
-
-            Log.d("my_debug", "Received! ${intent.action} \n")
-            Log.d("my_debug", "The widget I found is $id")
-            // Instruct the widget manager to update the widget
-            appWidgetManager.updateAppWidget(id, remoteViews)
-        }
     }
 }
 
