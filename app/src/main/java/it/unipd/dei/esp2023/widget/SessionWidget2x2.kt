@@ -3,6 +3,8 @@ package it.unipd.dei.esp2023.widget
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.BroadcastReceiver
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -25,7 +27,7 @@ class SessionWidget2x2 : AppWidgetProvider() {
     )
     {
         id = appWidgetIds[0]
-        Log.d("my_debug", "Il mio widget id è $id")
+        //Log.d("my_debug", "Il mio widget id è $id")
         // There may be multiple widgets active, so update all of them
         for (appWidgetId in appWidgetIds) {
             val remoteViews = RemoteViews(context.packageName, R.layout.session_widget2x2)
@@ -60,12 +62,12 @@ class SessionWidget2x2 : AppWidgetProvider() {
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
 
-        Log.d("my_debug", "Received! ${intent.action}")
+        //Log.d("my_debug", "Received! ${intent.action}")
 
         if(intent?.action == "clicking_item") {
             val name = intent.getStringExtra("name")
             val id = intent.getLongExtra("id", -1L)
-            Log.d("my_debug", "with name $name and id $id")
+            //Log.d("my_debug", "with name $name and id $id \n")
 
             val bundle = Bundle()
             bundle.putLong(SessionDetailsFragment.ARGUMENT_SESSION_ID, id)
@@ -78,6 +80,26 @@ class SessionWidget2x2 : AppWidgetProvider() {
                 .createPendingIntent()
                 .send()
         }
+
+        if(intent?.action== "forced_quit"){
+            Log.d("my_debug", "Received! ${intent.action}")
+
+            Toast.makeText(context!!, "Do not force quit app", Toast.LENGTH_LONG).show()
+            Toast.makeText(context!!, "Please restart widget", Toast.LENGTH_LONG).show()
+
+            val remoteViews = RemoteViews(context.packageName, R.layout.session_widget2x2)
+            //Remove all items in case app has been forced closed
+            remoteViews.removeAllViews(R.id.SessionWidget2x2ID_List)
+
+            val appWidgetManager = AppWidgetManager.getInstance(context)
+            val ids = appWidgetManager.getAppWidgetIds(ComponentName(context, SessionWidget2x2::class.java)) ?: intArrayOf(0)
+            id = ids[0]
+
+            Log.d("my_debug", "Received! ${intent.action} \n")
+            Log.d("my_debug", "The widget I found is $id")
+            // Instruct the widget manager to update the widget
+            appWidgetManager.updateAppWidget(id, remoteViews)
+        }
     }
 }
 
@@ -87,9 +109,7 @@ internal fun updateAppWidget(
     appWidgetId: Int
 ) {
     val remoteViews = RemoteViews(context.packageName, R.layout.session_widget2x2)
-    //Remove all items in case app has been forced closed
     remoteViews.removeAllViews(R.id.SessionWidget2x2ID_List)
-
     remoteViews.setRemoteAdapter(R.id.SessionWidget2x2ID_List, Intent(context, ListWidgetService::class.java))
 
     SessionWidget2x2.intent = Intent(context, SessionWidget2x2::class.java)
@@ -102,4 +122,22 @@ internal fun updateAppWidget(
     // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
 }
+
+internal fun deleteListWidget(
+    context: Context,
+    appWidgetManager: AppWidgetManager,
+    appWidgetId: Int)
+{
+    //Remove old list
+    val remoteViews = RemoteViews(context.packageName, R.layout.session_widget2x2)
+    remoteViews.removeAllViews(R.id.SessionWidget2x2ID_List)
+
+    //Put new Adapter
+    remoteViews.setRemoteAdapter(R.id.SessionWidget2x2ID_List, Intent(context, ListWidgetService::class.java))
+
+
+    // Instruct the widget manager to update the widget
+    appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
+}
+
 

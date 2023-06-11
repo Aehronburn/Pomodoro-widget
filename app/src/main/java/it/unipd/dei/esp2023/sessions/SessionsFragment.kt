@@ -2,13 +2,13 @@ package it.unipd.dei.esp2023.sessions
 
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
-import android.content.ContentResolver
-import android.net.Uri
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RemoteViews
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -17,10 +17,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
-import it.unipd.dei.esp2023.SessionsContentProvider
 import it.unipd.dei.esp2023.database.Session
 import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
 import it.unipd.dei.esp2023.widget.SessionWidget2x2
+import it.unipd.dei.esp2023.widget.deleteListWidget
 import it.unipd.dei.esp2023.widget.updateAppWidget
 
 class SessionsFragment : Fragment() {
@@ -58,8 +58,6 @@ class SessionsFragment : Fragment() {
             if(scrollY > oldScrollY) createNewSessionFAB.shrink()
             else createNewSessionFAB.extend()
         }
-
-
         /*
         update list of RecyclerView everytime a session is added/deleted
          */
@@ -69,13 +67,36 @@ class SessionsFragment : Fragment() {
             Notify the widget that data has changed; this triggers onDataSetChanged()
             in the Factory()
              */
-            val myAppWidgetManager = AppWidgetManager.getInstance(requireContext())
-            myAppWidgetManager.notifyAppWidgetViewDataChanged(
-                myAppWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionWidget2x2::class.java)),
+            val appWidgetManager = AppWidgetManager.getInstance(requireContext())
+            appWidgetManager.notifyAppWidgetViewDataChanged(
+                appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionWidget2x2::class.java)),
                 R.id.SessionWidget2x2ID_List)
+            /*
+            WARNING
+            LiveData keeps a strong reference to the observer and the owner as long
+             as the given LifecycleOwner is not destroyed.
+             When it is destroyed, LiveData removes references
+              to the observer & the owner.
+             */
         }
 
         return view
+    }
+
+    override fun onResume() {
+        /*
+
+        */
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        val ids = appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionWidget2x2::class.java)) ?: intArrayOf(0)
+        SessionWidget2x2.id = ids[0]
+
+        val context = requireContext()
+        if(id!=0){
+            updateAppWidget(context, appWidgetManager, SessionWidget2x2.id)
+        }
+        Log.d("my_debug", "Resumed!")
+        super.onResume()
     }
 
     /*

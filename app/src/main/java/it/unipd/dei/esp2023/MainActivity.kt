@@ -1,15 +1,18 @@
 package it.unipd.dei.esp2023
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationBarView
+import it.unipd.dei.esp2023.widget.SessionWidget2x2
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -59,5 +62,15 @@ class MainActivity : AppCompatActivity() {
         appBar.setNavigationOnClickListener { navController.navigateUp() }
 
     }
+
+    /*
+    override fun onDestroy() {
+        val intent = Intent(this, SessionWidget2x2::class.java)
+        intent.action = "forced_quit"
+        sendBroadcast(intent)
+        super.onDestroy()
+    }
+
+    */
 
 }
