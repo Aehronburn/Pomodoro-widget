@@ -96,6 +96,14 @@ internal fun updateAppWidget(
 
     remoteViews.setPendingIntentTemplate(R.id.SessionWidget2x2ID_List, pendingIntent)
 
+    val createSessionPendingIntent =
+        NavDeepLinkBuilder(context).
+        setGraph(R.navigation.navigation_graph).
+        setDestination(R.id.create_new_session_dialog).
+        createPendingIntent()
+
+    remoteViews.setOnClickPendingIntent(R.id.create_new_session_widget_button, createSessionPendingIntent)
+
     // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
 }
