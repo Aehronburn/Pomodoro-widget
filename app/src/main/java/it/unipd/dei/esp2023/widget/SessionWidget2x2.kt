@@ -3,8 +3,6 @@ package it.unipd.dei.esp2023.widget
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
-import android.content.BroadcastReceiver
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -27,28 +25,50 @@ class SessionWidget2x2 : AppWidgetProvider() {
     {
         // There may be multiple widgets active, so update all of them
         for (appWidgetId in appWidgetIds) {
-            val remoteViews = RemoteViews(context.packageName, R.layout.session_widget2x2)
-            //Remove all items in case app has been forced closed
-            remoteViews.removeAllViews(R.id.SessionWidget2x2ID_List)
+            val info = appWidgetManager.getAppWidgetInfo(appWidgetId)
+            val minWidth = info.minWidth
+            val minHeight = info.minHeight
+            val scale = context.resources.displayMetrics.density
+            val minWidthDp = (minWidth / scale + 0.5f)
+            val minHeightDp = (minHeight / scale + 0.5f)
 
-            remoteViews.setRemoteAdapter(R.id.SessionWidget2x2ID_List, Intent(context, ListWidgetService::class.java))
+            Log.d("my_debug", "minWidth is $minWidthDp")
+            Log.d("my_debug", "minHeight is $minHeightDp")
 
-            intent = Intent(context, SessionWidget2x2::class.java)
-            intent.action = "clicking_item"
-            val pendingIntent = PendingIntent.getBroadcast(context, 0, intent,
-                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 
-            remoteViews.setPendingIntentTemplate(R.id.SessionWidget2x2ID_List, pendingIntent)
+            if(minWidthDp < 200) {
 
-            val createSessionPendingIntent =
-                NavDeepLinkBuilder(context).
-                setGraph(R.navigation.navigation_graph).
-                setDestination(R.id.create_new_session_dialog).
-                createPendingIntent()
+            }
+            else{
+                val remoteViews = RemoteViews(context.packageName, R.layout.session_widget2x2)
+                //Remove all items in case app has been forced closed
+                remoteViews.removeAllViews(R.id.SessionWidget2x2ID_List)
 
-            remoteViews.setOnClickPendingIntent(R.id.create_new_session_widget_button, createSessionPendingIntent)
+                remoteViews.setRemoteAdapter(
+                    R.id.SessionWidget2x2ID_List,
+                    Intent(context, ListWidgetService::class.java)
+                )
 
-            appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
+                intent = Intent(context, SessionWidget2x2::class.java)
+                intent.action = "clicking_item"
+                val pendingIntent = PendingIntent.getBroadcast(
+                    context, 0, intent,
+                    PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                )
+
+                remoteViews.setPendingIntentTemplate(R.id.SessionWidget2x2ID_List, pendingIntent)
+
+                val createSessionPendingIntent =
+                    NavDeepLinkBuilder(context).setGraph(R.navigation.navigation_graph)
+                        .setDestination(R.id.create_new_session_dialog).createPendingIntent()
+
+                remoteViews.setOnClickPendingIntent(
+                    R.id.create_new_session_widget_button,
+                    createSessionPendingIntent
+                )
+
+                appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
+            }
         }
     }
 
