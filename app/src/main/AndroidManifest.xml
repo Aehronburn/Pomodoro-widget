@@ -44,7 +44,7 @@
             android:name=".service.TimerService"
             android:enabled="true" />
 
-        <service
+        <!-- service
             android:name=".statistics_widget.StatisticsAppWidgetProvider"
             android:enabled="true"
             android:exported="true">
@@ -52,7 +52,7 @@
                 <action
                     android:name="com.google.assistant.appactions.widgets.PIN_APP_WIDGET" />
             </intent-filter>
-        </service>
+        </service -->
         <!-- service
             android:name=".control_widget.ControlWidgetProvider"
             android:enabled="true"
@@ -69,7 +69,7 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
                 <action android:name="android.intent.action.TIME_SET"/>
                 <action android:name="android.intent.action.DATE_CHANGED"/>
-                <action android:name="com.google.assistant.appactions.widgets.COMPLETE_PIN_APP_WIDGET" />
+                <action android:name="com.google.assistant.appactions.widgets.PIN_APP_WIDGET" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/statistics_widget_info" />
         </receiver>
@@ -81,7 +81,7 @@
             >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-                <action android:name="com.google.assistant.appactions.widgets.COMPLETE_PIN_APP_WIDGET" />
+                <action android:name="com.google.assistant.appactions.widgets.PIN_APP_WIDGET" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
