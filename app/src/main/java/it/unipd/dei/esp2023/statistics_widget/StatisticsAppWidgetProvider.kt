@@ -28,6 +28,8 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
 
     private var monthCompleted = 0
     private var monthFocusTime = 0
+
+    // Info on Google Assistant support can be found in shortcuts.xml
     private fun setTextToSpeech(
         context: Context, widgetId: Int
     ) {

@@ -179,15 +179,6 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         // endregion
         appWidgetManager.updateAppWidget(widgetId, layoutMap)
     }
-    /*private fun isUsingNightModeResources(context: Context): Boolean {
-        return when (context.resources.configuration.uiMode and
-                Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_YES -> true
-            Configuration.UI_MODE_NIGHT_NO -> false
-            Configuration.UI_MODE_NIGHT_UNDEFINED -> false
-            else -> false
-        }
-    }*/
 
     private fun getPauseIntent(ctx: Context): PendingIntent{
         return getPendingIntentFromActionString(ctx, INTENT_ACTION_PAUSE)
@@ -203,6 +194,8 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         intent.action = action
         return PendingIntent.getBroadcast(ctx, 0, intent, PendingIntent.FLAG_IMMUTABLE)
     }
+
+    // Info on Google Assistant support can be found in shortcuts.xml
     private fun setIdleTextToSpeech(
         context: Context, widgetId: Int
     ) {
@@ -241,30 +234,4 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         const val WIDGET_TYPE = "WIDGET_TYPE"
         const val WIDGET_TYPE_CONTROL = "WIDGET_TYPE_CONTROL"
     }
-
-
-    /*
-        private fun updateControlWidget(context: Context, appWidgetManager: AppWidgetManager, widgetId: Int){
-        val views = RemoteViews(context.packageName, R.layout.control_widget)
-        // region single widget construction logic
-
-        views.setTextViewText(R.id.timeTv, currentTimerRemainingMs.toString())
-        // endregion
-        appWidgetManager.updateAppWidget(widgetId, views)
-    }
-    fun triggerUpdate(){
-        // https://stackoverflow.com/questions/3570146/is-it-possible-to-throw-an-intent-for-appwidget-update-programmatically
-        println("chiamata triggerUpdate() ${ctx==null}")
-        val brIntent = Intent()
-        brIntent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-        println("aa "+activeWidgetIds.toIntArray().joinToString(" "))
-        brIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, AppWidgetManager.getInstance(ctx!!).getAppWidgetIds( ComponentName(ctx!!.packageName, ControlWidgetProvider::class.java.name)));
-        println(AppWidgetManager.getInstance(ctx!!).getAppWidgetIds( ComponentName(ctx!!.packageName, ControlWidgetProvider::class.java.name)).joinToString ( " " ))
-        ctx!!.sendBroadcast(brIntent)
-    }
-    companion object {
-        const val CURRENT_STATUS_IDLE = 0
-        const val CURRENT_STATUS_RUNNING = 1
-        const val CURRENT_STATUS_PAUSED = 2
-    }*/
 }
