@@ -6,10 +6,8 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.util.SizeF
 import android.widget.RemoteViews
-import androidx.annotation.RequiresApi
 import androidx.navigation.NavDeepLinkBuilder
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.content_providers.StatisticsContentProvider
@@ -40,7 +38,6 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
                 .build()
         appActionsWidgetExtension.updateWidget(widgetId)
     }
-    @RequiresApi(Build.VERSION_CODES.S)
     override fun onReceive(context: Context?, intent: Intent?) {
         if(intent?.action == Intent.ACTION_DATE_CHANGED || intent?.action == Intent.ACTION_TIME_CHANGED) {
             val ids = AppWidgetManager.getInstance(context).getAppWidgetIds(ComponentName(context!!, StatisticsAppWidgetProvider::class.java))
@@ -57,7 +54,6 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
     override fun onUpdate(
         context: Context,
         appWidgetManager: AppWidgetManager,
@@ -233,7 +229,7 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
             val viewMapping: Map<SizeF, RemoteViews> = mapOf(
                 SizeF(80f, 50f) to smallView,
                 SizeF(80f, 120f) to mediumView,
-                SizeF(80f, 225f) to largeView,
+                SizeF(80f, 240f) to largeView,
                 SizeF(80f, 460f) to extraLargeView
             )
             val remoteViews = RemoteViews(viewMapping)
