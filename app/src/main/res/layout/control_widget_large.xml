@@ -32,6 +32,7 @@
         android:orientation="vertical"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
+        android:background="#00000000"
         >
         <TextView
             android:layout_width="match_parent"
@@ -47,6 +48,7 @@
             android:lineHeight = "80sp"
             android:textSize = "73sp"
             tools:text="00"
+            android:background="#00000000"
             />
         <TextView
             android:layout_width="match_parent"
@@ -60,6 +62,7 @@
             android:includeFontPadding="false"
             style="@style/TextAppearance.Material3.DisplayLarge"
             tools:text="00"
+            android:background="#00000000"
             />
     </LinearLayout>
     <ImageButton
