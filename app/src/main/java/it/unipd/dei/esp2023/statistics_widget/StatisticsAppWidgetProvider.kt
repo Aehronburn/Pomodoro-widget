@@ -227,9 +227,9 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
             maximum widths and heights allowed for that view
              */
             val viewMapping: Map<SizeF, RemoteViews> = mapOf(
-                SizeF(80f, 50f) to smallView,
-                SizeF(80f, 120f) to mediumView,
-                SizeF(80f, 240f) to largeView,
+                SizeF(80f, 100f) to smallView,
+                SizeF(80f, 220f) to mediumView,
+                SizeF(80f, 340f) to largeView,
                 SizeF(80f, 460f) to extraLargeView
             )
             val remoteViews = RemoteViews(viewMapping)
