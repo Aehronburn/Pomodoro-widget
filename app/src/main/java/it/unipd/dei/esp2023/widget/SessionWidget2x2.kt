@@ -5,15 +5,20 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.util.SizeF
 import android.widget.RemoteViews
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.navigation.NavDeepLinkBuilder
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
 
 class SessionWidget2x2 : AppWidgetProvider() {
+    private val currWidth: Int = 0
+    private val currHeight: Int = 0
     companion object{
         lateinit var intent: Intent
     }
@@ -25,49 +30,15 @@ class SessionWidget2x2 : AppWidgetProvider() {
     {
         // There may be multiple widgets active, so update all of them
         for (appWidgetId in appWidgetIds) {
-            val info = appWidgetManager.getAppWidgetInfo(appWidgetId)
-            val minWidth = info.minWidth
-            val minHeight = info.minHeight
-            val scale = context.resources.displayMetrics.density
-            val minWidthDp = (minWidth / scale + 0.5f)
-            val minHeightDp = (minHeight / scale + 0.5f)
-
-            Log.d("my_debug", "minWidth is $minWidthDp")
-            Log.d("my_debug", "minHeight is $minHeightDp")
+            val info1 = appWidgetManager.getAppWidgetOptions(appWidgetId)
 
 
-            if(minWidthDp < 200) {
 
+            if(currWidth < 200) {
+                createRemoteViews(context, appWidgetManager, appWidgetId, SizeF(110f, 110f))
             }
             else{
-                val remoteViews = RemoteViews(context.packageName, R.layout.session_widget2x2)
-                //Remove all items in case app has been forced closed
-                remoteViews.removeAllViews(R.id.SessionWidget2x2ID_List)
-
-                remoteViews.setRemoteAdapter(
-                    R.id.SessionWidget2x2ID_List,
-                    Intent(context, ListWidgetService::class.java)
-                )
-
-                intent = Intent(context, SessionWidget2x2::class.java)
-                intent.action = "clicking_item"
-                val pendingIntent = PendingIntent.getBroadcast(
-                    context, 0, intent,
-                    PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-                )
-
-                remoteViews.setPendingIntentTemplate(R.id.SessionWidget2x2ID_List, pendingIntent)
-
-                val createSessionPendingIntent =
-                    NavDeepLinkBuilder(context).setGraph(R.navigation.navigation_graph)
-                        .setDestination(R.id.create_new_session_dialog).createPendingIntent()
-
-                remoteViews.setOnClickPendingIntent(
-                    R.id.create_new_session_widget_button,
-                    createSessionPendingIntent
-                )
-
-                appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
+                createRemoteViews(context, appWidgetManager, appWidgetId, SizeF(110f, 110f))
             }
         }
     }
@@ -98,6 +69,31 @@ class SessionWidget2x2 : AppWidgetProvider() {
                 .send()
         }
     }
+
+/*
+    @RequiresApi(Build.VERSION_CODES.S)
+    override fun onAppWidgetOptionsChanged(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        id: Int,
+        newOptions: Bundle?
+    ) {
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, id, newOptions)
+        // Get the new sizes.
+        val sizes = newOptions?.getParcelableArrayList<SizeF>(
+            AppWidgetManager.OPTION_APPWIDGET_SIZES
+        )
+        // Check that the list of sizes is provided by the launcher.
+        if (sizes.isNullOrEmpty()) {
+            return
+        }
+        // Map the sizes to the RemoteViews that you want.
+        val remoteViews = RemoteViews(sizes.associateWith(::createRemoteViews))
+        appWidgetManager.updateAppWidget(id, remoteViews)
+    }
+
+ */
+
 }
 
 internal fun updateAppWidget(
@@ -105,6 +101,14 @@ internal fun updateAppWidget(
     appWidgetManager: AppWidgetManager,
     appWidgetId: Int
 ) {
+    createRemoteViews(context, appWidgetManager, appWidgetId, SizeF(110f, 110f))
+}
+
+
+fun createRemoteViews(context: Context,
+                      appWidgetManager: AppWidgetManager,
+                      appWidgetId: Int,
+                      size: SizeF,){
     val remoteViews = RemoteViews(context.packageName, R.layout.session_widget2x2)
     remoteViews.removeAllViews(R.id.SessionWidget2x2ID_List)
     remoteViews.setRemoteAdapter(R.id.SessionWidget2x2ID_List, Intent(context, ListWidgetService::class.java))
@@ -124,7 +128,6 @@ internal fun updateAppWidget(
 
     remoteViews.setOnClickPendingIntent(R.id.create_new_session_widget_button, createSessionPendingIntent)
 
-    // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
 }
 
