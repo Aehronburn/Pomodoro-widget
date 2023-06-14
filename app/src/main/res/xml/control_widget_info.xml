@@ -6,7 +6,7 @@
     android:targetCellHeight="2"
     android:targetCellWidth="2"
     android:previewLayout="@layout/control_widget_preview"
-    android:previewImage="@mipmap/ic_launcher"
+    android:previewImage="@drawable/control_widget_preview_img"
     android:widgetCategory="home_screen"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="0"

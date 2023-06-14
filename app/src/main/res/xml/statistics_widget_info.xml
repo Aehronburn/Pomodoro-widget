@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:description="@string/statistics_widget_description"
-    android:previewImage="@mipmap/ic_launcher"
+    android:previewImage="@drawable/stats_widget_preview_img"
     android:minHeight="52dp"
     android:minWidth="175dp"
     android:previewLayout="@layout/statistics_widget_small"
