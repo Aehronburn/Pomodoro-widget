@@ -18,15 +18,6 @@ import com.google.assistant.appactions.widgets.AppActionsWidgetExtension
 
 class StatisticsAppWidgetProvider : AppWidgetProvider() {
 
-    private var todayCompleted = 0
-    private var todayFocusTime = 0
-
-    private var weekCompleted = 0
-    private var weekFocusTime = 0
-
-    private var monthCompleted = 0
-    private var monthFocusTime = 0
-
     // Info on Google Assistant support can be found in shortcuts.xml
     private fun setTextToSpeech(
         context: Context, widgetId: Int
@@ -79,8 +70,8 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
                 null, null, null, null
             )
             todayStats!!.moveToNext()
-            todayCompleted = todayStats.getInt(2)
-            todayFocusTime = todayStats.getInt(3)
+            val todayCompleted = todayStats.getInt(2)
+            val todayFocusTime = todayStats.getInt(3)
             todayStats.close()
             val (todayFocusHours, todayFocusMinutes) = StatisticsViewModel.timeToHhMm(todayFocusTime)
             val productivityImage = StatisticsFragment.getProductivityImage(todayCompleted)
@@ -88,6 +79,9 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
             /*
             week stats
              */
+            var weekCompleted = 0
+            var weekFocusTime = 0
+
             val weekStats = contentResolver.query(
                 Uri.parse("content://" + StatisticsContentProvider.AUTHORITY + "/" + StatisticsContentProvider.WEEK_PATH),
                 null, null, null, null
@@ -102,6 +96,9 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
             /*
             month stats
              */
+            var monthCompleted = 0
+            var monthFocusTime = 0
+
             val monthStats = contentResolver.query(
                 Uri.parse("content://" + StatisticsContentProvider.AUTHORITY + "/" + StatisticsContentProvider.MONTH_PATH),
                 null, null, null, null
