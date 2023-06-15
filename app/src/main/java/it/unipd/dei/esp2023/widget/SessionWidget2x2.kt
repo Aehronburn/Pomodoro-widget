@@ -17,8 +17,6 @@ import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
 
 class SessionWidget2x2 : AppWidgetProvider() {
-    private val currWidth: Int = 0
-    private val currHeight: Int = 0
     companion object{
         lateinit var intent: Intent
     }
@@ -30,16 +28,7 @@ class SessionWidget2x2 : AppWidgetProvider() {
     {
         // There may be multiple widgets active, so update all of them
         for (appWidgetId in appWidgetIds) {
-            val info1 = appWidgetManager.getAppWidgetOptions(appWidgetId)
-
-
-
-            if(currWidth < 200) {
-                createRemoteViews(context, appWidgetManager, appWidgetId, SizeF(110f, 110f))
-            }
-            else{
-                createRemoteViews(context, appWidgetManager, appWidgetId, SizeF(110f, 110f))
-            }
+            createRemoteViews(context, appWidgetManager, appWidgetId, SizeF(110f, 110f))
         }
     }
 
@@ -69,30 +58,6 @@ class SessionWidget2x2 : AppWidgetProvider() {
                 .send()
         }
     }
-
-/*
-    @RequiresApi(Build.VERSION_CODES.S)
-    override fun onAppWidgetOptionsChanged(
-        context: Context,
-        appWidgetManager: AppWidgetManager,
-        id: Int,
-        newOptions: Bundle?
-    ) {
-        super.onAppWidgetOptionsChanged(context, appWidgetManager, id, newOptions)
-        // Get the new sizes.
-        val sizes = newOptions?.getParcelableArrayList<SizeF>(
-            AppWidgetManager.OPTION_APPWIDGET_SIZES
-        )
-        // Check that the list of sizes is provided by the launcher.
-        if (sizes.isNullOrEmpty()) {
-            return
-        }
-        // Map the sizes to the RemoteViews that you want.
-        val remoteViews = RemoteViews(sizes.associateWith(::createRemoteViews))
-        appWidgetManager.updateAppWidget(id, remoteViews)
-    }
-
- */
 
 }
 
