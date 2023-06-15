@@ -2,52 +2,48 @@
     android:id="@android:id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5DED6"
     android:theme="@style/AppTheme.AppWidgetContainer">
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#F5DED6"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="@dimen/margin_small">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:background="#B12C16"
-                android:padding="@dimen/margin_small">
-
-                <TextView
-                    android:id="@+id/appwidget_title"
-                    style="@style/TextAppearance.Material3.TitleLarge"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="5"
-                    android:textColor="#85736D"
-                    android:contentDescription="@string/appwidget_title"
-                    android:text="@string/appwidget_title" />
-
-                <ImageButton
-                    android:id="@+id/create_new_session_widget_button"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="end"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/create_new_session_fab_text"
-                    android:src="@drawable/add_fill0_wght400_grad0_opsz48" />
-
-            </LinearLayout>
-
-            <ListView
-                android:id="@+id/SessionWidget2x2ID_List"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/appwidget_title"
+                style="@style/TextAppearance.Material3.TitleLarge"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="#85736D"
-                android:padding="@dimen/margin_small" />
+                android:layout_gravity="center"
+                android:layout_weight="5"
+                android:contentDescription="@string/appwidget_title"
+                android:text="@string/appwidget_title"
+                android:textColor="#85736D" />
+
+            <ImageButton
+                android:id="@+id/create_new_session_widget_button"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_gravity="end"
+                android:layout_weight="1"
+                android:contentDescription="@string/create_new_session_fab_text"
+                android:src="@drawable/add_fill0_wght400_grad0_opsz48" />
+
         </LinearLayout>
+
+        <ListView
+            android:id="@+id/SessionWidget2x2ID_List"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_small" />
+    </LinearLayout>
 
 
 </RelativeLayout>
