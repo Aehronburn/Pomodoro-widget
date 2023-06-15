@@ -1,6 +1,5 @@
 package it.unipd.dei.esp2023
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +10,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationBarView
-import it.unipd.dei.esp2023.widget.SessionWidget2x2
 
 
 class MainActivity : AppCompatActivity() {

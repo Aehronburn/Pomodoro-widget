@@ -12,10 +12,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        tools:targetApi="31">
+        android:theme="@style/AppTheme">
         <receiver
-            android:name=".widget.SessionWidget2x2"
+            android:name=".sessions_widget.SessionWidget2x2"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -23,7 +22,7 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/session_widget2x2_info" />
+                android:resource="@xml/sessions_widget_info" />
         </receiver>
 
         <activity
@@ -40,7 +39,7 @@
         <provider
             android:name=".SessionsContentProvider"
             android:authorities="it.unipd.dei.esp2023.SessionsContentProvider"
-            android:exported="true"></provider>
+            android:exported="true"/>
 
         <service
             android:name=".service.TimerService"
@@ -48,7 +47,7 @@
 
 
         <service
-            android:name=".widget.ListWidgetService"
+            android:name=".sessions_widget.SessionsWidgetService"
             android:enabled="true"
             android:permission="android.permission.BIND_REMOTEVIEWS"/>
 

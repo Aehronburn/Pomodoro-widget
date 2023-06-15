@@ -1,17 +1,14 @@
-package it.unipd.dei.esp2023.widget
+package it.unipd.dei.esp2023.sessions_widget
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.util.SizeF
 import android.widget.RemoteViews
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.navigation.NavDeepLinkBuilder
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
@@ -37,12 +34,12 @@ class SessionWidget2x2 : AppWidgetProvider() {
 
     override fun onDisabled(context: Context) {
         // Enter relevant functionality for when the last widget is disabled
-        Toast.makeText(context!!, "Thanks for using our widget", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "Thanks for using our widget", Toast.LENGTH_LONG).show()
     }
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
-        if(intent?.action == "clicking_item") {
+        if(intent.action == "clicking_item") {
             val name = intent.getStringExtra("name")
             val id = intent.getLongExtra("id", -1L)
 
@@ -74,9 +71,9 @@ fun createRemoteViews(context: Context,
                       appWidgetManager: AppWidgetManager,
                       appWidgetId: Int,
                       size: SizeF,){
-    val remoteViews = RemoteViews(context.packageName, R.layout.session_widget2x2)
+    val remoteViews = RemoteViews(context.packageName, R.layout.session_widget)
     remoteViews.removeAllViews(R.id.SessionWidget2x2ID_List)
-    remoteViews.setRemoteAdapter(R.id.SessionWidget2x2ID_List, Intent(context, ListWidgetService::class.java))
+    remoteViews.setRemoteAdapter(R.id.SessionWidget2x2ID_List, Intent(context, SessionsWidgetService::class.java))
 
     SessionWidget2x2.intent = Intent(context, SessionWidget2x2::class.java)
     SessionWidget2x2.intent.action = "clicking_item"

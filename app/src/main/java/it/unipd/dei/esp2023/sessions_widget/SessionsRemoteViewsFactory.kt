@@ -1,24 +1,19 @@
-package it.unipd.dei.esp2023.widget
+package it.unipd.dei.esp2023.sessions_widget
 
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
-import android.os.Build
-import android.util.Log
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
-import android.widget.Toast
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.SessionsContentProvider
 
 
 //Questa classe funge da Adapter tra il dataset, nel nostro caso un Cursore,
 //e la lista ListView del widget
-class MyRemoteViewsFactory(private val context: Context, intent: Intent):
+class SessionsRemoteViewsFactory(private val context: Context):
     RemoteViewsService.RemoteViewsFactory
 {
     private var myCursor: Cursor? = null

@@ -1,12 +1,12 @@
-package it.unipd.dei.esp2023.widget
+package it.unipd.dei.esp2023.sessions_widget
 
 import android.content.Intent
 import android.widget.RemoteViewsService
 
 
 //Questa classe è un Service che serve solo a ritornare la Factory
-class ListWidgetService: RemoteViewsService() {
+class SessionsWidgetService: RemoteViewsService() {
     override fun onGetViewFactory(intent: Intent?): RemoteViewsFactory {
-        return MyRemoteViewsFactory(applicationContext, intent!!)
+        return SessionsRemoteViewsFactory(applicationContext)
     }
 }
