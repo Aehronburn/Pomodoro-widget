@@ -18,7 +18,7 @@ class ControlWidgetConfiguration : AppCompatActivity() {
     private var toggleSwitch: MaterialSwitch? = null
 
     /*
-    * Commit must be used in pace of apply for saving shared preferences since settings must be read,
+    * Commit must be used in place of apply for saving shared preferences since settings must be read,
     * immediately after they are written, outside of the main thread
     * */
     @SuppressLint("ApplySharedPref")

@@ -34,20 +34,20 @@
         android:layout_centerHorizontal="true"
         android:background="#00000000"
         >
+
         <TextView
+            android:id="@+id/minTv"
+            style="@style/TextAppearance.Material3.DisplayMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left"
-            android:id="@+id/minTv"
-            android:paddingRight="10dp"
-            android:paddingLeft="0dp"
-            android:paddingVertical="0dp"
-            android:fontFamily="monospace"
-            android:includeFontPadding="false"
-            style="@style/TextAppearance.Material3.DisplayMedium"
-            tools:text="00"
             android:background="#00000000"
-            />
+            android:fontFamily="monospace"
+            android:gravity="left"
+            android:includeFontPadding="false"
+            android:paddingVertical="0dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="10dp"
+            tools:text="00" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -56,8 +56,7 @@
                     android:background="@android:color/system_accent1_50"
                     android:backgroundTint="@android:color/system_accent1_700"
                     android:backgroundTintMode="multiply"
-                    android:text="@string/stats_widget_today_title"
-                    android:textColor="@android:color/system_accent1_50" />
+                    android:text="@string/stats_widget_today_title" />
 
                 <LinearLayout
                     android:id="@+id/today_stats_widget"
@@ -78,8 +77,7 @@
                         android:background="@android:color/system_accent1_50"
                         android:backgroundTint="@android:color/system_accent1_700"
                         android:backgroundTintMode="multiply"
-                        android:text="@string/fake_widget_today_completed"
-                        android:textColor="@android:color/system_accent1_50" />
+                        android:text="@string/fake_widget_today_completed" />
 
                     <TextView
                         android:id="@+id/today_focus_time_text_widget"
@@ -92,8 +90,7 @@
                         android:backgroundTint="@android:color/system_accent1_700"
                         android:backgroundTintMode="multiply"
                         android:text="@string/fake_widget_today_focustime"
-                        android:textAlignment="textEnd"
-                        android:textColor="@android:color/system_accent1_50" />
+                        android:textAlignment="textEnd" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -115,8 +112,7 @@
                     android:background="@android:color/system_accent1_50"
                     android:backgroundTint="@android:color/system_accent1_700"
                     android:backgroundTintMode="multiply"
-                    android:text="@string/stats_widget_week_title"
-                    android:textColor="@android:color/system_accent1_50" />
+                    android:text="@string/stats_widget_week_title" />
 
                 <LinearLayout
                     android:id="@+id/week_stats_widget"
@@ -137,8 +133,7 @@
                         android:background="@android:color/system_accent1_50"
                         android:backgroundTint="@android:color/system_accent1_700"
                         android:backgroundTintMode="multiply"
-                        android:text="@string/fake_widget_week_completed"
-                        android:textColor="@android:color/system_accent1_50" />
+                        android:text="@string/fake_widget_week_completed" />
 
                     <TextView
                         android:id="@+id/week_focus_time_text_widget"
@@ -151,8 +146,7 @@
                         android:backgroundTint="@android:color/system_accent1_700"
                         android:backgroundTintMode="multiply"
                         android:text="@string/fake_widget_week_focustime"
-                        android:textAlignment="textEnd"
-                        android:textColor="@android:color/system_accent1_50" />
+                        android:textAlignment="textEnd" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -174,8 +168,7 @@
                     android:background="@android:color/system_accent1_50"
                     android:backgroundTint="@android:color/system_accent1_700"
                     android:backgroundTintMode="multiply"
-                    android:text="@string/stats_widget_month_title"
-                    android:textColor="@android:color/system_accent1_50" />
+                    android:text="@string/stats_widget_month_title" />
 
                 <LinearLayout
                     android:id="@+id/month_stats_widget"
@@ -196,8 +189,7 @@
                         android:background="@android:color/system_accent1_50"
                         android:backgroundTint="@android:color/system_accent1_700"
                         android:backgroundTintMode="multiply"
-                        android:text="@string/fake_widget_month_completed"
-                        android:textColor="@android:color/system_accent1_50" />
+                        android:text="@string/fake_widget_month_completed" />
 
                     <TextView
                         android:id="@+id/month_focus_time_text_widget"
@@ -210,8 +202,7 @@
                         android:backgroundTint="@android:color/system_accent1_700"
                         android:backgroundTintMode="multiply"
                         android:text="@string/fake_widget_month_focustime"
-                        android:textAlignment="textEnd"
-                        android:textColor="@android:color/system_accent1_50" />
+                        android:textAlignment="textEnd" />
                 </LinearLayout>
             </LinearLayout>
 

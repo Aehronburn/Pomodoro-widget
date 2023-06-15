@@ -32,5 +32,7 @@
 
     <style name="AppWidgetTheme" parent="Theme.Material3.DynamicColors.Dark">
         <item name="android:background">@android:color/system_accent2_800</item>
+        <item name="android:textColorPrimary">@android:color/system_accent1_10</item>
+        <item name="android:textColorSecondary">@android:color/system_accent1_10</item>
     </style>
 </resources>
