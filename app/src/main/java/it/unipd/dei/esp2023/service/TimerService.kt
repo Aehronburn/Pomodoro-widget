@@ -162,6 +162,7 @@ class TimerService : Service() {
         val statsUpdateIntent = Intent(this, StatisticsWidgetProvider::class.java).apply {
             action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
             putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+            putExtra(StatisticsWidgetProvider.WIDGET_TYPE, StatisticsWidgetProvider.WIDGET_TYPE_STATS)
         }
         sendBroadcast(statsUpdateIntent)
     }

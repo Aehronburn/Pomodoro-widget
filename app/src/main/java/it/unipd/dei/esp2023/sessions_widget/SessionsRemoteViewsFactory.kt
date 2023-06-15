@@ -31,7 +31,7 @@ class SessionsRemoteViewsFactory(private val context: Context):
         sessionList = contentResolver.query(uri, null, null, null, null )
 
         val appWidgetManager = AppWidgetManager.getInstance(context)
-        val ids = appWidgetManager.getAppWidgetIds(ComponentName(context, SessionsWidget::class.java)) ?: intArrayOf(-1)
+        val ids = appWidgetManager.getAppWidgetIds(ComponentName(context, SessionsWidget::class.java))
         ids.forEach { id ->
             updateAppWidget(context, appWidgetManager, id)
         }

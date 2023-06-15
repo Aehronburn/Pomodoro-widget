@@ -95,7 +95,7 @@ class SessionsFragment : Fragment() {
 
     override fun onResume() {
         val appWidgetManager = AppWidgetManager.getInstance(context)
-        val ids = appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionsWidget::class.java)) ?: intArrayOf(-1)
+        val ids = appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionsWidget::class.java))
         ids.forEach { id ->
             updateAppWidget(requireContext(), appWidgetManager, id)
         }

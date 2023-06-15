@@ -90,6 +90,9 @@ fun createRemoteViews(
         createSessionPendingIntent
     )
 
+    val mainAppPendingIntent = NavDeepLinkBuilder(context).setGraph(R.navigation.navigation_graph).setDestination(R.id.sessions_fragment).createPendingIntent()
+    remoteViews.setOnClickPendingIntent(R.id.sessions_widget_title_bar, mainAppPendingIntent)
+
     appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
 }
 

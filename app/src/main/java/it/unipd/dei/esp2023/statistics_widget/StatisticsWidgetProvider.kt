@@ -29,16 +29,16 @@ class StatisticsWidgetProvider : AppWidgetProvider() {
                 .build()
         appActionsWidgetExtension.updateWidget(widgetId)
     }
-    override fun onReceive(context: Context?, intent: Intent?) {
-        if(intent?.action == Intent.ACTION_DATE_CHANGED || intent?.action == Intent.ACTION_TIME_CHANGED) {
+    override fun onReceive(context: Context?, intent: Intent) {
+        if((intent.action == Intent.ACTION_DATE_CHANGED || intent.action == Intent.ACTION_TIME_CHANGED) ||
+            intent.getStringExtra(WIDGET_TYPE) == WIDGET_TYPE_STATS) {
             val ids = AppWidgetManager.getInstance(context).getAppWidgetIds(ComponentName(context!!, StatisticsWidgetProvider::class.java))
             onUpdate(context, AppWidgetManager.getInstance(context), ids)
         } else {
             /*
             if the update was referring to ControlWidgetProvider do nothing
              */
-            if(intent != null &&
-                intent.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE &&
+            if(intent.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE &&
                 intent.getStringExtra(ControlWidgetProvider.WIDGET_TYPE) == ControlWidgetProvider.WIDGET_TYPE_CONTROL)
                 return
             super.onReceive(context, intent)
@@ -235,26 +235,8 @@ class StatisticsWidgetProvider : AppWidgetProvider() {
         }
     }
 
-    /*
-    Just for printing device's cell sizes
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    override fun onAppWidgetOptionsChanged(
-        context: Context?,
-        appWidgetManager: AppWidgetManager?,
-        appWidgetId: Int,
-        newOptions: Bundle
-    ) {
-        println("MIN_WIDTH " + newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH))
-        println("MAX_WIDTH " + newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH))
-        println("MIN_HEIGHT " + newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT))
-        println("MAX_HEIGHT " + newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT))
-        println(
-            "SIZES " + newOptions.getParcelableArrayList(
-                AppWidgetManager.OPTION_APPWIDGET_SIZES,
-                SizeF::class.java
-            )
-        )
-        println(" ")
+    companion object {
+        const val WIDGET_TYPE = "WIDGET_TYPE"
+        const val WIDGET_TYPE_STATS = "WIDGET_TYPE_STATS"
     }
-     */
 }
