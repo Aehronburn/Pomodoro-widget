@@ -84,5 +84,7 @@
     <string name="control_widget_assistant_speech_idle">Open the app to start a timer.</string>
     <string name="control_widget_assistant_text_active">The timer is running.</string>
     <string name="control_widget_assistant_speech_active">The timer is running.</string>
+    <string name="control_config_switch_text">Transparent background</string>
+    <string name="control_config_button_text">Add widget</string>
 
 </resources>
