@@ -15,7 +15,7 @@ import it.unipd.dei.esp2023.R
 class ControlWidgetConfiguration : AppCompatActivity() {
 
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
-    private var toggleSwitch: MaterialSwitch? = null
+    private lateinit var toggleSwitch: MaterialSwitch
 
     /*
     * Commit must be used in place of apply for saving shared preferences since settings must be read,
@@ -46,7 +46,7 @@ class ControlWidgetConfiguration : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.addWidgetBtn).setOnClickListener{
             val prefs = getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE)
             val editor = prefs.edit()
-            editor.putBoolean(SHARED_PREFERENCES_KEY_PREFIX + appWidgetId, toggleSwitch?.isChecked?:DEFAULT_TRANSPARENCY_VALUE)
+            editor.putBoolean(SHARED_PREFERENCES_KEY_PREFIX + appWidgetId, toggleSwitch.isChecked)
             editor.commit()
 
             val addWidgetResult = Intent()
