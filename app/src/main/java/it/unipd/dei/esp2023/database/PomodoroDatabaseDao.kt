@@ -63,7 +63,7 @@ interface PomodoroDatabaseDao {
      is intended to be returned by a contentProvider and not to be used by a UI component.
      Column id is renamed to _id because the CursorAdapter of a ListView requires it.
      */
-    @Query("SELECT id as _id, name, creation_date FROM session")
+    @Query("SELECT id as _id, name, creation_date FROM session ORDER BY creation_date ASC")
     fun getSessionListCursor(): Cursor
     @Query("SELECT * FROM session ORDER BY creation_date DESC")
     fun getSessionList(): LiveData<List<Session>>
