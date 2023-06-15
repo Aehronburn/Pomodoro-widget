@@ -112,10 +112,10 @@ class ControlWidgetProvider(): AppWidgetProvider() {
         // region single widget construction logic
 
         if(transparentBackground){
-            largeViews.setColorInt(R.id.idleControlWidgetLayoutRoot, "setBackgroundColor", Color.TRANSPARENT, Color.TRANSPARENT)
-            mediumViews.setColorInt(R.id.idleControlWidgetLayoutRoot, "setBackgroundColor", Color.TRANSPARENT, Color.TRANSPARENT)
-            smallViews.setColorInt(R.id.idleControlWidgetLayoutRoot, "setBackgroundColor", Color.TRANSPARENT, Color.TRANSPARENT)
-            tinyViews.setColorInt(R.id.idleControlWidgetLayoutRoot, "setBackgroundColor", Color.TRANSPARENT, Color.TRANSPARENT)
+            largeViews.setColorInt(R.id.controlWidgetLayoutRoot, "setBackgroundColor", Color.TRANSPARENT, Color.TRANSPARENT)
+            mediumViews.setColorInt(R.id.controlWidgetLayoutRoot, "setBackgroundColor", Color.TRANSPARENT, Color.TRANSPARENT)
+            smallViews.setColorInt(R.id.controlWidgetLayoutRoot, "setBackgroundColor", Color.TRANSPARENT, Color.TRANSPARENT)
+            tinyViews.setColorInt(R.id.controlWidgetLayoutRoot, "setBackgroundColor", Color.TRANSPARENT, Color.TRANSPARENT)
         }
 
         // https://stackoverflow.com/a/14798107
