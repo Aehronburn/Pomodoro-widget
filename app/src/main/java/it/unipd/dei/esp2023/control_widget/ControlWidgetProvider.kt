@@ -83,7 +83,7 @@ class ControlWidgetProvider(): AppWidgetProvider() {
             * */
             return
         }
-        val prefs: SharedPreferences = context.getSharedPreferences(ControlWidgetConfiguration.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+        val prefs: SharedPreferences = context.getSharedPreferences(ControlWidgetConfiguration.SHARED_PREFERENCES_NAME, Context.MODE_MULTI_PROCESS) // TODO fix warning
         val transparentBackground: Boolean = prefs.getBoolean(ControlWidgetConfiguration.SHARED_PREFERENCES_KEY_PREFIX + widgetId, ControlWidgetConfiguration.DEFAULT_TRANSPARENCY_VALUE)
         if(status == CURRENT_STATUS_IDLE){
             if(!appWidgetManager.getAppWidgetOptions(widgetId).getString(AppActionsWidgetExtension.EXTRA_APP_ACTIONS_BII).isNullOrBlank()){

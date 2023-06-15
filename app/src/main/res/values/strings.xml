@@ -44,7 +44,7 @@
     <string name="delete_task_content_decription">Delete the task</string>
     <string name="toggle_start_play_pause_description">Starts the timer if not started, or toggles play/pause</string>
     <string name="reset_timer_button_description">Resets the current timer</string>
-    <string name="circle_control_widget_background_description">Resets the current timer</string>
+    <string name="circle_control_widget_background_description">Background circle</string>
 
     <string name="delete_task_content_description">Delete the task</string>
     <string name="service_notification_title">Pomodoro timer running</string>
