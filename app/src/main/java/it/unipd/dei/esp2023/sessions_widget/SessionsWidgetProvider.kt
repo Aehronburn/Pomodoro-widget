@@ -65,10 +65,10 @@ fun createRemoteViews(
     appWidgetManager: AppWidgetManager,
     appWidgetId: Int,
 ) {
-    val remoteViews = RemoteViews(context.packageName, R.layout.session_widget)
-    remoteViews.removeAllViews(R.id.SessionWidget2x2ID_List)
+    val remoteViews = RemoteViews(context.packageName, R.layout.sessions_widget)
+    remoteViews.removeAllViews(R.id.sessions_widget_list)
     remoteViews.setRemoteAdapter(
-        R.id.SessionWidget2x2ID_List,
+        R.id.sessions_widget_list,
         Intent(context, SessionsWidgetService::class.java)
     )
 
@@ -79,7 +79,7 @@ fun createRemoteViews(
         PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     )
 
-    remoteViews.setPendingIntentTemplate(R.id.SessionWidget2x2ID_List, pendingIntent)
+    remoteViews.setPendingIntentTemplate(R.id.sessions_widget_list, pendingIntent)
 
     val createSessionPendingIntent =
         NavDeepLinkBuilder(context).setGraph(R.navigation.navigation_graph)

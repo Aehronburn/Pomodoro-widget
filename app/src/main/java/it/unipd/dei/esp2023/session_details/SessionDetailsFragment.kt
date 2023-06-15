@@ -102,7 +102,7 @@ class SessionDetailsFragment : Fragment() {
             val myAppWidgetManager = AppWidgetManager.getInstance(requireContext())
             myAppWidgetManager.notifyAppWidgetViewDataChanged(
                 myAppWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionsWidget::class.java)),
-                R.id.SessionWidget2x2ID_List)
+                R.id.sessions_widget_list)
         }
 
         return view

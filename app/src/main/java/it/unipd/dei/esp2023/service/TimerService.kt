@@ -12,7 +12,7 @@ import it.unipd.dei.esp2023.MainActivity
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.control_widget.ControlWidgetProvider
 import it.unipd.dei.esp2023.settings.SettingsFragment
-import it.unipd.dei.esp2023.statistics_widget.StatisticsAppWidgetProvider
+import it.unipd.dei.esp2023.statistics_widget.StatisticsWidgetProvider
 
 class TimerService : Service() {
 
@@ -158,8 +158,8 @@ class TimerService : Service() {
         /*
         update statistics widgets
          */
-        val ids = AppWidgetManager.getInstance(this).getAppWidgetIds(ComponentName(this, StatisticsAppWidgetProvider::class.java))
-        val statsUpdateIntent = Intent(this, StatisticsAppWidgetProvider::class.java).apply {
+        val ids = AppWidgetManager.getInstance(this).getAppWidgetIds(ComponentName(this, StatisticsWidgetProvider::class.java))
+        val statsUpdateIntent = Intent(this, StatisticsWidgetProvider::class.java).apply {
             action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
             putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
         }

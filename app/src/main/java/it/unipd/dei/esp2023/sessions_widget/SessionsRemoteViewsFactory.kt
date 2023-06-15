@@ -51,7 +51,7 @@ class SessionsRemoteViewsFactory(private val context: Context):
         val id = sessionList!!.getLong(0)
         val name = sessionList!!.getString(1)
 
-        val remoteViews = RemoteViews(context.packageName, R.layout.widget_list_item)
+        val remoteViews = RemoteViews(context.packageName, R.layout.sessions_widget_list_item)
         remoteViews.setTextViewText(R.id.widget_list_item_text, name)
 
         /*

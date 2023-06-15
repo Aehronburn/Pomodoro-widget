@@ -63,7 +63,7 @@
 
         <!-- Info on Google Assistant support can be found in shortcuts.xml -->
         <receiver
-            android:name=".statistics_widget.StatisticsAppWidgetProvider"
+            android:name=".statistics_widget.StatisticsWidgetProvider"
             android:exported="false"
             android:label="@string/stats_widget_label">
             <intent-filter>

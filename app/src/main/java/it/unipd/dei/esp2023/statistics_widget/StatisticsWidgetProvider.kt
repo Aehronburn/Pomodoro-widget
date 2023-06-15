@@ -16,7 +16,7 @@ import it.unipd.dei.esp2023.statistics.StatisticsFragment
 import it.unipd.dei.esp2023.statistics.StatisticsViewModel
 import com.google.assistant.appactions.widgets.AppActionsWidgetExtension
 
-class StatisticsAppWidgetProvider : AppWidgetProvider() {
+class StatisticsWidgetProvider : AppWidgetProvider() {
 
     // Info on Google Assistant support can be found in shortcuts.xml
     private fun setTextToSpeech(
@@ -31,7 +31,7 @@ class StatisticsAppWidgetProvider : AppWidgetProvider() {
     }
     override fun onReceive(context: Context?, intent: Intent?) {
         if(intent?.action == Intent.ACTION_DATE_CHANGED || intent?.action == Intent.ACTION_TIME_CHANGED) {
-            val ids = AppWidgetManager.getInstance(context).getAppWidgetIds(ComponentName(context!!, StatisticsAppWidgetProvider::class.java))
+            val ids = AppWidgetManager.getInstance(context).getAppWidgetIds(ComponentName(context!!, StatisticsWidgetProvider::class.java))
             onUpdate(context, AppWidgetManager.getInstance(context), ids)
         } else {
             /*
