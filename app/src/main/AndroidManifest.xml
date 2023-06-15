@@ -29,7 +29,14 @@
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
-
+        <activity
+            android:name=".control_widget.ControlWidgetConfiguration"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
         <provider
             android:authorities="it.unipd.dei.esp2023.content_providers.SessionsContentProvider"
             android:name=".content_providers.SessionsContentProvider">

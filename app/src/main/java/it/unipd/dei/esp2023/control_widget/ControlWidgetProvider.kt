@@ -5,6 +5,8 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.*
 import android.util.SizeF
 import android.widget.RemoteViews
@@ -81,11 +83,16 @@ class ControlWidgetProvider(): AppWidgetProvider() {
             * */
             return
         }
+        val prefs: SharedPreferences = context.getSharedPreferences(ControlWidgetConfiguration.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+        val transparentBackground: Boolean = prefs.getBoolean(ControlWidgetConfiguration.SHARED_PREFERENCES_KEY_PREFIX + widgetId, ControlWidgetConfiguration.DEFAULT_TRANSPARENCY_VALUE)
         if(status == CURRENT_STATUS_IDLE){
             if(!appWidgetManager.getAppWidgetOptions(widgetId).getString(AppActionsWidgetExtension.EXTRA_APP_ACTIONS_BII).isNullOrBlank()){
                 setIdleTextToSpeech(context, widgetId)
             }
             val views = RemoteViews(context.packageName, R.layout.control_widget_idle)
+            if(transparentBackground){
+                views.setColorInt(R.id.idleControlWidgetLayoutRoot, "setBackgroundColor", Color.TRANSPARENT, Color.TRANSPARENT)
+            }
             views.setOnClickPendingIntent(
                 R.id.idleControlWidgetLayoutRoot,
                 PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
@@ -103,6 +110,13 @@ class ControlWidgetProvider(): AppWidgetProvider() {
 
 
         // region single widget construction logic
+
+        if(transparentBackground){
+            largeViews.setColorInt(R.id.idleControlWidgetLayoutRoot, "setBackgroundColor", Color.TRANSPARENT, Color.TRANSPARENT)
+            mediumViews.setColorInt(R.id.idleControlWidgetLayoutRoot, "setBackgroundColor", Color.TRANSPARENT, Color.TRANSPARENT)
+            smallViews.setColorInt(R.id.idleControlWidgetLayoutRoot, "setBackgroundColor", Color.TRANSPARENT, Color.TRANSPARENT)
+            tinyViews.setColorInt(R.id.idleControlWidgetLayoutRoot, "setBackgroundColor", Color.TRANSPARENT, Color.TRANSPARENT)
+        }
 
         // https://stackoverflow.com/a/14798107
         largeViews.setOnClickPendingIntent(R.id.resetBtn, getResetIntent(context))
