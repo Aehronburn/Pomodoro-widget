@@ -49,6 +49,13 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
         get() = _remainingSeconds
 
     /*
+    remaining total time in seconds, to be displayed in the progress bar
+     */
+    private val _progress = MutableLiveData<Int>(0)
+    val progress: LiveData<Int>
+        get() = _progress
+
+    /*
     is there already a countdown timer which has been created previously?
      */
     private val _isStarted = MutableLiveData<Boolean>(false)
@@ -130,15 +137,16 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
      */
     private fun updateCurrentPhase() {
         _currentPhase.value = phasesList.first()
-        setInitialDuration(_currentPhase.value!!.duration * TimerService.ONE_MINUTE_IN_MS.toInt())
+        setRemainingTime(_currentPhase.value!!.duration * TimerService.ONE_MINUTE_IN_MS.toInt())
     }
 
     /*
-        initializes time left text views with full duration of the phase. Il will be then updated by the service only
-         */
-    fun setInitialDuration(remainingTimeMillis: Int) {
+    updates remaining time to be displayed in textviews and progress bar
+     */
+    fun setRemainingTime(remainingTimeMillis: Int) { // TODO mettere round come in control widget
         _remainingMinutes.value = remainingTimeMillis / TimerService.ONE_MINUTE_IN_MS.toInt()
         _remainingSeconds.value = (remainingTimeMillis % TimerService.ONE_MINUTE_IN_MS.toInt()) / ONE_SECOND_IN_MS
+        _progress.value = remainingTimeMillis / ONE_SECOND_IN_MS
     }
 
     /*
@@ -170,17 +178,17 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
                 TimerService.PROGRESS_STATUS_RUNNING -> {
                     viewModel.setIsStarted(true)
                     viewModel.setIsPlaying(true)
-                    viewModel.setInitialDuration(msg.arg1)
+                    viewModel.setRemainingTime(msg.arg1)
                 }
                 TimerService.PROGRESS_STATUS_DELETED -> {
                     viewModel.setIsStarted(false)
                     viewModel.setIsPlaying(false)
-                    viewModel.setInitialDuration(msg.arg1)
+                    viewModel.setRemainingTime(msg.arg1)
                 }
                 TimerService.PROGRESS_STATUS_PAUSED -> {
                     viewModel.setIsStarted(true)
                     viewModel.setIsPlaying(false)
-                    viewModel.setInitialDuration(msg.arg1)
+                    viewModel.setRemainingTime(msg.arg1)
                 }
                 TimerService.PROGRESS_STATUS_COMPLETED -> {
                     viewModel.setIsStarted(false)

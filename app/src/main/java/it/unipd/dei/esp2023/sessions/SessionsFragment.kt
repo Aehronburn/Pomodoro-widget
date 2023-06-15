@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
+import com.google.android.material.transition.MaterialFadeThrough
 import it.unipd.dei.esp2023.database.Session
 import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
 import it.unipd.dei.esp2023.sessions_widget.SessionWidget2x2
@@ -23,6 +25,20 @@ class SessionsFragment : Fragment() {
 
 
     private val viewModel: SessionsViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = MaterialFadeThrough()
+        exitTransition = MaterialFadeThrough()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        /*
+        The recyclerView needs to load its items first
+         */
+        postponeEnterTransition()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,12 +70,16 @@ class SessionsFragment : Fragment() {
             if(scrollY > oldScrollY) createNewSessionFAB.shrink()
             else createNewSessionFAB.extend()
         }
+
         /*
         update list of RecyclerView everytime a session is added/deleted
          */
         viewModel.sessionList.observe(viewLifecycleOwner) {
             adapter.updateList(it)
             /*
+            now the animation can start
+             */
+            (view.parent as ViewGroup).doOnPreDraw { startPostponedEnterTransition() }
             Notify the widget that data has changed; this triggers onDataSetChanged()
             in the Factory()
              */

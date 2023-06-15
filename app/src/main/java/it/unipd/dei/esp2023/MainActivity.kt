@@ -9,7 +9,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.navigation.NavigationBarView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController = navHostFragment.navController
 
-        val bottomNavigationBarView = findViewById<NavigationBarView>(R.id.bottomNavigationView)
+        val bottomNavigationBarView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationBarView.setupWithNavController(navController)
 
         /*

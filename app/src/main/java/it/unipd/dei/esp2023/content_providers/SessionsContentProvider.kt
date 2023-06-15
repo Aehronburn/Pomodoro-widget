@@ -1,4 +1,4 @@
-package it.unipd.dei.esp2023
+package it.unipd.dei.esp2023.content_providers
 
 import android.content.ContentProvider
 import android.content.ContentValues
@@ -50,6 +50,6 @@ class SessionsContentProvider: ContentProvider() {
     }
 
     companion object {
-        const val URI = "content://it.unipd.dei.esp2023.SessionsContentProvider/sessions"
+        const val URI = "content://it.unipd.dei.esp2023.content_providers.SessionsContentProvider/sessions"
     }
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".control_widget.ControlWidgetConfiguration"
+    android:gravity="center"
+    >
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/transparentBgSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="50dp"
+        android:switchPadding = "50dp"
+        android:text="@string/control_config_switch_text"
+        />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/addWidgetBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/control_config_button_text"
+        />
+</LinearLayout>

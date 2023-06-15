@@ -61,8 +61,11 @@
     <color name="md_theme_dark_surfaceTint">#FFB59A</color>
     <color name="md_theme_dark_outlineVariant">#53433E</color>
     <color name="md_theme_dark_scrim">#000000</color>
-    <color name="light_blue_50">#FFE1F5FE</color>
-    <color name="light_blue_200">#FF81D4FA</color>
-    <color name="light_blue_600">#FF039BE5</color>
-    <color name="light_blue_900">#FF01579B</color>
+
+    <color name="short_break_progress_indicator">#C9F4AA</color>
+    <color name="short_break_progress_track">#E5FDD1</color>
+    <color name="pomodoro_progress_indicator">#FF8787</color>
+    <color name="pomodoro_progress_track">#F8C4B4</color>
+    <color name="long_break_progress_indicator">#95BDFF</color>
+    <color name="long_break_progress_track">#B4E4FF</color>
 </resources>

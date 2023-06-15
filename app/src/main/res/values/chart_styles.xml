@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ColumnStyle">
+        <item name="color">?android:attr/colorPrimary</item>
+        <item name="thickness">@dimen/colum_width</item>
+    </style>
+    <style name="ColumnChartStyle">
+        <item name="column1">@style/ColumnStyle</item>
+    </style>
+    <style name="ColumnChartBottomAxisStyle">
+        <item name="showGuideline">false</item>
+        <item name="showTick">false</item>
+    </style>
+    <style name="ColumnChartStartAxisStyle">
+        <item name="showTick">false</item>
+    </style>
+
+    <style name="LineStyle">
+        <item name="color">?android:attr/colorPrimary</item>
+        <item name="lineThickness">4dp</item>
+    </style>
+    <style name="LineChartStyle">
+        <item name="line1Spec">@style/LineStyle</item>
+    </style>
+    <style name="LineChartBottomAxisStyle">
+        <item name="horizontalAxisTickPosition">center</item>
+    </style>
+    <style name="LineChartStartAxisStyle">
+        <item name="showGuideline">false</item>
+        <item name="showTick">false</item>
+    </style>
+</resources>

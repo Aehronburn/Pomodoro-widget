@@ -19,6 +19,7 @@ import androidx.core.content.PermissionChecker
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import com.google.android.material.transition.MaterialFade
 import it.unipd.dei.esp2023.MainViewModel
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.databinding.FragmentTimerBinding
@@ -31,6 +32,12 @@ class TimerFragment : Fragment() {
     private val viewModel: TimerViewModel by viewModels()
 
     private val activityViewModel: MainViewModel by activityViewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = MaterialFade()
+        exitTransition = MaterialFade()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,11 +57,54 @@ class TimerFragment : Fragment() {
             preferences.getInt(SettingsFragment.LONG_BREAK_DURATION, SettingsFragment.DEFAULT_LONG_BREAK_DURATION)
         )
 
+        /*
+        every time the use goes back to the previous page and re-enters the timer fragment,
+        the list of phases is re-calculated. This means that a pomodoro phase is always the first
+        and if a break was due, now the it is lost and the user must complete another pomodoro before
+         */
         activityViewModel.getTaskExtList(sessionId).observe(viewLifecycleOwner) {
             if(!viewModel.isInitialized) {
                 viewModel.createPhasesList(it)
                 viewModel.isInitialized = true
             }
+        }
+
+        /*
+        set progress indicator max to max of phase duration
+         */
+        viewModel.currentPhase.observe(viewLifecycleOwner) {
+            binding.phaseProgressIndicator.max = it.duration * 60
+        }
+
+        /*
+        cannot update progress with data binding with animation, so we do it here by calling setProgress(..., animate = true)
+         */
+        viewModel.progress.observe(viewLifecycleOwner) {
+            binding.phaseProgressIndicator.setProgress(it, true)
+        }
+
+        /*
+        programmatically set progress bar colors based on current phase
+         */
+        viewModel.currentPhase.observe(viewLifecycleOwner) {
+            val trackColor: Int?
+            val indicatorColor: Int?
+            when(it.taskId) {
+                TimerService.TIMER_TYPE_SHORT_BREAK.toLong() -> {
+                    trackColor = R.color.short_break_progress_track
+                    indicatorColor = R.color.short_break_progress_indicator
+                }
+                TimerService.TIMER_TYPE_LONG_BREAK.toLong() -> {
+                    trackColor = R.color.long_break_progress_track
+                    indicatorColor = R.color.long_break_progress_indicator
+                }
+                else -> {
+                    trackColor = R.color.pomodoro_progress_track
+                    indicatorColor = R.color.pomodoro_progress_indicator
+                }
+            }
+            binding.phaseProgressIndicator.trackColor = resources.getColor(trackColor, context?.theme)
+            binding.phaseProgressIndicator.setIndicatorColor(resources.getColor(indicatorColor, context?.theme))
         }
 
         binding.toggleStartPlayPause.setOnClickListener {

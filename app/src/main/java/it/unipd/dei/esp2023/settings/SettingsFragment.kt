@@ -8,12 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import com.google.android.material.transition.MaterialFadeThrough
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.databinding.FragmentSettingsBinding
 
 class SettingsFragment : Fragment() {
 
     private val viewModel: SettingsViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = MaterialFadeThrough()
+        //exitTransition = MaterialFadeThrough()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

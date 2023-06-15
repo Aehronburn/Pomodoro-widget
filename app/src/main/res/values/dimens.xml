@@ -5,10 +5,15 @@
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_medium_large">24dp</dimen>
     <dimen name="margin_medium_small">12dp</dimen>
+    <dimen name="colum_width">16dp</dimen>
     <!-- fab height: 56dp + margin top: 16dp + margin bottom: 16dp -->
     <dimen name="session_recyclerview_bottom_padding">88dp</dimen>
     <!-- fab height: 56dp + small fab height: 40dp margin top: 16dp + margin bottom: 16dp + margin fabs: 24dp -->
     <dimen name="session_details_recyclerview_bottom_padding">152dp</dimen>
+    <dimen name="circular_progress_indicator_size">300dp</dimen>
+    <dimen name="progress_bar_track_thickness">10dp</dimen>
+    <dimen name="progress_bar_indicator_radius">8dp</dimen>
+    <dimen name="statistics_productivity_image_height">180dp</dimen>
     <integer name="grid_column_count">1</integer>
 
     <!--

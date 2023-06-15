@@ -1,6 +1,8 @@
 package it.unipd.dei.esp2023.service
 
 import android.app.*
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.*
@@ -8,18 +10,22 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.Builder
 import it.unipd.dei.esp2023.MainActivity
 import it.unipd.dei.esp2023.R
+import it.unipd.dei.esp2023.control_widget.ControlWidgetProvider
 import it.unipd.dei.esp2023.settings.SettingsFragment
+import it.unipd.dei.esp2023.statistics_widget.StatisticsAppWidgetProvider
 
 class TimerService : Service() {
 
     private lateinit var mMessenger: Messenger
+    private var isCompleted: Boolean = false
     private var isForeground: Boolean = false
     private var isPaused: Boolean = false
     private var currentTimer: CountDownTimer? = null
     private var lastInitialDuration: Long = DEFAULT_DURATION_FOR_TIMER_TYPE(TIMER_TYPE_POMODORO)
     private var timerType: Int = 0
     private var remainingTimerMs: Long = 0
-    private var boundMessengersList: MutableList<Messenger> = mutableListOf<Messenger>() //TODO mettere set invece di list
+    // private var boundMessengersList: MutableList<Messenger> = mutableListOf<Messenger>() //TODO mettere set invece di list
+    private var boundFragmentMessenger: Messenger? = null
     /*
         From Jared's reply to https://stackoverflow.com/a/25821942:
         "Also please keep in mind if you want it to update pretty and not erase it and re-create
@@ -67,7 +73,9 @@ class TimerService : Service() {
                 ACTION_UNSUBSCRIBE -> {
                     handleUnsubscribe(msg)
                 }
-                Int.MAX_VALUE->super.handleMessage(msg)
+                ACTION_WIDGET_INFO -> {
+                    handleWidgetInfo(msg)
+                }
                 else -> super.handleMessage(msg)
             }
         }
@@ -75,9 +83,12 @@ class TimerService : Service() {
 
     private fun enterForeground(){
         startForeground(TIMER_SERVICE_NOTIFICATION_ID, createNotification())
+        isForeground = true
     }
     private fun exitForeground(removeNotificationBehaviour: Int = STOP_FOREGROUND_REMOVE){
         stopForeground(removeNotificationBehaviour)
+        isForeground = false
+        isCompleted = false
     }
     private fun getTimerTypeString(): String{
         return when(timerType){
@@ -86,16 +97,16 @@ class TimerService : Service() {
             else -> getString(R.string.pomodoro_duration_title)
         }
     }
-    private fun createNotification(): Notification {
+    private fun createNotification(): Notification { // TODO mettere round come in control widget
         return notificationBuilder
-            .setContentTitle(getString(R.string.service_notification_title))
+            .setContentTitle(if (isCompleted) getString(R.string.service_notification_title_completed) else getString(R.string.service_notification_title))
             .setContentText(
-                getString(
+                if (isCompleted) (getString(R.string.service_notification_text_progress_completed, getTimerTypeString())) else (getString(
                     if(isPaused) R.string.service_notification_text_progress_paused else R.string.service_notification_text_progress_running,
                     getTimerTypeString(),
                     remainingTimerMs/ONE_MINUTE_IN_MS,
                     (remainingTimerMs%ONE_MINUTE_IN_MS)/1000
-                )
+                ))
             )
             .setSmallIcon(R.mipmap.ic_launcher)
             .setOngoing(true)
@@ -106,18 +117,53 @@ class TimerService : Service() {
                     Intent(this, MainActivity::class.java),
                     PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
                 )
-            ) // TODO aprire nel fragment del timer invece che nell'homepage dell'app
+            )
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
-            .setOnlyAlertOnce(true)
+            .setOnlyAlertOnce(!isCompleted)
             .build()
     }
     private fun updateNotification(){
         notificationManager.notify(TIMER_SERVICE_NOTIFICATION_ID, createNotification())
     }
     private fun sendProgress(status: Int, progress: Int = 0){
-        for(rec in boundMessengersList){
-            rec.send(Message.obtain(null, status, progress, 0))
+        boundFragmentMessenger?.send(Message.obtain(null, status, progress, 0))
+        sendWidgetUpdate(status, progress)
+    }
+    private fun sendWidgetUpdate(status: Int, progress: Int){
+        /*
+        update control widgets
+         */
+        val brIntent = Intent()
+        brIntent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+        // https://stackoverflow.com/a/6446264
+        brIntent.putExtra(
+            AppWidgetManager.EXTRA_APPWIDGET_IDS,
+            AppWidgetManager.getInstance(this).getAppWidgetIds( ComponentName(this.packageName, ControlWidgetProvider::class.java.name))
+        )
+        brIntent.putExtra(ControlWidgetProvider.EXTRAS_KEY_STATUS, when(status){
+            PROGRESS_STATUS_RUNNING->{ControlWidgetProvider.CURRENT_STATUS_RUNNING}
+            PROGRESS_STATUS_PAUSED->{ControlWidgetProvider.CURRENT_STATUS_PAUSED}
+            PROGRESS_STATUS_DELETED->{ControlWidgetProvider.CURRENT_STATUS_IDLE}
+            PROGRESS_STATUS_COMPLETED->{ControlWidgetProvider.CURRENT_STATUS_IDLE}
+            INITIAL_STATUS_IDLE->{ControlWidgetProvider.CURRENT_STATUS_IDLE}
+            INITIAL_STATUS_RUNNING->{ControlWidgetProvider.CURRENT_STATUS_RUNNING}
+            INITIAL_STATUS_PAUSED->{ControlWidgetProvider.CURRENT_STATUS_PAUSED}
+            else->{ControlWidgetProvider.CURRENT_STATUS_IDLE}
+        })
+        brIntent.putExtra(ControlWidgetProvider.EXTRAS_KEY_MS, remainingTimerMs.toInt())
+        brIntent.putExtra(ControlWidgetProvider.EXTRAS_KEY_TYPE, timerType)
+        brIntent.putExtra(ControlWidgetProvider.WIDGET_TYPE, ControlWidgetProvider.WIDGET_TYPE_CONTROL)
+        sendBroadcast(brIntent)
+
+        /*
+        update statistics widgets
+         */
+        val ids = AppWidgetManager.getInstance(this).getAppWidgetIds(ComponentName(this, StatisticsAppWidgetProvider::class.java))
+        val statsUpdateIntent = Intent(this, StatisticsAppWidgetProvider::class.java).apply {
+            action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
         }
+        sendBroadcast(statsUpdateIntent)
     }
     private fun cancelTimer(){
         currentTimer?.cancel()
@@ -129,16 +175,21 @@ class TimerService : Service() {
     }
     private fun onTickCountDownTimer(millisUntilFinished: Long){
         remainingTimerMs = millisUntilFinished
-        updateNotification()
-        sendProgress(PROGRESS_STATUS_RUNNING, millisUntilFinished.toInt())
+        if(remainingTimerMs>0){
+            updateNotification()
+            sendProgress(PROGRESS_STATUS_RUNNING, millisUntilFinished.toInt())
+            isCompleted = false
+        }
     }
     private fun onFinishCountDownTimer(){
         cancelTimer()
-        if(isForeground){
+        /*if(isForeground){
             exitForeground()
-        }
+        }*/
         isPaused = false
+        isCompleted = true
         remainingTimerMs = 0
+        updateNotification()
         sendProgress(PROGRESS_STATUS_COMPLETED)
     }
     private fun createNewTimer(msDuration: Long, msInterval: Long = TIMER_TICK_DURATION): CountDownTimer{
@@ -146,6 +197,13 @@ class TimerService : Service() {
             override fun onTick(millisUntilFinished: Long) = onTickCountDownTimer(millisUntilFinished)
             override fun onFinish() = onFinishCountDownTimer()
         }
+    }
+    private fun handleWidgetInfo(ignored: Message){
+        if(!isForeground){
+            sendWidgetUpdate(INITIAL_STATUS_IDLE, 0)
+            return
+        }
+        sendWidgetUpdate(if(isPaused) INITIAL_STATUS_PAUSED else INITIAL_STATUS_RUNNING, remainingTimerMs.toInt())
     }
     private fun handleCreateTimer(msg: Message){
         if(isForeground){
@@ -189,12 +247,14 @@ class TimerService : Service() {
                 enterForeground()
             }
             isPaused = true
+            isCompleted = false
             updateNotification()
             sendProgress(PROGRESS_STATUS_PAUSED, remainingTimerMs.toInt())
         }else{
-            if(isForeground){
+            /*if(isForeground){
                 exitForeground()
-            }
+            }*/
+            isCompleted = true
             isPaused = false
             sendProgress(PROGRESS_STATUS_COMPLETED)
         }
@@ -206,6 +266,7 @@ class TimerService : Service() {
         }
         remainingTimerMs = 0
         isPaused = false
+        isCompleted = false
         sendProgress(PROGRESS_STATUS_DELETED)
     }
     private fun handleResetTimer(msg: Message) {
@@ -214,15 +275,24 @@ class TimerService : Service() {
             enterForeground()
         }
         isPaused = true
+        isCompleted = false
         remainingTimerMs = if(msg.arg1 != 0) msg.arg1.toLong() else lastInitialDuration
         updateNotification()
-        sendProgress(PROGRESS_STATUS_DELETED, remainingTimerMs.toInt())
+        sendProgress(PROGRESS_STATUS_PAUSED, remainingTimerMs.toInt())
     }
     private fun handleSubscribe(msg: Message) {
-        boundMessengersList.add(msg.replyTo)
+        boundFragmentMessenger = msg.replyTo
+        sendFirstUpdate(msg.replyTo)
     }
-    private fun handleUnsubscribe(msg: Message) {
-        // TODO a come fare unsubscribe ci pensiamo quando abbiamo anche un widget :P
+    private fun sendFirstUpdate(msgr: Messenger){
+        if(isPaused){
+            msgr.send(Message.obtain(null, INITIAL_STATUS_PAUSED, remainingTimerMs.toInt(), 0))
+        }else{
+            msgr.send(Message.obtain(null, if(remainingTimerMs>0) INITIAL_STATUS_RUNNING else INITIAL_STATUS_IDLE, remainingTimerMs.toInt(), 0))
+        }
+    }
+    private fun handleUnsubscribe(ignored: Message) {
+        boundFragmentMessenger = null
     }
 
     // region lifecycle
@@ -230,7 +300,7 @@ class TimerService : Service() {
     {
         super.onCreate()
         notificationManager = getSystemService(NotificationManager::class.java)
-        val channel = NotificationChannel(TIMER_SERVICE_NOTIFICATION_CHANNEL_ID, TIMER_SERVICE_NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW)
+        val channel = NotificationChannel(TIMER_SERVICE_NOTIFICATION_CHANNEL_ID, TIMER_SERVICE_NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
         notificationManager.createNotificationChannel(channel)
 
         mMessenger = Messenger(IncomingHandler(this))
@@ -255,7 +325,7 @@ class TimerService : Service() {
 
     companion object{
         const val TIMER_SERVICE_NOTIFICATION_CHANNEL_ID = "PomodoroTimer"
-        const val TIMER_SERVICE_NOTIFICATION_CHANNEL_NAME = "Pomodoro Timer notification channel"
+        const val TIMER_SERVICE_NOTIFICATION_CHANNEL_NAME = "Pomodoro Timer notifications" // Used in the settings page for the app (notifications settings)
 
         const val TIMER_SERVICE_NOTIFICATION_ID = 1
 
@@ -266,6 +336,7 @@ class TimerService : Service() {
         const val ACTION_RESET_TIMER = 5
         const val ACTION_SUBSCRIBE = 6
         const val ACTION_UNSUBSCRIBE = 7
+        const val ACTION_WIDGET_INFO = 8
 
         const val TIMER_TICK_DURATION: Long = 1000
 
@@ -286,5 +357,11 @@ class TimerService : Service() {
         const val PROGRESS_STATUS_PAUSED = 2
         const val PROGRESS_STATUS_DELETED = 3
         const val PROGRESS_STATUS_COMPLETED = 4
+
+        const val INITIAL_STATUS_IDLE = 100
+        const val INITIAL_STATUS_RUNNING = 101
+        const val INITIAL_STATUS_PAUSED = 102
+
+        // TODO togliere un po' di stati, ne bastano meno
     }
 }

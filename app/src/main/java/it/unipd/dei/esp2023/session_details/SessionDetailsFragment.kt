@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.transition.MaterialFade
 import it.unipd.dei.esp2023.MainViewModel
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.database.TaskExt
@@ -24,6 +26,17 @@ import it.unipd.dei.esp2023.sessions_widget.SessionWidget2x2
 class SessionDetailsFragment : Fragment() {
     private val sessionDetailsViewModel: SessionDetailsViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = MaterialFade()
+        exitTransition = MaterialFade()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,6 +88,9 @@ class SessionDetailsFragment : Fragment() {
         mainViewModel.getTaskExtList(sessionId).observe(viewLifecycleOwner){
                 list ->
             theAdapter.setTaskList(list)
+            (view.parent as ViewGroup).doOnPreDraw {
+                startPostponedEnterTransition()
+            }
             startSessionFAB.isEnabled = list.isNotEmpty()
 
             /*
