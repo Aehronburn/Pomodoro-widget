@@ -21,8 +21,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="5"
-                android:contentDescription="@string/appwidget_title"
-                android:text="@string/appwidget_title"
+                android:contentDescription="@string/sessions_widget_title"
+                android:text="@string/sessions_widget_title"
                 android:textColor="#85736D" />
 
             <ImageButton

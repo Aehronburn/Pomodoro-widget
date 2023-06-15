@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
 import com.google.android.material.transition.MaterialFadeThrough
 import it.unipd.dei.esp2023.database.Session
 import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
-import it.unipd.dei.esp2023.sessions_widget.SessionWidget2x2
+import it.unipd.dei.esp2023.sessions_widget.SessionsWidget
 import it.unipd.dei.esp2023.sessions_widget.updateAppWidget
 
 class SessionsFragment : Fragment() {
@@ -54,19 +54,19 @@ class SessionsFragment : Fragment() {
             CreateNewSessionDialog().show(childFragmentManager, "CreateNewSessionDialog")
         }
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.sessions_recyclerview)
+        val sessionsRecyclerView = view.findViewById<RecyclerView>(R.id.sessions_recyclerview)
 
         /*
         grid column count depends on the screen size. Default 1, for screen widths >= 400dp column count is 2
          */
-        recyclerView.layoutManager = StaggeredGridLayoutManager(resources.getInteger(R.integer.grid_column_count), VERTICAL)
+        sessionsRecyclerView.layoutManager = StaggeredGridLayoutManager(resources.getInteger(R.integer.grid_column_count), VERTICAL)
         val adapter = SessionsAdapter(onItemClickedListener = onItemClickedListener, onItemDeletedListener = onItemDeletedListener)
-        recyclerView.adapter = adapter
+        sessionsRecyclerView.adapter = adapter
 
         /*
         shrinks the extended fab when scrolled
          */
-        recyclerView.setOnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
+        sessionsRecyclerView.setOnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
             if(scrollY > oldScrollY) createNewSessionFAB.shrink()
             else createNewSessionFAB.extend()
         }
@@ -80,12 +80,13 @@ class SessionsFragment : Fragment() {
             now the animation can start
              */
             (view.parent as ViewGroup).doOnPreDraw { startPostponedEnterTransition() }
+            /*
             Notify the widget that data has changed; this triggers onDataSetChanged()
             in the Factory()
              */
             val appWidgetManager = AppWidgetManager.getInstance(requireContext())
             appWidgetManager.notifyAppWidgetViewDataChanged(
-                appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionWidget2x2::class.java)),
+                appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionsWidget::class.java)),
                 R.id.SessionWidget2x2ID_List)
         }
 
@@ -94,7 +95,7 @@ class SessionsFragment : Fragment() {
 
     override fun onResume() {
         val appWidgetManager = AppWidgetManager.getInstance(context)
-        val ids = appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionWidget2x2::class.java)) ?: intArrayOf(-1)
+        val ids = appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionsWidget::class.java)) ?: intArrayOf(-1)
         ids.forEach { id ->
             updateAppWidget(requireContext(), appWidgetManager, id)
         }

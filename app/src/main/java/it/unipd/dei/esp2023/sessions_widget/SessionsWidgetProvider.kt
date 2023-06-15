@@ -11,7 +11,7 @@ import androidx.navigation.NavDeepLinkBuilder
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
 
-class SessionWidget2x2 : AppWidgetProvider() {
+class SessionsWidget : AppWidgetProvider() {
     companion object {
         lateinit var intent: Intent
     }
@@ -72,10 +72,10 @@ fun createRemoteViews(
         Intent(context, SessionsWidgetService::class.java)
     )
 
-    SessionWidget2x2.intent = Intent(context, SessionWidget2x2::class.java)
-    SessionWidget2x2.intent.action = "clicking_item"
+    SessionsWidget.intent = Intent(context, SessionsWidget::class.java)
+    SessionsWidget.intent.action = "clicking_item"
     val pendingIntent = PendingIntent.getBroadcast(
-        context, 0, SessionWidget2x2.intent,
+        context, 0, SessionsWidget.intent,
         PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     )
 

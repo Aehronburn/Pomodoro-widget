@@ -58,14 +58,6 @@ interface PomodoroDatabaseDao {
     @Query("SELECT * FROM completed_pomodoro WHERE id = :pomodoroId")
     fun getCompletedPomodoroFromId(pomodoroId: Long): LiveData<CompletedPomodoro>
 
-    /*
-    Unlike getSessionList(), which returns a LiveData, getSessionListCursor returns a non
-    observable snapshot of the available sessions in the session table as a Cursor object, since it
-     is intended to be returned by a contentProvider and not to be used by a UI component.
-     Column id is renamed to _id because the CursorAdapter of a ListView requires it.
-     */
-    @Query("SELECT id as _id, name, creation_date FROM session ORDER BY creation_date ASC")
-    fun getSessionListCursor(): Cursor
     @Query("SELECT * FROM session ORDER BY creation_date DESC")
     fun getSessionList(): LiveData<List<Session>>
     @Query("SELECT * FROM session ORDER BY creation_date ASC")
@@ -174,7 +166,7 @@ interface PomodoroDatabaseDao {
      is intended to be returned by a contentProvider and not to be used by a UI component.
      Column id is renamed to _id because the CursorAdapter of a ListView requires it.
      */
-    @Query("SELECT id as _id, name, creation_date FROM session")
+    @Query("SELECT id as _id, name, creation_date FROM session ORDER BY creation_date ASC")
     fun getSessionListCursor(): Cursor
 
     @Query("""

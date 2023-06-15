@@ -21,7 +21,7 @@ import com.google.android.material.transition.MaterialFade
 import it.unipd.dei.esp2023.MainViewModel
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.database.TaskExt
-import it.unipd.dei.esp2023.sessions_widget.SessionWidget2x2
+import it.unipd.dei.esp2023.sessions_widget.SessionsWidget
 
 class SessionDetailsFragment : Fragment() {
     private val sessionDetailsViewModel: SessionDetailsViewModel by viewModels()
@@ -101,7 +101,7 @@ class SessionDetailsFragment : Fragment() {
              */
             val myAppWidgetManager = AppWidgetManager.getInstance(requireContext())
             myAppWidgetManager.notifyAppWidgetViewDataChanged(
-                myAppWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionWidget2x2::class.java)),
+                myAppWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionsWidget::class.java)),
                 R.id.SessionWidget2x2ID_List)
         }
 

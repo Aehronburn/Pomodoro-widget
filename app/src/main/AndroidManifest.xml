@@ -14,25 +14,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <receiver
-            android:name=".sessions_widget.SessionWidget2x2"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/sessions_widget_info" />
-        </receiver>
-
-        android:theme="@style/AppTheme"
-        tools:targetApi="31">
 
         <activity
-            android:launchMode="singleTop"
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTop">
             <nav-graph android:value="@navigation/navigation_graph" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,25 +32,23 @@
 
         <activity
             android:name=".control_widget.ControlWidgetConfiguration"
-            android:exported="true"
-            >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
+
         <provider
+            android:name=".content_providers.SessionsContentProvider"
             android:authorities="it.unipd.dei.esp2023.content_providers.SessionsContentProvider"
-            android:name=".content_providers.SessionsContentProvider">
-        </provider>
+            android:exported="true"
+            tools:ignore="ExportedContentProvider" />
 
         <provider
-            android:name=".SessionsContentProvider"
-            android:authorities="it.unipd.dei.esp2023.SessionsContentProvider"
-            android:exported="true"/>
-
-            android:authorities="it.unipd.dei.esp2023.content_providers.StatisticsContentProvider"
-            android:name=".content_providers.StatisticsContentProvider">
-        </provider>
+            android:name=".content_providers.StatisticsContentProvider"
+            android:authorities="it.unipd.dei.esp2023.content_providers.SessionsContentProvider"
+            android:exported="true"
+            tools:ignore="ExportedContentProvider" />
 
         <service
             android:name=".service.TimerService"
@@ -74,34 +58,49 @@
         <service
             android:name=".sessions_widget.SessionsWidgetService"
             android:enabled="true"
-            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
 
         <!-- Info on Google Assistant support can be found in shortcuts.xml -->
-        <receiver android:name=".statistics_widget.StatisticsAppWidgetProvider"
-            android:label="@string/stats_widget_label"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-                <action android:name="android.intent.action.TIME_SET"/>
-                <action android:name="android.intent.action.DATE_CHANGED"/>
-                <action android:name="com.google.assistant.appactions.widgets.PIN_APP_WIDGET" />
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/statistics_widget_info" />
-        </receiver>
-
         <receiver
-            android:name=".control_widget.ControlWidgetProvider"
-            android:label="@string/control_widget_label"
-            android:exported="true"
-            >
+            android:name=".statistics_widget.StatisticsAppWidgetProvider"
+            android:exported="false"
+            android:label="@string/stats_widget_label">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
                 <action android:name="com.google.assistant.appactions.widgets.PIN_APP_WIDGET" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/control_widget_info"/>
+                android:resource="@xml/statistics_widget_info" />
+        </receiver>
+
+        <receiver
+            android:name=".control_widget.ControlWidgetProvider"
+            android:exported="true"
+            android:label="@string/control_widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.google.assistant.appactions.widgets.PIN_APP_WIDGET" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/control_widget_info" />
+        </receiver>
+
+        <receiver
+            android:name=".sessions_widget.SessionsWidget"
+            android:exported="true"
+            android:label="@string/sessions_widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/sessions_widget_info" />
         </receiver>
 
     </application>

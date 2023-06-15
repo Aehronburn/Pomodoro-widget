@@ -8,11 +8,8 @@ import android.net.Uri
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import it.unipd.dei.esp2023.R
-import it.unipd.dei.esp2023.SessionsContentProvider
+import it.unipd.dei.esp2023.content_providers.SessionsContentProvider
 
-
-//Questa classe funge da Adapter tra il dataset, nel nostro caso un Cursore,
-//e la lista ListView del widget
 class SessionsRemoteViewsFactory(private val context: Context):
     RemoteViewsService.RemoteViewsFactory
 {
@@ -34,7 +31,7 @@ class SessionsRemoteViewsFactory(private val context: Context):
         sessionList = contentResolver.query(uri, null, null, null, null )
 
         val appWidgetManager = AppWidgetManager.getInstance(context)
-        val ids = appWidgetManager.getAppWidgetIds(ComponentName(context, SessionWidget2x2::class.java)) ?: intArrayOf(-1)
+        val ids = appWidgetManager.getAppWidgetIds(ComponentName(context, SessionsWidget::class.java)) ?: intArrayOf(-1)
         ids.forEach { id ->
             updateAppWidget(context, appWidgetManager, id)
         }
@@ -51,12 +48,9 @@ class SessionsRemoteViewsFactory(private val context: Context):
 
     override fun getViewAt(position: Int): RemoteViews {
         sessionList!!.moveToPosition(position)
-        //"id" column
         val id = sessionList!!.getLong(0)
-        //"name" column
         val name = sessionList!!.getString(1)
 
-        //Equivalente del viewHolder
         val remoteViews = RemoteViews(context.packageName, R.layout.widget_list_item)
         remoteViews.setTextViewText(R.id.widget_list_item_text, name)
 
@@ -65,7 +59,7 @@ class SessionsRemoteViewsFactory(private val context: Context):
         its extras and pass the name of the current session
          */
 
-        val intent = SessionWidget2x2.intent
+        val intent = SessionsWidget.intent
         intent.putExtra("name", name)
         intent.putExtra("id", id)
         remoteViews.setOnClickFillInIntent(R.id.widget_list_item_text, intent)

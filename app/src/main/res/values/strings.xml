@@ -87,8 +87,7 @@
     <string name="control_config_switch_text">Transparent background</string>
     <string name="control_config_button_text">Add widget</string>
 
-
-    <string name="appwidget_title">Sessions</string>
-    <string name="add_widget">Add widget</string>
-    <string name="app_widget_description">Widget 2x2 che mostra la Lista di Sessioni</string>
+    <string name="sessions_widget_title">Sessions</string>
+    <string name="sessions_widget_description">Monitor the list of sessions</string>
+    <string name="sessions_widget_label">Sessions list</string>
 </resources>
