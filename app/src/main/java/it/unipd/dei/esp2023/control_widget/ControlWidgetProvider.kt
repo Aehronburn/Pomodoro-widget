@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.os.*
 import android.util.SizeF
 import android.widget.RemoteViews
+import androidx.core.content.edit
 import com.google.assistant.appactions.widgets.AppActionsWidgetExtension
 import it.unipd.dei.esp2023.MainActivity
 import it.unipd.dei.esp2023.R
@@ -74,6 +75,18 @@ class ControlWidgetProvider(): AppWidgetProvider() {
             updateControlWidget(context, appWidgetManager, id)
         }
     }
+
+    override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
+        if(context==null) return
+        val prefs: SharedPreferences = context.getSharedPreferences(ControlWidgetConfiguration.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+        appWidgetIds?.forEach {
+            widgetId ->
+            prefs.edit(true){
+                remove(ControlWidgetConfiguration.SHARED_PREFERENCES_KEY_PREFIX + widgetId)
+            }
+        }
+        super.onDeleted(context, appWidgetIds)
+    }
     private fun updateControlWidget(context: Context, appWidgetManager: AppWidgetManager, widgetId: Int){
         if(status == CURRENT_STATUS_MISSING){
             /*
@@ -83,7 +96,9 @@ class ControlWidgetProvider(): AppWidgetProvider() {
             * */
             return
         }
-        val prefs: SharedPreferences = context.getSharedPreferences(ControlWidgetConfiguration.SHARED_PREFERENCES_NAME, Context.MODE_MULTI_PROCESS) // TODO fix warning
+        val prefs: SharedPreferences = context.getSharedPreferences(ControlWidgetConfiguration.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+        //println("Letto pref ${prefs.getBoolean(ControlWidgetConfiguration.SHARED_PREFERENCES_KEY_PREFIX + widgetId, false)}")
+
         val transparentBackground: Boolean = prefs.getBoolean(ControlWidgetConfiguration.SHARED_PREFERENCES_KEY_PREFIX + widgetId, ControlWidgetConfiguration.DEFAULT_TRANSPARENCY_VALUE)
         if(status == CURRENT_STATUS_IDLE){
             if(!appWidgetManager.getAppWidgetOptions(widgetId).getString(AppActionsWidgetExtension.EXTRA_APP_ACTIONS_BII).isNullOrBlank()){

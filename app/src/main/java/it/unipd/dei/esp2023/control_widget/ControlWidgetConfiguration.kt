@@ -1,5 +1,6 @@
 package it.unipd.dei.esp2023.control_widget
 
+import android.annotation.SuppressLint
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
@@ -16,6 +17,11 @@ class ControlWidgetConfiguration : AppCompatActivity() {
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
     private var toggleSwitch: MaterialSwitch? = null
 
+    /*
+    * Commit must be used in pace of apply for saving shared preferences since settings must be read,
+    * immediately after they are written, outside of the main thread
+    * */
+    @SuppressLint("ApplySharedPref")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_control_widget_configuration)
@@ -38,23 +44,25 @@ class ControlWidgetConfiguration : AppCompatActivity() {
 
         toggleSwitch = findViewById(R.id.transparentBgSwitch)
         findViewById<MaterialButton>(R.id.addWidgetBtn).setOnClickListener{
-            val prefs = getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_MULTI_PROCESS) // TODO fix warning
+            val prefs = getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE)
             val editor = prefs.edit()
             editor.putBoolean(SHARED_PREFERENCES_KEY_PREFIX + appWidgetId, toggleSwitch?.isChecked?:DEFAULT_TRANSPARENCY_VALUE)
-            editor.apply()
+            editor.commit()
 
             val addWidgetResult = Intent()
             addWidgetResult.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
             setResult(RESULT_OK, addWidgetResult)
+
+            // https://stackoverflow.com/a/14991479
+            val intent = Intent(
+                AppWidgetManager.ACTION_APPWIDGET_UPDATE, null, this,
+                ControlWidgetProvider::class.java
+            )
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, intArrayOf(appWidgetId))
+            sendBroadcast(intent)
+
             finish()
         }
-        // https://stackoverflow.com/a/14991479
-        val intent = Intent(
-            AppWidgetManager.ACTION_APPWIDGET_UPDATE, null, this,
-            ControlWidgetProvider::class.java
-        )
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, intArrayOf(appWidgetId))
-        sendBroadcast(intent)
     }
 
     companion object {
