@@ -19,7 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import it.unipd.dei.esp2023.MainViewModel
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.database.TaskExt
-import it.unipd.dei.esp2023.widget.SessionWidget2x2
+import it.unipd.dei.esp2023.sessions_widget.SessionWidget2x2
 
 class SessionDetailsFragment : Fragment() {
     private val sessionDetailsViewModel: SessionDetailsViewModel by viewModels()

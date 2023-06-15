@@ -3,11 +3,9 @@ package it.unipd.dei.esp2023.sessions
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -18,8 +16,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
 import it.unipd.dei.esp2023.database.Session
 import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
-import it.unipd.dei.esp2023.widget.SessionWidget2x2
-import it.unipd.dei.esp2023.widget.updateAppWidget
+import it.unipd.dei.esp2023.sessions_widget.SessionWidget2x2
+import it.unipd.dei.esp2023.sessions_widget.updateAppWidget
 
 class SessionsFragment : Fragment() {
 
@@ -69,34 +67,16 @@ class SessionsFragment : Fragment() {
             appWidgetManager.notifyAppWidgetViewDataChanged(
                 appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionWidget2x2::class.java)),
                 R.id.SessionWidget2x2ID_List)
-            /*
-            WARNING
-            LiveData keeps a strong reference to the observer and the owner as long
-             as the given LifecycleOwner is not destroyed.
-             When it is destroyed, LiveData removes references
-              to the observer & the owner.
-             */
         }
 
         return view
     }
 
     override fun onResume() {
-        /*
-            It's necessary to update the widget from here and NOT erroneously from the observation
-            of the LiveData. In fact when user swipes up the app and kills it, the LiveData gets
-            destroyed and eventually recreated on another launch. However, it's not the same
-            so Widget doesn't get updated anymore
-        */
         val appWidgetManager = AppWidgetManager.getInstance(context)
         val ids = appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionWidget2x2::class.java)) ?: intArrayOf(-1)
-        try {
-            val id = ids[0]
-            val context = requireContext()
-            updateAppWidget(context, appWidgetManager, id)
-        }
-        catch(e: ArrayIndexOutOfBoundsException){
-            Toast.makeText(context, "Try my awesome Widget", Toast.LENGTH_SHORT).show()
+        ids.forEach { id ->
+            updateAppWidget(requireContext(), appWidgetManager, id)
         }
 
         super.onResume()

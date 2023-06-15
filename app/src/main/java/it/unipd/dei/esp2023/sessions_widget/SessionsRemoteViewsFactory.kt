@@ -16,13 +16,12 @@ import it.unipd.dei.esp2023.SessionsContentProvider
 class SessionsRemoteViewsFactory(private val context: Context):
     RemoteViewsService.RemoteViewsFactory
 {
-    private var myCursor: Cursor? = null
-
+    private var sessionList: Cursor? = null
 
     override fun onCreate() {
         val contentResolver = context.contentResolver
         val uri =  Uri.parse(SessionsContentProvider.URI)
-        myCursor = contentResolver.query(uri, null, null, null, null )
+        sessionList = contentResolver.query(uri, null, null, null, null )
     }
 
     /*
@@ -32,34 +31,30 @@ class SessionsRemoteViewsFactory(private val context: Context):
     override fun onDataSetChanged() {
         val contentResolver = context.contentResolver
         val uri =  Uri.parse(SessionsContentProvider.URI)
-        myCursor = contentResolver.query(uri, null, null, null, null )
+        sessionList = contentResolver.query(uri, null, null, null, null )
 
         val appWidgetManager = AppWidgetManager.getInstance(context)
         val ids = appWidgetManager.getAppWidgetIds(ComponentName(context, SessionWidget2x2::class.java)) ?: intArrayOf(-1)
-        try {
-            val id = ids[0]
+        ids.forEach { id ->
             updateAppWidget(context, appWidgetManager, id)
         }
-        catch(e: ArrayIndexOutOfBoundsException){
-        }
-
     }
 
     override fun onDestroy() {
-        //Log.d("my_debug", "destroyed factory")
+        sessionList?.close()
         return
     }
 
     override fun getCount(): Int {
-        return myCursor!!.count
+        return sessionList!!.count
     }
 
     override fun getViewAt(position: Int): RemoteViews {
-        myCursor!!.moveToPosition(position)
+        sessionList!!.moveToPosition(position)
         //"id" column
-        val id = myCursor!!.getLong(0)
+        val id = sessionList!!.getLong(0)
         //"name" column
-        val name = myCursor!!.getString(1)
+        val name = sessionList!!.getString(1)
 
         //Equivalente del viewHolder
         val remoteViews = RemoteViews(context.packageName, R.layout.widget_list_item)
