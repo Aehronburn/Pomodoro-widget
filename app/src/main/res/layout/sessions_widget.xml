@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@android:id/background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -33,7 +34,9 @@
             android:background="@drawable/rounded_corner_control"
             android:clipToOutline="true"
             android:contentDescription="@string/create_new_session_fab_text"
-            android:src="@drawable/add_fill0_wght400_grad0_opsz48" />
+            android:src="@drawable/add_fill0_wght400_grad0_opsz48"
+            android:tint="?android:attr/textColorPrimary"
+            tools:ignore="UseAppTint" />
 
     </LinearLayout>
 
