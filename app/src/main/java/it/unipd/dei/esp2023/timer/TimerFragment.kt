@@ -138,9 +138,9 @@ class TimerFragment : Fragment() {
                 mService?.send(
                     Message.obtain(
                         null, TimerService.ACTION_CREATE_TIMER, timerType,
-                        TimerService.ONE_MINUTE_IN_MS.toInt() * viewModel.currentPhase.value!!.duration / 10
+                        TimerService.ONE_MINUTE_IN_MS.toInt() * viewModel.currentPhase.value!!.duration
                     )
-                ) //TODO REMOVE duration / 10, used only for quick testing
+                )
             } else {
                 val action =
                     if (viewModel.isPlaying.value == true) TimerService.ACTION_PAUSE_TIMER else TimerService.ACTION_START_TIMER

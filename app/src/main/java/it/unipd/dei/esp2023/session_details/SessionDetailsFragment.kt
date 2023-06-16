@@ -71,7 +71,6 @@ class SessionDetailsFragment : Fragment() {
         startSessionFAB.setOnClickListener {
             val bundle = Bundle()
             bundle.putLong(ARGUMENT_SESSION_ID, argumentSessionId)
-            //TODO implement navigation
             findNavController().navigate(R.id.action_sessionDetails_to_timerFragment, bundle)
         }
 

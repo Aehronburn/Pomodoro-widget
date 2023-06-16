@@ -17,7 +17,7 @@ class SessionsWidget : AppWidgetProvider() {
         const val INTENT_ACTION_ITEM_CLICK = "clicking_item"
         const val INTENT_EXTRA_SESSION_NAME = "name"
         const val INTENT_EXTRA_SESSION_ID = "id"
-        lateinit var intent: Intent // TODO questo intent messo qui è un po' sus
+        lateinit var intent: Intent
     }
 
     override fun onUpdate(
