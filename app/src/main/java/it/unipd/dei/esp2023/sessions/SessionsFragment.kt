@@ -19,7 +19,6 @@ import com.google.android.material.transition.MaterialFadeThrough
 import it.unipd.dei.esp2023.database.Session
 import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
 import it.unipd.dei.esp2023.sessions_widget.SessionsWidget
-import it.unipd.dei.esp2023.sessions_widget.updateAppWidget
 
 class SessionsFragment : Fragment() {
 
@@ -91,16 +90,6 @@ class SessionsFragment : Fragment() {
         }
 
         return view
-    }
-
-    override fun onResume() {
-        val appWidgetManager = AppWidgetManager.getInstance(context)
-        val ids = appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionsWidget::class.java))
-        ids.forEach { id ->
-            updateAppWidget(requireContext(), appWidgetManager, id)
-        }
-
-        super.onResume()
     }
 
     /*
