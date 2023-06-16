@@ -34,7 +34,7 @@ class StatisticsWidgetProvider : AppWidgetProvider() {
         appActionsWidgetExtension.updateWidget(widgetId)
     }
     override fun onReceive(context: Context?, intent: Intent) {
-        if((intent.action == Intent.ACTION_DATE_CHANGED || intent.action == Intent.ACTION_TIME_CHANGED) ||
+        if(intent.action == Intent.ACTION_DATE_CHANGED || intent.action == Intent.ACTION_TIME_CHANGED ||
             intent.getStringExtra(WIDGET_TYPE) == WIDGET_TYPE_STATS) {
             val ids = AppWidgetManager.getInstance(context).getAppWidgetIds(ComponentName(context!!, StatisticsWidgetProvider::class.java))
             onUpdate(context, AppWidgetManager.getInstance(context), ids)
