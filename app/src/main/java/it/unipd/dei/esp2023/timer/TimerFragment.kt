@@ -166,6 +166,7 @@ class TimerFragment : Fragment() {
                     arrayOf(Manifest.permission.POST_NOTIFICATIONS),
                     12345
                 )
+
         val intent = Intent(context, TimerService::class.java)
         context?.bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
 
@@ -176,17 +177,19 @@ class TimerFragment : Fragment() {
     }
 
     /*
-    unsubscribe from service "mailing list" and unbind from service
+    unbind from service if the fragment is destroyed but not because of a configuration change
      */
-    override fun onDestroyView() {
-        super.onDestroyView()
-        mService?.send(Message.obtain(null, TimerService.ACTION_DELETE_TIMER, 0, 0))
-
-        val unsubscribeMsg = Message.obtain(null, TimerService.ACTION_UNSUBSCRIBE, 0, 0)
-        unsubscribeMsg.replyTo = viewModel.replyMessenger
-        mService?.send(unsubscribeMsg)
-
-        context?.unbindService(mConnection)
+    override fun onDestroy() {
+        if(!requireActivity().isChangingConfigurations) {
+            if(bound) {
+                mService?.send(Message.obtain(null, TimerService.ACTION_DELETE_TIMER, 0, 0))
+                val unsubscribeMsg = Message.obtain(null, TimerService.ACTION_UNSUBSCRIBE, 0, 0)
+                unsubscribeMsg.replyTo = viewModel.replyMessenger
+                mService?.send(unsubscribeMsg)
+                context?.unbindService(mConnection)
+            }
+        }
+        super.onDestroy()
     }
 
     /** Messenger for communicating with the service.  */
