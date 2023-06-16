@@ -46,7 +46,7 @@
 
         <provider
             android:name=".content_providers.StatisticsContentProvider"
-            android:authorities="it.unipd.dei.esp2023.content_providers.SessionsContentProvider"
+            android:authorities="it.unipd.dei.esp2023.content_providers.StatisticsContentProvider"
             android:exported="true"
             tools:ignore="ExportedContentProvider" />
 
