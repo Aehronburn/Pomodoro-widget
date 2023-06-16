@@ -13,6 +13,7 @@ import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.control_widget.ControlWidgetProvider
 import it.unipd.dei.esp2023.settings.SettingsFragment
 import it.unipd.dei.esp2023.statistics_widget.StatisticsWidgetProvider
+import kotlin.math.roundToInt
 
 class TimerService : Service() {
 
@@ -24,7 +25,6 @@ class TimerService : Service() {
     private var lastInitialDuration: Long = DEFAULT_DURATION_FOR_TIMER_TYPE(TIMER_TYPE_POMODORO)
     private var timerType: Int = 0
     private var remainingTimerMs: Long = 0
-    // private var boundMessengersList: MutableList<Messenger> = mutableListOf<Messenger>() //TODO mettere set invece di list
     private var boundFragmentMessenger: Messenger? = null
     /*
         From Jared's reply to https://stackoverflow.com/a/25821942:
@@ -97,15 +97,15 @@ class TimerService : Service() {
             else -> getString(R.string.pomodoro_duration_title)
         }
     }
-    private fun createNotification(): Notification { // TODO mettere round come in control widget
+    private fun createNotification(): Notification {
         return notificationBuilder
             .setContentTitle(if (isCompleted) getString(R.string.service_notification_title_completed) else getString(R.string.service_notification_title))
             .setContentText(
                 if (isCompleted) (getString(R.string.service_notification_text_progress_completed, getTimerTypeString())) else (getString(
                     if(isPaused) R.string.service_notification_text_progress_paused else R.string.service_notification_text_progress_running,
                     getTimerTypeString(),
-                    remainingTimerMs/ONE_MINUTE_IN_MS,
-                    (remainingTimerMs%ONE_MINUTE_IN_MS)/1000
+                    (remainingTimerMs/ONE_MINUTE_IN_MS.toFloat()).roundToInt(),
+                    ((remainingTimerMs%ONE_MINUTE_IN_MS)/1000.0).roundToInt()
                 ))
             )
             .setSmallIcon(R.mipmap.ic_launcher)

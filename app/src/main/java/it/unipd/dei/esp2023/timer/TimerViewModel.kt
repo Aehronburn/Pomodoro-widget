@@ -15,6 +15,7 @@ import it.unipd.dei.esp2023.database.PomodoroDatabaseDao
 import it.unipd.dei.esp2023.database.TaskExt
 import it.unipd.dei.esp2023.service.TimerService
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 class TimerViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -143,10 +144,10 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
     /*
     updates remaining time to be displayed in textviews and progress bar
      */
-    fun setRemainingTime(remainingTimeMillis: Int) { // TODO mettere round come in control widget
-        _remainingMinutes.value = remainingTimeMillis / TimerService.ONE_MINUTE_IN_MS.toInt()
-        _remainingSeconds.value = (remainingTimeMillis % TimerService.ONE_MINUTE_IN_MS.toInt()) / ONE_SECOND_IN_MS
-        _progress.value = remainingTimeMillis / ONE_SECOND_IN_MS
+    fun setRemainingTime(remainingTimeMillis: Int) {
+        _remainingMinutes.value = (remainingTimeMillis / TimerService.ONE_MINUTE_IN_MS.toFloat()).roundToInt()
+        _remainingSeconds.value = ((remainingTimeMillis % TimerService.ONE_MINUTE_IN_MS.toInt()) / ONE_SECOND_IN_MS.toFloat()).roundToInt()
+        _progress.value = (remainingTimeMillis / ONE_SECOND_IN_MS.toFloat()).roundToInt()
     }
 
     /*
