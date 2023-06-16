@@ -19,6 +19,7 @@
         android:backgroundTintMode="multiply"
         android:clipToOutline="true"
         android:padding="@dimen/margin_small"
+        android:text="?ListItemText"
         tools:text="list item"/>
 
 </LinearLayout>

@@ -90,4 +90,7 @@
     <string name="sessions_widget_title">Sessions</string>
     <string name="sessions_widget_description">Monitor the list of sessions</string>
     <string name="sessions_widget_label">Sessions list</string>
+
+    <string name="sessions_widget_fake_item_1">algorithms</string>
+    <string name="sessions_widget_fake_item_2">ai</string>
 </resources>

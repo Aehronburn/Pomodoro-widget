@@ -43,4 +43,17 @@
         <item name="cornerSize">12dp</item>
     </style>
 
+
+    <style name="AppWidgetTheme.ListItem">
+        <item name="ListItemText" />
+    </style>
+
+    <style name="AppWidgetTheme.ListItem.Preview1">
+        <item name="ListItemText">@string/sessions_widget_fake_item_1</item>
+    </style>
+
+    <style name="AppWidgetTheme.ListItem.Preview2">
+        <item name="ListItemText">@string/sessions_widget_fake_item_2</item>
+    </style>
+
 </resources>

@@ -1,14 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@android:id/background"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:theme="@style/AppWidgetTheme">
 
-    <include
-        layout="@layout/sessions_widget"
+    <LinearLayout
+        android:id="@+id/sessions_widget_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="72dp" />
+        android:layout_height="wrap_content"
+        android:clipToOutline="true"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_medium_small">
 
-    <include layout="@layout/sessions_widget_list_item"/>
+        <TextView
+            android:id="@+id/sessions_widget_title"
+            style="@style/TextAppearance.Material3.TitleLarge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="5"
+            android:contentDescription="@string/sessions_widget_title"
+            android:text="@string/sessions_widget_title" />
+
+        <ImageButton
+            android:id="@+id/create_new_session_widget_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="end"
+            android:background="@drawable/rounded_corner_control"
+            android:clipToOutline="true"
+            android:contentDescription="@string/create_new_session_fab_text"
+            android:src="@drawable/add_fill0_wght400_grad0_opsz48"
+            android:tint="?android:attr/textColorPrimary"
+            tools:ignore="UseAppTint" />
+
+    </LinearLayout>
+
+    <include layout="@layout/sessions_widget_list_item" android:theme="@style/AppWidgetTheme.ListItem.Preview1"/>
+    <include layout="@layout/sessions_widget_list_item" android:theme="@style/AppWidgetTheme.ListItem.Preview2"/>
+
+
 </LinearLayout>
