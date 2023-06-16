@@ -21,7 +21,7 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
 
     private val database: PomodoroDatabaseDao
 
-    init{
+    init {
         database = PomodoroDatabase.getInstance(application).databaseDao
     }
 
@@ -41,8 +41,8 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
      */
     private val phasesList: MutableList<Phase> = mutableListOf()
 
-    private val _remainingMinutes =  MutableLiveData<Int>(0)
-    val remainingMinutes : LiveData<Int>
+    private val _remainingMinutes = MutableLiveData<Int>(0)
+    val remainingMinutes: LiveData<Int>
         get() = _remainingMinutes
 
     private val _remainingSeconds = MutableLiveData<Int>(0)
@@ -90,15 +90,32 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
      */
     fun createPhasesList(list: List<TaskExt>) {
         var longBreakCounter = 0
-        for(item in list) {
-            for(i in item.completedPomodoros until item.totalPomodoros) {
-                phasesList.add(Phase(item.id, String.format("%s (%d / %d)", item.name, i + 1, item.totalPomodoros), pomodoroDuration))
-                if(longBreakCounter == LONG_BREAK_FREQUENCY) {
-                    phasesList.add(Phase(TimerService.TIMER_TYPE_LONG_BREAK.toLong(), LONG_BREAK_NAME, longBreakDuration))
+        for (item in list) {
+            for (i in item.completedPomodoros until item.totalPomodoros) {
+                phasesList.add(
+                    Phase(
+                        item.id,
+                        String.format("%s (%d / %d)", item.name, i + 1, item.totalPomodoros),
+                        pomodoroDuration
+                    )
+                )
+                if (longBreakCounter == LONG_BREAK_FREQUENCY) {
+                    phasesList.add(
+                        Phase(
+                            TimerService.TIMER_TYPE_LONG_BREAK.toLong(),
+                            LONG_BREAK_NAME,
+                            longBreakDuration
+                        )
+                    )
                     longBreakCounter = 0
-                }
-                else {
-                    phasesList.add(Phase(TimerService.TIMER_TYPE_SHORT_BREAK.toLong(), SHORT_BREAK_NAME, shortBreakDuration))
+                } else {
+                    phasesList.add(
+                        Phase(
+                            TimerService.TIMER_TYPE_SHORT_BREAK.toLong(),
+                            SHORT_BREAK_NAME,
+                            shortBreakDuration
+                        )
+                    )
                     longBreakCounter++
                 }
             }
@@ -106,9 +123,10 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
         /*
         remove eventual short or long break if it is the last phase
          */
-        if(phasesList.isNotEmpty()) {
-            if(phasesList.last().taskId != TimerService.TIMER_TYPE_SHORT_BREAK.toLong() ||
-                phasesList.last().taskId != TimerService.TIMER_TYPE_LONG_BREAK.toLong())
+        if (phasesList.isNotEmpty()) {
+            if (phasesList.last().taskId != TimerService.TIMER_TYPE_SHORT_BREAK.toLong() ||
+                phasesList.last().taskId != TimerService.TIMER_TYPE_LONG_BREAK.toLong()
+            )
                 phasesList.removeLast()
             updateCurrentPhase()
         } else {
@@ -145,8 +163,10 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
     updates remaining time to be displayed in textviews and progress bar
      */
     fun setRemainingTime(remainingTimeMillis: Int) {
-        _remainingMinutes.value = (remainingTimeMillis / TimerService.ONE_MINUTE_IN_MS.toFloat()).roundToInt()
-        _remainingSeconds.value = ((remainingTimeMillis % TimerService.ONE_MINUTE_IN_MS.toInt()) / ONE_SECOND_IN_MS.toFloat()).roundToInt()
+        _remainingMinutes.value =
+            (remainingTimeMillis / TimerService.ONE_MINUTE_IN_MS.toFloat()).roundToInt()
+        _remainingSeconds.value =
+            ((remainingTimeMillis % TimerService.ONE_MINUTE_IN_MS.toInt()) / ONE_SECOND_IN_MS.toFloat()).roundToInt()
         _progress.value = (remainingTimeMillis / ONE_SECOND_IN_MS.toFloat()).roundToInt()
     }
 
@@ -157,14 +177,20 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
         /*
         insert pomodoro into database if it is not a short or long break
          */
-        if(_currentPhase.value!!.taskId != TimerService.TIMER_TYPE_LONG_BREAK.toLong() &&
-            _currentPhase.value!!.taskId != TimerService.TIMER_TYPE_SHORT_BREAK.toLong()) {
+        if (_currentPhase.value!!.taskId != TimerService.TIMER_TYPE_LONG_BREAK.toLong() &&
+            _currentPhase.value!!.taskId != TimerService.TIMER_TYPE_SHORT_BREAK.toLong()
+        ) {
             viewModelScope.launch {
-                database.insertCompletedPomodoro(CompletedPomodoro(task = _currentPhase.value!!.taskId, duration = _currentPhase.value!!.duration))
+                database.insertCompletedPomodoro(
+                    CompletedPomodoro(
+                        task = _currentPhase.value!!.taskId,
+                        duration = _currentPhase.value!!.duration
+                    )
+                )
             }
         }
         phasesList.removeFirst()
-        if(phasesList.isEmpty()) {
+        if (phasesList.isEmpty()) {
             _isPhasesListCompleted.value = true
         } else {
             updateCurrentPhase()
@@ -175,22 +201,25 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
     internal class HandlerReplyMsg(val viewModel: TimerViewModel) : Handler(Looper.myLooper()!!) {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
-            when(msg.what){
+            when (msg.what) {
                 TimerService.PROGRESS_STATUS_RUNNING -> {
                     viewModel.setIsStarted(true)
                     viewModel.setIsPlaying(true)
                     viewModel.setRemainingTime(msg.arg1)
                 }
+
                 TimerService.PROGRESS_STATUS_DELETED -> {
                     viewModel.setIsStarted(false)
                     viewModel.setIsPlaying(false)
                     viewModel.setRemainingTime(msg.arg1)
                 }
+
                 TimerService.PROGRESS_STATUS_PAUSED -> {
                     viewModel.setIsStarted(true)
                     viewModel.setIsPlaying(false)
                     viewModel.setRemainingTime(msg.arg1)
                 }
+
                 TimerService.PROGRESS_STATUS_COMPLETED -> {
                     viewModel.setIsStarted(false)
                     viewModel.setIsPlaying(false)

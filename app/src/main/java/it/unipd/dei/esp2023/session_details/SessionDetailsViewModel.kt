@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class SessionDetailsViewModel(app: Application): AndroidViewModel(app) {
+class SessionDetailsViewModel(app: Application) : AndroidViewModel(app) {
     /*
     * Powered by: Ufficio complicazione affari semplici
     *
@@ -35,17 +35,24 @@ class SessionDetailsViewModel(app: Application): AndroidViewModel(app) {
 
     private var pomodoroDuration: Int
     private val myDao: PomodoroDatabaseDao
-    init{
+
+    init {
         myDao = PomodoroDatabase.getInstance(app).databaseDao
-        pomodoroDuration = app.getSharedPreferences(MainActivity::class.simpleName, Context.MODE_PRIVATE).getInt(SettingsFragment.POMODORO_DURATION, SettingsFragment.DEFAULT_POMODORO_DURATION)
+        pomodoroDuration =
+            app.getSharedPreferences(MainActivity::class.simpleName, Context.MODE_PRIVATE).getInt(
+                SettingsFragment.POMODORO_DURATION,
+                SettingsFragment.DEFAULT_POMODORO_DURATION
+            )
     }
 
     var initialized: Boolean = false
 
     var sessionId: Long = 0
-        get() { return field }
-        set(id: Long) {
-            if(!initialized){
+        get() {
+            return field
+        }
+        set(id) {
+            if (!initialized) {
                 field = id
                 sessionInfo = myDao.getSessionFromId(sessionId)
                 initProgressInfo()
@@ -61,8 +68,10 @@ class SessionDetailsViewModel(app: Application): AndroidViewModel(app) {
     val timeProgress: LiveData<Pair<Int, Int>>
         get() = _timeProgress
 
-    private var _taskCountProgress: MutableLiveData<Pair<Int, Int>> = MutableLiveData<Pair<Int, Int>>()
-    private var _pomCountProgress: MutableLiveData<Pair<Int, Int>> = MutableLiveData<Pair<Int, Int>>()
+    private var _taskCountProgress: MutableLiveData<Pair<Int, Int>> =
+        MutableLiveData<Pair<Int, Int>>()
+    private var _pomCountProgress: MutableLiveData<Pair<Int, Int>> =
+        MutableLiveData<Pair<Int, Int>>()
     private var _timeProgress: MutableLiveData<Pair<Int, Int>> = MutableLiveData<Pair<Int, Int>>()
 
     private var totalTasks: Int? = null
@@ -78,48 +87,50 @@ class SessionDetailsViewModel(app: Application): AndroidViewModel(app) {
     private lateinit var cp: LiveData<Int> //completed pomodoros
     private lateinit var cm: LiveData<Int> //completed minutes
 
-    fun deleteTask(t: TaskExt): Unit{
-        val toDelete: Task = Task(t.id, t.session, t.name, t.taskOrder, t.totalPomodoros)
-        viewModelScope.launch(Dispatchers.IO){
+    fun deleteTask(t: TaskExt) {
+        val toDelete = Task(t.id, t.session, t.name, t.taskOrder, t.totalPomodoros)
+        viewModelScope.launch(Dispatchers.IO) {
             myDao.deleteTask(toDelete)
         }
     }
-    fun newTask(name: String, totPom: Int): Unit{
+
+    fun newTask(name: String, totPom: Int) {
         println(sessionId)
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             myDao.insertLastTask(sessionId, name, totPom)
         }
     }
+
     // TODO posso assicurarmi che runni solo un observer alla volta e evitare che i !! facciano danni?
     // I !! non dovrebbero fare danni perchè una volta che viene dato un valore alle variabili non tornano più
     // a null, ma magari un minimo di semaforo non farebbe comunque male, dunno
-    private val ttObserver: Observer<Int> = Observer<Int>{
+    private val ttObserver: Observer<Int> = Observer<Int> {
         totalTasks = it
-        if(completedTasks!=null){
-            _taskCountProgress.value = Pair<Int, Int>(completedTasks!!,totalTasks!!)
-        }
-    }
-    private val ctObserver: Observer<Int> = Observer<Int>{
-        completedTasks = it
-        if(totalTasks!=null){
+        if (completedTasks != null) {
             _taskCountProgress.value = Pair<Int, Int>(completedTasks!!, totalTasks!!)
         }
     }
-    private val tpObserver: Observer<Int> = Observer<Int>{
-        totalPom = it
-        if(completedPom!=null){
-            _pomCountProgress.value = Pair<Int, Int>(completedPom!!,totalPom!!)
-            updateTimeProgress()
+    private val ctObserver: Observer<Int> = Observer<Int> {
+        completedTasks = it
+        if (totalTasks != null) {
+            _taskCountProgress.value = Pair<Int, Int>(completedTasks!!, totalTasks!!)
         }
     }
-    private val cpObserver: Observer<Int> = Observer<Int>{
-        completedPom = it
-        if(totalPom!=null){
+    private val tpObserver: Observer<Int> = Observer<Int> {
+        totalPom = it
+        if (completedPom != null) {
             _pomCountProgress.value = Pair<Int, Int>(completedPom!!, totalPom!!)
             updateTimeProgress()
         }
     }
-    private val cmObserver: Observer<Int> = Observer<Int>{
+    private val cpObserver: Observer<Int> = Observer<Int> {
+        completedPom = it
+        if (totalPom != null) {
+            _pomCountProgress.value = Pair<Int, Int>(completedPom!!, totalPom!!)
+            updateTimeProgress()
+        }
+    }
+    private val cmObserver: Observer<Int> = Observer<Int> {
         completedMinutes = it
         updateTimeProgress()
     }
@@ -127,13 +138,14 @@ class SessionDetailsViewModel(app: Application): AndroidViewModel(app) {
     // totalMinutes dipende da cm, tp e cp
     // per non replicare il codice dell'emissione del dato timeprogress faccio questa funzione
     // da chiamare ogni volta che ciascuno dei tre dati cambia
-    private fun updateTimeProgress(): Unit{
-        if(completedMinutes != null && totalPom != null && completedPom != null){
-            val totalMinutes = completedMinutes!!+(totalPom!!-completedPom!!)*pomodoroDuration
+    private fun updateTimeProgress() {
+        if (completedMinutes != null && totalPom != null && completedPom != null) {
+            val totalMinutes = completedMinutes!! + (totalPom!! - completedPom!!) * pomodoroDuration
             _timeProgress.value = Pair<Int, Int>(completedMinutes!!, totalMinutes)
         }
     }
-    private fun initProgressInfo(): Unit{
+
+    private fun initProgressInfo() {
         tt = myDao.getTotalTaskCountFromSessionId(sessionId)
         ct = myDao.getCompletedTaskCountFromSessionId(sessionId)
         tp = myDao.getTotalPomodorosCountFromSessionId(sessionId)
@@ -150,19 +162,19 @@ class SessionDetailsViewModel(app: Application): AndroidViewModel(app) {
     override fun onCleared() {
         super.onCleared()
         // https://kotlinlang.org/docs/whatsnew12.html#check-whether-a-lateinit-var-is-initialized
-        if(tt.isInitialized && tt.hasObservers()){
+        if (tt.isInitialized && tt.hasObservers()) {
             tt.removeObserver(ttObserver)
         }
-        if(ct.isInitialized && ct.hasObservers()){
+        if (ct.isInitialized && ct.hasObservers()) {
             ct.removeObserver(ctObserver)
         }
-        if(tp.isInitialized && tp.hasObservers()){
+        if (tp.isInitialized && tp.hasObservers()) {
             tp.removeObserver(tpObserver)
         }
-        if(cp.isInitialized && cp.hasObservers()){
+        if (cp.isInitialized && cp.hasObservers()) {
             cp.removeObserver(cpObserver)
         }
-        if(cm.isInitialized && cm.hasObservers()){
+        if (cm.isInitialized && cm.hasObservers()) {
             cm.removeObserver(cmObserver)
         }
     }

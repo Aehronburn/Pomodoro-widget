@@ -26,7 +26,8 @@ class SettingsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding: FragmentSettingsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
+        val binding: FragmentSettingsBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
@@ -44,9 +45,24 @@ class SettingsFragment : Fragment() {
         loading settings that were last saved in SharedPreferences
          */
         val preferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
-        viewModel.setPomodoroDuration(preferences.getInt(POMODORO_DURATION, DEFAULT_POMODORO_DURATION))
-        viewModel.setShortBreakDuration(preferences.getInt(SHORT_BREAK_DURATION, DEFAULT_SHORT_BREAK_DURATION))
-        viewModel.setLongBreakDuration(preferences.getInt(LONG_BREAK_DURATION, DEFAULT_LONG_BREAK_DURATION))
+        viewModel.setPomodoroDuration(
+            preferences.getInt(
+                POMODORO_DURATION,
+                DEFAULT_POMODORO_DURATION
+            )
+        )
+        viewModel.setShortBreakDuration(
+            preferences.getInt(
+                SHORT_BREAK_DURATION,
+                DEFAULT_SHORT_BREAK_DURATION
+            )
+        )
+        viewModel.setLongBreakDuration(
+            preferences.getInt(
+                LONG_BREAK_DURATION,
+                DEFAULT_LONG_BREAK_DURATION
+            )
+        )
 
         return binding.root
     }
@@ -64,12 +80,14 @@ class SettingsFragment : Fragment() {
             )
         }
         viewModel.shortBreakDuration.value?.let {
-            preferencesEditor.putInt(SHORT_BREAK_DURATION,
+            preferencesEditor.putInt(
+                SHORT_BREAK_DURATION,
                 it
             )
         }
         viewModel.longBreakDuration.value?.let {
-            preferencesEditor.putInt(LONG_BREAK_DURATION,
+            preferencesEditor.putInt(
+                LONG_BREAK_DURATION,
                 it
             )
         }

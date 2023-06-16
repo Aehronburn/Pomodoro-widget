@@ -9,7 +9,7 @@ import java.time.LocalDate
 data class Session(
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name="id")
+    @ColumnInfo(name = "id")
     var id: Long = 0L,
 
     @ColumnInfo(name = "name")

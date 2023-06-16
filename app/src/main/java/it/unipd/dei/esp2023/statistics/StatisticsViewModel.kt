@@ -59,6 +59,7 @@ class StatisticsViewModel(application: Application) : AndroidViewModel(applicati
     fun setTodayCompleted(completed: Int) {
         _todayCompleted.value = completed
     }
+
     fun setTodayFocusTime(focusTime: Int) {
         _todayFocusTime.value = timeToHhMm(focusTime)
     }
@@ -66,6 +67,7 @@ class StatisticsViewModel(application: Application) : AndroidViewModel(applicati
     fun setWeekCompleted(completed: Int) {
         _weekCompleted.value = completed
     }
+
     fun setWeekFocusTime(focusTime: Int) {
         _weekFocusTime.value = timeToHhMm(focusTime)
     }
@@ -73,6 +75,7 @@ class StatisticsViewModel(application: Application) : AndroidViewModel(applicati
     fun setMonthCompleted(completed: Int) {
         _monthCompleted.value = completed
     }
+
     fun setMonthFocusTime(focusTime: Int) {
         _monthFocusTime.value = timeToHhMm(focusTime)
     }
@@ -83,7 +86,7 @@ class StatisticsViewModel(application: Application) : AndroidViewModel(applicati
         /*
         Given time in minutes, returns the number of hours and number of minutes that do not make into an hour
          */
-        fun timeToHhMm(time: Int) : Pair<Int, Int> {
+        fun timeToHhMm(time: Int): Pair<Int, Int> {
             return Pair(time / 60, time % 60)
         }
     }

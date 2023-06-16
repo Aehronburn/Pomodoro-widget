@@ -113,7 +113,8 @@ class StatisticsFragment : Fragment() {
             binding.monthChart.setModel(entries)
 
             val max = eachDayCompletedPomodoros.maxOfOrNull { entry -> entry.y.toInt() } ?: 0
-            (binding.monthChart.startAxis as VerticalAxis<AxisPosition.Vertical.Start>).maxLabelCount = max
+            (binding.monthChart.startAxis as VerticalAxis<AxisPosition.Vertical.Start>).maxLabelCount =
+                max
         }
 
         binding.viewModel = viewModel
@@ -123,7 +124,7 @@ class StatisticsFragment : Fragment() {
     }
 
     companion object {
-        fun getProductivityImage(numCompleted: Int) : Int {
+        fun getProductivityImage(numCompleted: Int): Int {
             return when (numCompleted) {
                 0 -> R.drawable.pomodoro_artwork_sleeping
                 in 1..4 -> R.drawable.pomodoro_artwork_working

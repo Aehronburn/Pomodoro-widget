@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- https://stackoverflow.com/questions/3185103/how-to-define-a-circle-shape-in-an-android-xml-drawable-file -->
+<?xml version="1.0" encoding="utf-8"?><!-- https://stackoverflow.com/questions/3185103/how-to-define-a-circle-shape-in-an-android-xml-drawable-file -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval"
-    >
+    android:shape="oval">
     <stroke
         android:width="3dp"
-        android:color="@color/pomodoro_progress_indicator"/>
+        android:color="@color/pomodoro_progress_indicator" />
     <size
         android:width="120dp"
-        android:height="120dp"/>
+        android:height="120dp" />
 </shape>

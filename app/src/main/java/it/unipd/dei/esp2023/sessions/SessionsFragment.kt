@@ -48,8 +48,9 @@ class SessionsFragment : Fragment() {
         /*
         Spawns a dialog requesting user to input data for creating a new session
          */
-        val createNewSessionFAB = view.findViewById<ExtendedFloatingActionButton>(R.id.create_new_session_fab)
-        createNewSessionFAB.setOnClickListener{
+        val createNewSessionFAB =
+            view.findViewById<ExtendedFloatingActionButton>(R.id.create_new_session_fab)
+        createNewSessionFAB.setOnClickListener {
             CreateNewSessionDialog().show(childFragmentManager, "CreateNewSessionDialog")
         }
 
@@ -58,15 +59,19 @@ class SessionsFragment : Fragment() {
         /*
         grid column count depends on the screen size. Default 1, for screen widths >= 400dp column count is 2
          */
-        sessionsRecyclerView.layoutManager = StaggeredGridLayoutManager(resources.getInteger(R.integer.grid_column_count), VERTICAL)
-        val adapter = SessionsAdapter(onItemClickedListener = onItemClickedListener, onItemDeletedListener = onItemDeletedListener)
+        sessionsRecyclerView.layoutManager =
+            StaggeredGridLayoutManager(resources.getInteger(R.integer.grid_column_count), VERTICAL)
+        val adapter = SessionsAdapter(
+            onItemClickedListener = onItemClickedListener,
+            onItemDeletedListener = onItemDeletedListener
+        )
         sessionsRecyclerView.adapter = adapter
 
         /*
         shrinks the extended fab when scrolled
          */
         sessionsRecyclerView.setOnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
-            if(scrollY > oldScrollY) createNewSessionFAB.shrink()
+            if (scrollY > oldScrollY) createNewSessionFAB.shrink()
             else createNewSessionFAB.extend()
         }
 
@@ -85,8 +90,14 @@ class SessionsFragment : Fragment() {
              */
             val appWidgetManager = AppWidgetManager.getInstance(requireContext())
             appWidgetManager.notifyAppWidgetViewDataChanged(
-                appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionsWidget::class.java)),
-                R.id.sessions_widget_list)
+                appWidgetManager.getAppWidgetIds(
+                    ComponentName(
+                        requireContext(),
+                        SessionsWidget::class.java
+                    )
+                ),
+                R.id.sessions_widget_list
+            )
         }
 
         return view
@@ -95,7 +106,7 @@ class SessionsFragment : Fragment() {
     /*
     callback function called when user opens the session's details
      */
-    private val onItemClickedListener: (Session) -> Unit =  { session ->
+    private val onItemClickedListener: (Session) -> Unit = { session ->
         val bundle = Bundle()
         bundle.putLong(SessionDetailsFragment.ARGUMENT_SESSION_ID, session.id)
         bundle.putString(SessionDetailsFragment.ARGUMENT_SESSION_NAME, session.name)

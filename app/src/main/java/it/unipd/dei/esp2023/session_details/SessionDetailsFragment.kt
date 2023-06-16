@@ -44,7 +44,7 @@ class SessionDetailsFragment : Fragment() {
     ): View? {
         val argumentSessionId: Long? = arguments?.getLong(ARGUMENT_SESSION_ID)
 
-        require(argumentSessionId!=null)
+        require(argumentSessionId != null)
         val sessionId: Long = argumentSessionId
         sessionDetailsViewModel.sessionId = sessionId
         val view = inflater.inflate(R.layout.fragment_session_details, container, false)
@@ -55,15 +55,15 @@ class SessionDetailsFragment : Fragment() {
 
         // https://developer.android.com/guide/topics/resources/string-resource#formatting-strings
         val tCountTV = view.findViewById<TextView>(R.id.sessionTaskCountTV)
-        sessionDetailsViewModel.taskCountProgress.observe(viewLifecycleOwner){
+        sessionDetailsViewModel.taskCountProgress.observe(viewLifecycleOwner) {
             tCountTV.text = getString(R.string.task_count_session_details, it.first, it.second)
         }
         val pCountTV = view.findViewById<TextView>(R.id.sessionPomodoroCountTV)
-        sessionDetailsViewModel.pomCountProgress.observe(viewLifecycleOwner){
+        sessionDetailsViewModel.pomCountProgress.observe(viewLifecycleOwner) {
             pCountTV.text = getString(R.string.pom_count_session_details, it.first, it.second)
         }
         val timeTV = view.findViewById<TextView>(R.id.sessionTimeTV)
-        sessionDetailsViewModel.timeProgress.observe(viewLifecycleOwner){
+        sessionDetailsViewModel.timeProgress.observe(viewLifecycleOwner) {
             timeTV.text = getString(R.string.time_progress_session_details, it.first, it.second)
         }
 
@@ -81,12 +81,11 @@ class SessionDetailsFragment : Fragment() {
         }
 
         recyclerView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if(scrollY > oldScrollY) startSessionFAB.shrink()
+            if (scrollY > oldScrollY) startSessionFAB.shrink()
             else startSessionFAB.extend()
         }
 
-        mainViewModel.getTaskExtList(sessionId).observe(viewLifecycleOwner){
-                list ->
+        mainViewModel.getTaskExtList(sessionId).observe(viewLifecycleOwner) { list ->
             theAdapter.setTaskList(list)
             (view.parent as ViewGroup).doOnPreDraw {
                 startPostponedEnterTransition()
@@ -101,8 +100,14 @@ class SessionDetailsFragment : Fragment() {
              */
             val myAppWidgetManager = AppWidgetManager.getInstance(requireContext())
             myAppWidgetManager.notifyAppWidgetViewDataChanged(
-                myAppWidgetManager.getAppWidgetIds(ComponentName(requireContext(), SessionsWidget::class.java)),
-                R.id.sessions_widget_list)
+                myAppWidgetManager.getAppWidgetIds(
+                    ComponentName(
+                        requireContext(),
+                        SessionsWidget::class.java
+                    )
+                ),
+                R.id.sessions_widget_list
+            )
         }
 
         return view

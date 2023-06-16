@@ -9,7 +9,7 @@
         android:id="@+id/sessions_fragment"
         android:name="it.unipd.dei.esp2023.sessions.SessionsFragment"
         android:label="Sessions"
-        tools:layout="@layout/fragment_sessions" >
+        tools:layout="@layout/fragment_sessions">
         <action
             android:id="@+id/action_sessions_fragment_to_sessionDetails"
             app:destination="@id/sessionDetails" />
@@ -18,7 +18,7 @@
         android:id="@+id/statistics_fragment"
         android:name="it.unipd.dei.esp2023.statistics.StatisticsFragment"
         android:label="Statistics"
-        tools:layout="@layout/fragment_statistics" >
+        tools:layout="@layout/fragment_statistics">
         <action
             android:id="@+id/action_statistics_fragment_to_sessions_fragment"
             app:destination="@id/sessions_fragment"
@@ -52,7 +52,7 @@
         android:id="@+id/timer_fragment"
         android:name="it.unipd.dei.esp2023.timer.TimerFragment"
         android:label="Timer"
-        tools:layout="@layout/fragment_timer" >
+        tools:layout="@layout/fragment_timer">
         <argument
             android:name="sessionId"
             app:argType="long" />
@@ -61,5 +61,5 @@
         android:id="@+id/create_new_session_dialog"
         android:name="it.unipd.dei.esp2023.sessions.CreateNewSessionDialog"
         android:label="create_new_session_dialog"
-        tools:layout="@layout/fragment_dialog_create_new_session"/>
+        tools:layout="@layout/fragment_dialog_create_new_session" />
 </navigation>

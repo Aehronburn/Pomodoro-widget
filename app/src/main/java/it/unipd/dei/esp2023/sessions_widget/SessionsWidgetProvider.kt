@@ -38,7 +38,10 @@ class SessionsWidget : AppWidgetProvider() {
         /*
         * if the update was referring to ControlWidgetProvider do nothing
         */
-        if(intent.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE && intent.getStringExtra(ControlWidgetProvider.WIDGET_TYPE) == ControlWidgetProvider.WIDGET_TYPE_CONTROL) {
+        if (intent.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE && intent.getStringExtra(
+                ControlWidgetProvider.WIDGET_TYPE
+            ) == ControlWidgetProvider.WIDGET_TYPE_CONTROL
+        ) {
             return
         }
         if (intent.action == INTENT_ACTION_ITEM_CLICK) {
@@ -55,7 +58,7 @@ class SessionsWidget : AppWidgetProvider() {
                 .setArguments(bundle)
                 .createPendingIntent()
                 .send()
-        }else{
+        } else {
             super.onReceive(context, intent)
         }
     }
@@ -101,7 +104,8 @@ fun createRemoteViews(
         createSessionPendingIntent
     )
 
-    val mainAppPendingIntent = NavDeepLinkBuilder(context).setGraph(R.navigation.navigation_graph).setDestination(R.id.sessions_fragment).createPendingIntent()
+    val mainAppPendingIntent = NavDeepLinkBuilder(context).setGraph(R.navigation.navigation_graph)
+        .setDestination(R.id.sessions_fragment).createPendingIntent()
     remoteViews.setOnClickPendingIntent(R.id.sessions_widget_title_bar, mainAppPendingIntent)
 
     appWidgetManager.updateAppWidget(appWidgetId, remoteViews)

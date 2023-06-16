@@ -43,7 +43,8 @@ class TimerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding: FragmentTimerBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_timer, container, false)
+        val binding: FragmentTimerBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_timer, container, false)
 
         val sessionId = requireArguments().getLong(SessionDetailsFragment.ARGUMENT_SESSION_ID)
 
@@ -52,9 +53,18 @@ class TimerFragment : Fragment() {
          */
         val preferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
         viewModel.setPhasesDurations(
-            preferences.getInt(SettingsFragment.POMODORO_DURATION, SettingsFragment.DEFAULT_POMODORO_DURATION),
-            preferences.getInt(SettingsFragment.SHORT_BREAK_DURATION, SettingsFragment.DEFAULT_SHORT_BREAK_DURATION),
-            preferences.getInt(SettingsFragment.LONG_BREAK_DURATION, SettingsFragment.DEFAULT_LONG_BREAK_DURATION)
+            preferences.getInt(
+                SettingsFragment.POMODORO_DURATION,
+                SettingsFragment.DEFAULT_POMODORO_DURATION
+            ),
+            preferences.getInt(
+                SettingsFragment.SHORT_BREAK_DURATION,
+                SettingsFragment.DEFAULT_SHORT_BREAK_DURATION
+            ),
+            preferences.getInt(
+                SettingsFragment.LONG_BREAK_DURATION,
+                SettingsFragment.DEFAULT_LONG_BREAK_DURATION
+            )
         )
 
         /*
@@ -63,7 +73,7 @@ class TimerFragment : Fragment() {
         and if a break was due, now the it is lost and the user must complete another pomodoro before
          */
         activityViewModel.getTaskExtList(sessionId).observe(viewLifecycleOwner) {
-            if(!viewModel.isInitialized) {
+            if (!viewModel.isInitialized) {
                 viewModel.createPhasesList(it)
                 viewModel.isInitialized = true
             }
@@ -89,38 +99,51 @@ class TimerFragment : Fragment() {
         viewModel.currentPhase.observe(viewLifecycleOwner) {
             val trackColor: Int?
             val indicatorColor: Int?
-            when(it.taskId) {
+            when (it.taskId) {
                 TimerService.TIMER_TYPE_SHORT_BREAK.toLong() -> {
                     trackColor = R.color.short_break_progress_track
                     indicatorColor = R.color.short_break_progress_indicator
                 }
+
                 TimerService.TIMER_TYPE_LONG_BREAK.toLong() -> {
                     trackColor = R.color.long_break_progress_track
                     indicatorColor = R.color.long_break_progress_indicator
                 }
+
                 else -> {
                     trackColor = R.color.pomodoro_progress_track
                     indicatorColor = R.color.pomodoro_progress_indicator
                 }
             }
-            binding.phaseProgressIndicator.trackColor = resources.getColor(trackColor, context?.theme)
-            binding.phaseProgressIndicator.setIndicatorColor(resources.getColor(indicatorColor, context?.theme))
+            binding.phaseProgressIndicator.trackColor =
+                resources.getColor(trackColor, context?.theme)
+            binding.phaseProgressIndicator.setIndicatorColor(
+                resources.getColor(
+                    indicatorColor,
+                    context?.theme
+                )
+            )
         }
 
         binding.toggleStartPlayPause.setOnClickListener {
             /*
             we use the same button for either creating(and start) timer and play/pause. We distinguish using a boolean variable isStarted
              */
-            if(viewModel.isStarted.value == false) {
-                val timerType = when(viewModel.currentPhase.value!!.taskId) {
+            if (viewModel.isStarted.value == false) {
+                val timerType = when (viewModel.currentPhase.value!!.taskId) {
                     TimerService.TIMER_TYPE_SHORT_BREAK.toLong() -> TimerService.TIMER_TYPE_SHORT_BREAK
                     TimerService.TIMER_TYPE_LONG_BREAK.toLong() -> TimerService.TIMER_TYPE_LONG_BREAK
                     else -> TimerService.TIMER_TYPE_POMODORO
                 }
-                mService?.send(Message.obtain(null, TimerService.ACTION_CREATE_TIMER, timerType,
-                    TimerService.ONE_MINUTE_IN_MS.toInt() * viewModel.currentPhase.value!!.duration / 10)) //TODO REMOVE duration / 10, used only for quick testing
+                mService?.send(
+                    Message.obtain(
+                        null, TimerService.ACTION_CREATE_TIMER, timerType,
+                        TimerService.ONE_MINUTE_IN_MS.toInt() * viewModel.currentPhase.value!!.duration / 10
+                    )
+                ) //TODO REMOVE duration / 10, used only for quick testing
             } else {
-                val action = if(viewModel.isPlaying.value == true) TimerService.ACTION_PAUSE_TIMER else TimerService.ACTION_START_TIMER
+                val action =
+                    if (viewModel.isPlaying.value == true) TimerService.ACTION_PAUSE_TIMER else TimerService.ACTION_START_TIMER
                 mService?.send(Message.obtain(null, action))
             }
         }
@@ -132,9 +155,17 @@ class TimerFragment : Fragment() {
         /*
         ask for notification permission(Android 13) and bind to service
          */
-        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU)
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) != PermissionChecker.PERMISSION_GRANTED)
-                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.POST_NOTIFICATIONS), 12345)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU)
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PermissionChecker.PERMISSION_GRANTED
+            )
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    12345
+                )
         val intent = Intent(context, TimerService::class.java)
         context?.bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
 

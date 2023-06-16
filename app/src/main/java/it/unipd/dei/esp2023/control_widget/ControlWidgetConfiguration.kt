@@ -43,7 +43,7 @@ class ControlWidgetConfiguration : AppCompatActivity() {
         }
 
         toggleSwitch = findViewById(R.id.transparentBgSwitch)
-        findViewById<MaterialButton>(R.id.addWidgetBtn).setOnClickListener{
+        findViewById<MaterialButton>(R.id.addWidgetBtn).setOnClickListener {
             val prefs = getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE)
             val editor = prefs.edit()
             editor.putBoolean(SHARED_PREFERENCES_KEY_PREFIX + appWidgetId, toggleSwitch.isChecked)

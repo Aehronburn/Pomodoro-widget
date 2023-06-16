@@ -11,9 +11,8 @@ import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.content_providers.SessionsContentProvider
 import kotlinx.coroutines.*
 
-class SessionsRemoteViewsFactory(private val context: Context):
-    RemoteViewsService.RemoteViewsFactory
-{
+class SessionsRemoteViewsFactory(private val context: Context) :
+    RemoteViewsService.RemoteViewsFactory {
     private var sessionList: Cursor? = null
 
     override fun onCreate() {
@@ -22,12 +21,12 @@ class SessionsRemoteViewsFactory(private val context: Context):
         }
     }
 
-    private suspend fun loadSessionList(){
-        withContext(Dispatchers.IO){
+    private suspend fun loadSessionList() {
+        withContext(Dispatchers.IO) {
             launch {
                 val contentResolver = context.contentResolver
-                val uri =  Uri.parse(SessionsContentProvider.URI)
-                sessionList = contentResolver.query(uri, null, null, null, null )
+                val uri = Uri.parse(SessionsContentProvider.URI)
+                sessionList = contentResolver.query(uri, null, null, null, null)
             }
         }
     }
@@ -38,7 +37,7 @@ class SessionsRemoteViewsFactory(private val context: Context):
      */
     override fun onDataSetChanged() {
         val contentResolver = context.contentResolver
-        val uri =  Uri.parse(SessionsContentProvider.URI)
+        val uri = Uri.parse(SessionsContentProvider.URI)
         /*
         * From onDataSetChanged documentation
         *
@@ -47,10 +46,11 @@ class SessionsRemoteViewsFactory(private val context: Context):
         *
         * Hence, coroutines are not used here
         * */
-        sessionList = contentResolver.query(uri, null, null, null, null )
+        sessionList = contentResolver.query(uri, null, null, null, null)
 
         val appWidgetManager = AppWidgetManager.getInstance(context)
-        val ids = appWidgetManager.getAppWidgetIds(ComponentName(context, SessionsWidget::class.java))
+        val ids =
+            appWidgetManager.getAppWidgetIds(ComponentName(context, SessionsWidget::class.java))
         ids.forEach { id ->
             updateAppWidget(context, appWidgetManager, id)
         }

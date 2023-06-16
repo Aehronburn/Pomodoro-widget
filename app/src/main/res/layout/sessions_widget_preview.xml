@@ -38,8 +38,13 @@
 
     </LinearLayout>
 
-    <include layout="@layout/sessions_widget_list_item" android:theme="@style/AppWidgetTheme.ListItem.Preview1"/>
-    <include layout="@layout/sessions_widget_list_item" android:theme="@style/AppWidgetTheme.ListItem.Preview2"/>
+    <include
+        layout="@layout/sessions_widget_list_item"
+        android:theme="@style/AppWidgetTheme.ListItem.Preview1" />
+
+    <include
+        layout="@layout/sessions_widget_list_item"
+        android:theme="@style/AppWidgetTheme.ListItem.Preview2" />
 
 
 </LinearLayout>
