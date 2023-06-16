@@ -122,10 +122,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_small"
                 android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_medium"
                 android:contentDescription="@string/long_break_duration_slider_content_label"
                 android:value="@{viewModel.longBreakDuration}"
                 android:valueFrom="@dimen/duration_minutes_minimum"
                 android:valueTo="@dimen/duration_minutes_maximum"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/lunch_icon"
                 app:layout_constraintTop_toBottomOf="@+id/long_break_duration_text" />

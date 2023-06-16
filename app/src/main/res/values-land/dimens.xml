@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="circular_progress_indicator_size">250dp</dimen>
+    <dimen name="statistics_cardview_width">400dp</dimen>
 </resources>
