@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="it.unipd.dei.esp2023.timer.TimerViewModel" />
+
+        <import type="android.view.View" />
+
+        <import type="androidx.core.content.ContextCompat" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".timer.TimerFragment">
+
+
+        <TextView
+            android:id="@+id/minutes_left_text"
+            style="@style/TextAppearance.Material3.DisplayLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/timer_seconds_left(viewModel.remainingMinutes)}"
+            android:visibility="@{viewModel.isPhasesListCompleted == true ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/phase_progress_indicator"
+            app:layout_constraintEnd_toEndOf="@+id/phase_progress_indicator"
+            app:layout_constraintStart_toStartOf="@+id/phase_progress_indicator"
+            app:layout_constraintTop_toTopOf="@+id/phase_progress_indicator"
+            app:layout_constraintVertical_bias="0.3"
+            tools:text="24" />
+
+
+        <TextView
+            android:id="@+id/seconds_left_text"
+            style="@style/TextAppearance.Material3.DisplayMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/timer_seconds_left(viewModel.remainingSeconds)}"
+            android:visibility="@{viewModel.isPhasesListCompleted == true ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="@+id/minutes_left_text"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/minutes_left_text"
+            app:layout_constraintTop_toBottomOf="@+id/minutes_left_text"
+            tools:text="59" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/phase_progress_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.isPhasesListCompleted == true ? View.INVISIBLE : View.VISIBLE}"
+            app:indicatorDirectionCircular="clockwise"
+            app:indicatorSize="@dimen/circular_progress_indicator_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:trackCornerRadius="@dimen/progress_bar_indicator_radius"
+            app:trackThickness="@dimen/progress_bar_track_thickness" />
+
+        <TextView
+            android:id="@+id/current_task_text"
+            style="@style/TextAppearance.Material3.HeadlineLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.currentPhase.name}"
+            android:visibility="@{viewModel.isPhasesListCompleted == true ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintBottom_toTopOf="@+id/toggle_start_play_pause"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="task 1" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/toggle_start_play_pause"
+            style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contentDescription="@string/toggle_start_play_pause_description"
+            android:src="@{viewModel.isPlaying == true ? @drawable/pause_fill1_wght400_grad0_opsz48 : @drawable/play_arrow_fill1_wght400_grad0_opsz48}"
+            android:visibility="@{viewModel.isPhasesListCompleted == true ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintBottom_toTopOf="@+id/reset_button"
+            app:layout_constraintEnd_toEndOf="@+id/current_task_text"
+            app:layout_constraintStart_toStartOf="@+id/current_task_text"
+            app:layout_constraintTop_toBottomOf="@+id/current_task_text" />
+
+        <Button
+            android:id="@+id/reset_button"
+            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/reset_timer_button_description"
+            android:visibility="@{viewModel.isStarted == true ? View.VISIBLE : View.INVISIBLE}"
+            app:icon="@drawable/restart_alt_fill0_wght400_grad0_opsz48"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/toggle_start_play_pause"
+            app:layout_constraintStart_toStartOf="@+id/toggle_start_play_pause"
+            app:layout_constraintTop_toBottomOf="@+id/toggle_start_play_pause" />
+
+        <TextView
+            android:id="@+id/all_tasks_completed_text"
+            style="@style/TextAppearance.Material3.DisplayLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/all_tasks_completed_description"
+            android:textAlignment="center"
+            android:visibility="@{viewModel.isPhasesListCompleted == true ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="invisible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
