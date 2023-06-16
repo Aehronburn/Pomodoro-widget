@@ -70,10 +70,10 @@ interface PomodoroDatabaseDao {
     @Query("SELECT * FROM completed_pomodoro WHERE id = :pomodoroId")
     fun getCompletedPomodoroFromId(pomodoroId: Long): LiveData<CompletedPomodoro>
 
-    @Query("SELECT * FROM session ORDER BY creation_date DESC")
+    @Query("SELECT * FROM session ORDER BY creation_date DESC, id DESC")
     fun getSessionList(): LiveData<List<Session>>
 
-    @Query("SELECT * FROM session ORDER BY creation_date ASC")
+    @Query("SELECT * FROM session ORDER BY creation_date ASC, id ASC")
     fun getSessionListASC(): LiveData<List<Session>>
 
     @Query("SELECT * FROM task WHERE session = :sessionId ORDER BY task_order, id ASC")
@@ -208,7 +208,9 @@ interface PomodoroDatabaseDao {
      is intended to be returned by a contentProvider and not to be used by a UI component.
      Column id is renamed to _id because the CursorAdapter of a ListView requires it.
      */
-    @Query("SELECT id as _id, name, creation_date FROM session ORDER BY creation_date ASC")
+    @Query("SELECT id as _id, name, creation_date FROM session ORDER BY creation_date ASC, id ASC")
+    fun getSessionListASCCursor(): Cursor
+    @Query("SELECT id as _id, name, creation_date FROM session ORDER BY creation_date DESC, id DESC")
     fun getSessionListCursor(): Cursor
 
     @Query(

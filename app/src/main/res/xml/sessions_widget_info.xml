@@ -4,7 +4,7 @@
     android:initialLayout="@layout/sessions_widget"
     android:minWidth="110dp"
     android:minHeight="110dp"
-    android:previewImage="@drawable/example_appwidget_preview"
+    android:previewImage="@drawable/sessions_widget_preview_img"
 
     android:maxResizeHeight="600dp"
     android:maxResizeWidth="700dp"
