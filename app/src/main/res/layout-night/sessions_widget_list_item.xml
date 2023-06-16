@@ -15,7 +15,7 @@
         android:layout_marginTop="@dimen/margin_medium_small"
         android:layout_marginEnd="@dimen/margin_small"
         android:background="@drawable/rounded_corners"
-        android:backgroundTint="@android:color/system_accent1_50"
+        android:backgroundTint="@android:color/system_accent1_700"
         android:backgroundTintMode="multiply"
         android:clipToOutline="true"
         android:padding="@dimen/margin_small"

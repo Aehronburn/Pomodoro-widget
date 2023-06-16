@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:clipToOutline="true"
         android:orientation="horizontal"
-        android:padding="@dimen/margin_small">
+        android:padding="@dimen/margin_medium_small">
 
         <TextView
             android:id="@+id/sessions_widget_title"
@@ -42,7 +42,7 @@
         android:id="@+id/sessions_widget_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_small"
         android:clipToOutline="true"
-        android:padding="@dimen/margin_small" />
+        android:divider="@null"
+        android:paddingBottom="@dimen/margin_medium_small" />
 </LinearLayout>
