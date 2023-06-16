@@ -9,11 +9,15 @@ import android.os.Bundle
 import android.widget.RemoteViews
 import androidx.navigation.NavDeepLinkBuilder
 import it.unipd.dei.esp2023.R
+import it.unipd.dei.esp2023.control_widget.ControlWidgetProvider
 import it.unipd.dei.esp2023.session_details.SessionDetailsFragment
 
 class SessionsWidget : AppWidgetProvider() {
     companion object {
-        lateinit var intent: Intent
+        const val INTENT_ACTION_ITEM_CLICK = "clicking_item"
+        const val INTENT_EXTRA_SESSION_NAME = "name"
+        const val INTENT_EXTRA_SESSION_ID = "id"
+        lateinit var intent: Intent // TODO questo intent messo qui è un po' sus
     }
 
     override fun onUpdate(
@@ -31,10 +35,15 @@ class SessionsWidget : AppWidgetProvider() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        super.onReceive(context, intent)
-        if (intent.action == "clicking_item") {
-            val name = intent.getStringExtra("name")
-            val id = intent.getLongExtra("id", -1L)
+        /*
+        * if the update was referring to ControlWidgetProvider do nothing
+        */
+        if(intent.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE && intent.getStringExtra(ControlWidgetProvider.WIDGET_TYPE) == ControlWidgetProvider.WIDGET_TYPE_CONTROL) {
+            return
+        }
+        if (intent.action == INTENT_ACTION_ITEM_CLICK) {
+            val name = intent.getStringExtra(INTENT_EXTRA_SESSION_NAME)
+            val id = intent.getLongExtra(INTENT_EXTRA_SESSION_ID, -1L)
 
             val bundle = Bundle()
             bundle.putLong(SessionDetailsFragment.ARGUMENT_SESSION_ID, id)
@@ -46,6 +55,8 @@ class SessionsWidget : AppWidgetProvider() {
                 .setArguments(bundle)
                 .createPendingIntent()
                 .send()
+        }else{
+            super.onReceive(context, intent)
         }
     }
 
@@ -73,7 +84,7 @@ fun createRemoteViews(
     )
 
     SessionsWidget.intent = Intent(context, SessionsWidget::class.java)
-    SessionsWidget.intent.action = "clicking_item"
+    SessionsWidget.intent.action = SessionsWidget.INTENT_ACTION_ITEM_CLICK
     val pendingIntent = PendingIntent.getBroadcast(
         context, 0, SessionsWidget.intent,
         PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
