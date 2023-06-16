@@ -6,15 +6,17 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(
-        tableName = "task",
-        foreignKeys = [
-            ForeignKey(entity = Session::class,
+    tableName = "task",
+    foreignKeys = [
+        ForeignKey(
+            entity = Session::class,
             parentColumns = ["id"],
             childColumns = ["session"],
             onDelete = ForeignKey.CASCADE,
-            onUpdate = ForeignKey.CASCADE)
-            ]
+            onUpdate = ForeignKey.CASCADE
         )
+    ]
+)
 data class Task(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
@@ -24,11 +26,11 @@ data class Task(
     var session: Long = 0L,
 
     @ColumnInfo(name = "name")
-    var name: String="",
+    var name: String = "",
 
     @ColumnInfo(name = "task_order")
-    var order: Int=0,
+    var order: Int = 0,
 
     @ColumnInfo(name = "total_pomodoros")
-    var totalPomodoros: Int=1,
+    var totalPomodoros: Int = 1,
 )

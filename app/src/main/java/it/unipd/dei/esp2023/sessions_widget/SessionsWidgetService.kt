@@ -5,7 +5,7 @@ import android.widget.RemoteViewsService
 
 
 //Questa classe è un Service che serve solo a ritornare la Factory
-class SessionsWidgetService: RemoteViewsService() {
+class SessionsWidgetService : RemoteViewsService() {
     override fun onGetViewFactory(intent: Intent?): RemoteViewsFactory {
         // TODO
         // mi pare vagamente che ci fosse qualche problema a usare applicationContext da qualche parte...

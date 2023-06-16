@@ -7,7 +7,7 @@ import android.net.Uri
 import it.unipd.dei.esp2023.database.PomodoroDatabase
 import it.unipd.dei.esp2023.database.PomodoroDatabaseDao
 
-class SessionsContentProvider: ContentProvider() {
+class SessionsContentProvider : ContentProvider() {
     lateinit var database: PomodoroDatabaseDao
 
     override fun onCreate(): Boolean {
@@ -22,7 +22,7 @@ class SessionsContentProvider: ContentProvider() {
         selectionArgs: Array<out String>?,
         sortOrder: String?
     ): Cursor {
-        if(uri != Uri.parse(URI)) {
+        if (uri != Uri.parse(URI)) {
             throw IllegalArgumentException()
         }
         return database.getSessionListCursor()
@@ -50,6 +50,7 @@ class SessionsContentProvider: ContentProvider() {
     }
 
     companion object {
-        const val URI = "content://it.unipd.dei.esp2023.content_providers.SessionsContentProvider/sessions"
+        const val URI =
+            "content://it.unipd.dei.esp2023.content_providers.SessionsContentProvider/sessions"
     }
 }

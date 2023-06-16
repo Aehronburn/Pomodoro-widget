@@ -10,10 +10,12 @@ import it.unipd.dei.esp2023.database.TaskExt
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val database: PomodoroDatabaseDao
-    init{
+
+    init {
         database = PomodoroDatabase.getInstance(application).databaseDao
     }
-    fun getTaskExtList(sessionId: Long):LiveData<List<TaskExt>>{
+
+    fun getTaskExtList(sessionId: Long): LiveData<List<TaskExt>> {
         return database.getTaskExtListFromSessionId(sessionId)
     }
 

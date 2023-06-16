@@ -25,7 +25,8 @@ class MainActivity : AppCompatActivity() {
          */
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController = navHostFragment.navController
 
         val bottomNavigationBarView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationBarView is visible only on the three main screens(Statistics, Sessions, Settings) and hidden everywhere else
          */
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            when(destination.id) {
+            when (destination.id) {
                 R.id.sessions_fragment -> bottomNavigationBarView.visibility = View.VISIBLE
                 R.id.settings_fragment -> bottomNavigationBarView.visibility = View.VISIBLE
                 R.id.statistics_fragment -> bottomNavigationBarView.visibility = View.VISIBLE

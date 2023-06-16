@@ -21,4 +21,6 @@ Refer to App Widget Documentation for margin information
 http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     -->
     <dimen name="widget_margin">0dp</dimen>
+    <dimen name="duration_minutes_minimum">1</dimen>
+    <dimen name="duration_minutes_maximum">30</dimen>
 </resources>

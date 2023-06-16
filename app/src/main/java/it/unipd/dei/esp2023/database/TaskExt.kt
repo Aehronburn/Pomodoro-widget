@@ -24,10 +24,10 @@ package it.unipd.dei.esp2023.database
 data class TaskExt(
     var id: Long = 0L,
     var session: Long = 0L,
-    var name: String="",
+    var name: String = "",
     // Ho dovuto cambiare il nome da 'order' a 'taskOrder' perchè, quando faccio la query, non posso usare 'order'
     // come nome di tabella. Room faceva questo cambiamento da solo quindi per Task non me ne dovevo preoccupare io
-    var taskOrder: Int=0,
-    var totalPomodoros: Int=1,
+    var taskOrder: Int = 0,
+    var totalPomodoros: Int = 1,
     var completedPomodoros: Int = 1
 )

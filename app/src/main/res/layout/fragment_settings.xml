@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="viewModel"
             type="it.unipd.dei.esp2023.settings.SettingsViewModel" />
@@ -38,16 +39,15 @@
 
         <com.google.android.material.slider.Slider
             android:id="@+id/pomodoro_duration_slider"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            style="@style/Widget.AppCompat.SeekBar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_medium"
             android:contentDescription="@string/pomodoro_duration_slider_content_label"
-            android:stepSize="1"
             android:value="@{viewModel.pomodoroDuration}"
-            android:valueFrom="1"
-            android:valueTo="10"
+            android:valueFrom="@dimen/duration_minutes_minimum"
+            android:valueTo="@dimen/duration_minutes_maximum"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/work_icon"
             app:layout_constraintTop_toBottomOf="@+id/pomodoro_duration_text" />
@@ -82,10 +82,9 @@
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_medium"
             android:contentDescription="@string/short_break_duration_slider_content_label"
-            android:stepSize="1"
             android:value="@{viewModel.shortBreakDuration}"
-            android:valueFrom="1"
-            android:valueTo="10"
+            android:valueFrom="@dimen/duration_minutes_minimum"
+            android:valueTo="@dimen/duration_minutes_maximum"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/coffee_icon"
             app:layout_constraintTop_toBottomOf="@+id/short_break_duration_text" />
@@ -114,16 +113,15 @@
 
         <com.google.android.material.slider.Slider
             android:id="@+id/long_break_duration_slider"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            style="@style/Widget.AppCompat.SeekBar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_medium"
             android:contentDescription="@string/long_break_duration_slider_content_label"
-            android:stepSize="1"
             android:value="@{viewModel.longBreakDuration}"
-            android:valueFrom="1"
-            android:valueTo="10"
+            android:valueFrom="@dimen/duration_minutes_minimum"
+            android:valueTo="@dimen/duration_minutes_maximum"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/lunch_icon"
             app:layout_constraintTop_toBottomOf="@+id/long_break_duration_text" />

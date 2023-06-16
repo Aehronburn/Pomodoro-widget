@@ -3,14 +3,16 @@
     <capability android:name="actions.intent.GET_SERVICE_OBSERVATION">
         <app-widget
             android:identifier="GET_SERVICE_OBSERVATION"
-            android:targetClass="it.unipd.dei.esp2023.statistics_widget.StatisticsAppWidgetProvider"
+            android:targetClass="it.unipd.dei.esp2023.statistics_widget.StatisticsWidgetProvider"
             android:targetPackage="it.unipd.dei.esp2023.statistics_widget">
-            <extra android:name="hasTts" android:value="true"/>
+            <extra
+                android:name="hasTts"
+                android:value="true" />
         </app-widget>
         <intent
             android:identifier="GET_SERVICE_OBSERVATION_FALLBACK"
             android:action="android.intent.action.VIEW"
-            android:targetClass="it.unipd.dei.esp2023.statistics_widget.StatisticsAppWidgetProvider"
+            android:targetClass="it.unipd.dei.esp2023.statistics_widget.StatisticsWidgetProvider"
             android:targetPackage="it.unipd.dei.esp2023.statistics_widget" />
     </capability>
     <capability android:name="actions.intent.GET_NEWS_ARTICLE">
@@ -19,7 +21,9 @@
             android:targetClass="it.unipd.dei.esp2023.control_widget.ControlWidgetProvider"
             android:targetPackage="it.unipd.dei.esp2023.control_widget">
 
-            <extra android:name="hasTts" android:value="true"/>
+            <extra
+                android:name="hasTts"
+                android:value="true" />
         </app-widget>
         <intent
             android:identifier="GET_NEWS_ARTICLE_FALLBACK"
@@ -29,49 +33,49 @@
     </capability>
 </shortcuts>
 
-<!--
+    <!--
 
-    About the Google Assistant widget integration for this app:
+        About the Google Assistant widget integration for this app:
 
-    Google Assistant support in this app is only for demonstrative purposes about Widget-Assistant
-    integration and is not fully functional. For a full Google Assistant integration for an app, the
-    minimum requirement that we are missing is a Google Developer account with access to Google Play
-    Console in order to register the app, even if the app is not published on the Play Store.
-    However, the current degree of Google Assistant support in this app is enough to demonstrate how
-    App Widgets can interact and be integrated with the assistant.
-    Of the three widgets in this App (Statistics, Control and Sessions List) the first two are made
-    accessible via Assistant trough two built-in intents: "Get service observation" for Statistics
-    and "Get news article" for Control. While the intent for statistics is really fitting, the one
-    chosen for the control widget is a bit of a stretch. This is because only the predefined BIIs
-    can be used for assistant integration (the full list of BIIs can be found here
-    https://developer.android.com/reference/app-actions/built-in-intents/bii-index ) and many of them
-    can't be used with widget (eg "Open app feature" and "Get thing" would probably have been a better
-    fit for the task of opening the control widget, but they don't support widgets as a response).
+        Google Assistant support in this app is only for demonstrative purposes about Widget-Assistant
+        integration and is not fully functional. For a full Google Assistant integration for an app, the
+        minimum requirement that we are missing is a Google Developer account with access to Google Play
+        Console in order to register the app, even if the app is not published on the Play Store.
+        However, the current degree of Google Assistant support in this app is enough to demonstrate how
+        App Widgets can interact and be integrated with the assistant.
+        Of the three widgets in this App (Statistics, Control and Sessions List) the first two are made
+        accessible via Assistant trough two built-in intents: "Get service observation" for Statistics
+        and "Get news article" for Control. While the intent for statistics is really fitting, the one
+        chosen for the control widget is a bit of a stretch. This is because only the predefined BIIs
+        can be used for assistant integration (the full list of BIIs can be found here
+        https://developer.android.com/reference/app-actions/built-in-intents/bii-index ) and many of them
+        can't be used with widget (eg "Open app feature" and "Get thing" would probably have been a better
+        fit for the task of opening the control widget, but they don't support widgets as a response).
 
-    To test this functionality on a device, the following conditions are required:
-    - both the device language and the Google Assistant language must be English (US)
-    - the user must be logged in with the same Google account in the device, in Google Assistant
-        and in Android Studio
-    - "Google Assistant" plugin must be installed in Android Studio
-    If, when opening this project, the "App Actions" tab is not shown in Android Studio even if the
-    plugin is installed, opening another project that supports App Actions ( for example the example
-    project used in the codelab https://codelabs.developers.google.com/codelabs/appactions-widgets )
-    and then reopening this project should solve the issue.
-    Once the "App Actions" tab is opened, the Preview should be created with the following parameters:
-    - App name: Pomodoro
-    - Locale: en
-    - Module: app.main
-    The part of the requirements in the "Create Preview" view about signing in to the Play Console with
-    the same account is not needed to test this functionality.
-    The "App Name" field can be chosen at will, but choosing names such as "Pomodoro Timer" can be
-    problematic since it can conflict with the default Timer functionality of the device.
-    After creating the preview, the option to select an intent and run the App Action is given. The
-    GET_SERVICE_OBSERVATION intent will show the Statistics widget, while GET_NEWS_ARTICLE will
-    open the Control widget (the news article choice is irrelevant since the parameter is ignored).
-    These App Actions can be triggered also directly from the device's Google Assistant: the command
-    "Check my Pomodoro usage" will show the Statistics widget with the corresponding TTS description.
-    The commands specified in the "Get news article" documentation don't seem to trigger the same
-    behaviour with the control widget and instead search the web for news on the web (documentation here
-    https://developer.android.com/reference/app-actions/built-in-intents/common/get-news-article#example-queries).
+        To test this functionality on a device, the following conditions are required:
+        - both the device language and the Google Assistant language must be English (US)
+        - the user must be logged in with the same Google account in the device, in Google Assistant
+            and in Android Studio
+        - "Google Assistant" plugin must be installed in Android Studio
+        If, when opening this project, the "App Actions" tab is not shown in Android Studio even if the
+        plugin is installed, opening another project that supports App Actions ( for example the example
+        project used in the codelab https://codelabs.developers.google.com/codelabs/appactions-widgets )
+        and then reopening this project should solve the issue.
+        Once the "App Actions" tab is opened, the Preview should be created with the following parameters:
+        - App name: Pomodoro
+        - Locale: en
+        - Module: app.main
+        The part of the requirements in the "Create Preview" view about signing in to the Play Console with
+        the same account is not needed to test this functionality.
+        The "App Name" field can be chosen at will, but choosing names such as "Pomodoro Timer" can be
+        problematic since it can conflict with the default Timer functionality of the device.
+        After creating the preview, the option to select an intent and run the App Action is given. The
+        GET_SERVICE_OBSERVATION intent will show the Statistics widget, while GET_NEWS_ARTICLE will
+        open the Control widget (the news article choice is irrelevant since the parameter is ignored).
+        These App Actions can be triggered also directly from the device's Google Assistant: the command
+        "Check my Pomodoro usage" will show the Statistics widget with the corresponding TTS description.
+        The commands specified in the "Get news article" documentation don't seem to trigger the same
+        behaviour with the control widget and instead search the web for news on the web (documentation here
+        https://developer.android.com/reference/app-actions/built-in-intents/common/get-news-article#example-queries).
 
--->
+    -->

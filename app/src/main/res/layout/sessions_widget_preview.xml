@@ -38,11 +38,13 @@
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/sessions_widget_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToOutline="true"
-        android:divider="@null"
-        android:paddingBottom="@dimen/margin_small" />
+    <include
+        layout="@layout/sessions_widget_list_item"
+        android:theme="@style/AppWidgetTheme.ListItem.Preview1" />
+
+    <include
+        layout="@layout/sessions_widget_list_item"
+        android:theme="@style/AppWidgetTheme.ListItem.Preview2" />
+
+
 </LinearLayout>

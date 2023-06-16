@@ -5,7 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Session::class, Task::class, CompletedPomodoro::class], version = 1, exportSchema = false)
+@Database(
+    entities = [Session::class, Task::class, CompletedPomodoro::class],
+    version = 1,
+    exportSchema = false
+)
 abstract class PomodoroDatabase : RoomDatabase() {
 
     abstract val databaseDao: PomodoroDatabaseDao
@@ -13,13 +17,17 @@ abstract class PomodoroDatabase : RoomDatabase() {
     companion object {
 
         @Volatile
-        private var INSTANCE : PomodoroDatabase? = null
+        private var INSTANCE: PomodoroDatabase? = null
 
-        fun getInstance(context: Context) : PomodoroDatabase {
+        fun getInstance(context: Context): PomodoroDatabase {
             synchronized(this) {
                 var instance = INSTANCE
-                if(instance == null) {
-                    instance = Room.databaseBuilder(context.applicationContext, PomodoroDatabase::class.java, "pomodoro_database").fallbackToDestructiveMigration().build()
+                if (instance == null) {
+                    instance = Room.databaseBuilder(
+                        context.applicationContext,
+                        PomodoroDatabase::class.java,
+                        "pomodoro_database"
+                    ).fallbackToDestructiveMigration().build()
                     INSTANCE = instance
                 }
                 return instance

@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:theme="@style/AppWidgetTheme"
-    >
+    android:theme="@style/AppWidgetTheme">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,6 +19,5 @@
         android:fontFamily="monospace"
         android:includeFontPadding="false"
         tools:text="00:00"
-        android:background="#00000000"
-        />
+        android:background="#00000000" />
 </RelativeLayout>

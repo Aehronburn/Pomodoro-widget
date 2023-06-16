@@ -36,12 +36,24 @@
         <item name="android:background">@android:color/system_accent2_50</item>
         <item name="android:textColorPrimary">@android:color/system_accent1_700</item>
         <item name="android:textColorSecondary">@android:color/system_accent1_700</item>
-
     </style>
 
     <style name="RoundedCornerImage">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>
+    </style>
+
+
+    <style name="AppWidgetTheme.ListItem">
+        <item name="ListItemText" />
+    </style>
+
+    <style name="AppWidgetTheme.ListItem.Preview1">
+        <item name="ListItemText">@string/sessions_widget_fake_item_1</item>
+    </style>
+
+    <style name="AppWidgetTheme.ListItem.Preview2">
+        <item name="ListItemText">@string/sessions_widget_fake_item_2</item>
     </style>
 
 </resources>

@@ -71,10 +71,14 @@ class CreateNewTaskDialog : DialogFragment() {
 
         val createButton = view.findViewById<Button>(R.id.create_task_button)
         createButton.setOnClickListener {
-            if(taskName.isNotEmpty() && pomodorosNumber != 0) {
+            if (taskName.isNotEmpty() && pomodorosNumber != 0) {
                 viewModel.newTask(taskName, pomodorosNumber)
             } else {
-                Toast.makeText(requireContext(), "Write a non empty name and/or a number greater than 0", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Write a non empty name and/or a number greater than 0",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
             dismiss()
         }

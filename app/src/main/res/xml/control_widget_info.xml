@@ -12,5 +12,4 @@
     android:widgetCategory="home_screen"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="0"
-    android:configure="it.unipd.dei.esp2023.control_widget.ControlWidgetConfiguration"
-    />
+    android:configure="it.unipd.dei.esp2023.control_widget.ControlWidgetConfiguration" />
