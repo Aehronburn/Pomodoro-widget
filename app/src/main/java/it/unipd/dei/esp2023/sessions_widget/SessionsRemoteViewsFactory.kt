@@ -9,6 +9,7 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.content_providers.SessionsContentProvider
+import kotlinx.coroutines.*
 
 class SessionsRemoteViewsFactory(private val context: Context):
     RemoteViewsService.RemoteViewsFactory
@@ -16,9 +17,19 @@ class SessionsRemoteViewsFactory(private val context: Context):
     private var sessionList: Cursor? = null
 
     override fun onCreate() {
-        val contentResolver = context.contentResolver
-        val uri =  Uri.parse(SessionsContentProvider.URI)
-        sessionList = contentResolver.query(uri, null, null, null, null )
+        runBlocking {
+            loadSessionList()
+        }
+    }
+
+    private suspend fun loadSessionList(){
+        withContext(Dispatchers.IO){
+            launch {
+                val contentResolver = context.contentResolver
+                val uri =  Uri.parse(SessionsContentProvider.URI)
+                sessionList = contentResolver.query(uri, null, null, null, null )
+            }
+        }
     }
 
     /*
@@ -28,6 +39,14 @@ class SessionsRemoteViewsFactory(private val context: Context):
     override fun onDataSetChanged() {
         val contentResolver = context.contentResolver
         val uri =  Uri.parse(SessionsContentProvider.URI)
+        /*
+        * From onDataSetChanged documentation
+        *
+        * "Note: expensive tasks can be safely performed synchronously within this method.
+        * In the interim, the old data will be displayed within the widget."
+        *
+        * Hence, coroutines are not used here
+        * */
         sessionList = contentResolver.query(uri, null, null, null, null )
 
         val appWidgetManager = AppWidgetManager.getInstance(context)
@@ -60,8 +79,8 @@ class SessionsRemoteViewsFactory(private val context: Context):
          */
 
         val intent = SessionsWidget.intent
-        intent.putExtra("name", name)
-        intent.putExtra("id", id)
+        intent.putExtra(SessionsWidget.INTENT_EXTRA_SESSION_NAME, name)
+        intent.putExtra(SessionsWidget.INTENT_EXTRA_SESSION_ID, id)
         remoteViews.setOnClickFillInIntent(R.id.widget_list_item_text, intent)
 
         return remoteViews
