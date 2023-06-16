@@ -462,7 +462,5 @@ class TimerService : Service() {
         const val INITIAL_STATUS_IDLE = 100
         const val INITIAL_STATUS_RUNNING = 101
         const val INITIAL_STATUS_PAUSED = 102
-
-        // TODO togliere un po' di stati, ne bastano meno
     }
 }
