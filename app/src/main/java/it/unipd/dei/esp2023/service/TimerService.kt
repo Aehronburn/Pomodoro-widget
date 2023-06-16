@@ -97,7 +97,7 @@ class TimerService : Service() {
             else -> getString(R.string.pomodoro_duration_title)
         }
     }
-    private fun createNotification(): Notification { // TODO mettere round come in control widget
+    private fun createNotification(): Notification {
         return notificationBuilder
             .setContentTitle(if (isCompleted) getString(R.string.service_notification_title_completed) else getString(R.string.service_notification_title))
             .setContentText(
