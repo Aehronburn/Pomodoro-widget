@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@android:id/background"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:theme="@style/AppWidgetTheme">
 
@@ -44,5 +44,5 @@
         android:layout_height="wrap_content"
         android:clipToOutline="true"
         android:divider="@null"
-        android:paddingBottom="@dimen/margin_medium_small" />
+        android:paddingBottom="@dimen/margin_small" />
 </LinearLayout>
