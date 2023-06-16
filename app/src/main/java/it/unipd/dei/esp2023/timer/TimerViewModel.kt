@@ -164,7 +164,7 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
      */
     fun setRemainingTime(remainingTimeMillis: Int) {
         _remainingMinutes.value =
-            (remainingTimeMillis / TimerService.ONE_MINUTE_IN_MS.toFloat()).roundToInt()
+            remainingTimeMillis / TimerService.ONE_MINUTE_IN_MS.toInt()
         _remainingSeconds.value =
             ((remainingTimeMillis % TimerService.ONE_MINUTE_IN_MS.toInt()) / ONE_SECOND_IN_MS.toFloat()).roundToInt()
         _progress.value = (remainingTimeMillis / ONE_SECOND_IN_MS.toFloat()).roundToInt()

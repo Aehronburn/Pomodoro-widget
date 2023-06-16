@@ -128,7 +128,7 @@ class TimerService : Service() {
                 )) else (getString(
                     if (isPaused) R.string.service_notification_text_progress_paused else R.string.service_notification_text_progress_running,
                     getTimerTypeString(),
-                    (remainingTimerMs / ONE_MINUTE_IN_MS.toFloat()).roundToInt(),
+                    remainingTimerMs / ONE_MINUTE_IN_MS,
                     ((remainingTimerMs % ONE_MINUTE_IN_MS) / 1000.0).roundToInt()
                 ))
             )
