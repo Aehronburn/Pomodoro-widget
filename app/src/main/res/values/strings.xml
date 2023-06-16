@@ -93,4 +93,6 @@
 
     <string name="sessions_widget_fake_item_1">algorithms</string>
     <string name="sessions_widget_fake_item_2">ai</string>
+    <string name="control_widget_preview_minutes">25</string>
+    <string name="control_widget_preview_seconds">00</string>
 </resources>
