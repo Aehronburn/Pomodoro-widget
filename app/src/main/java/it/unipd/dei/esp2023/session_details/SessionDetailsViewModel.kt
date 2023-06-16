@@ -90,9 +90,10 @@ class SessionDetailsViewModel(app: Application): AndroidViewModel(app) {
             myDao.insertLastTask(sessionId, name, totPom)
         }
     }
-    // TODO posso assicurarmi che runni solo un observer alla volta e evitare che i !! facciano danni?
-    // I !! non dovrebbero fare danni perchè una volta che viene dato un valore alle variabili non tornano più
-    // a null, ma magari un minimo di semaforo non farebbe comunque male, dunno
+    /*
+    * The use of double bang operators will never throw NPE because once the variables are set to a non-null value
+    * they will never return to null
+    */
     private val ttObserver: Observer<Int> = Observer<Int>{
         totalTasks = it
         if(completedTasks!=null){
