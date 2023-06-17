@@ -27,11 +27,11 @@
             android:layout_height="wrap_content"
             android:text="@{@string/timer_seconds_left(viewModel.remainingMinutes)}"
             android:visibility="@{viewModel.isPhasesListCompleted == true ? View.INVISIBLE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/phase_progress_indicator"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.32"
+            app:layout_constraintTop_toTopOf="@+id/phase_progress_indicator"
+            app:layout_constraintVertical_bias="0.4"
             tools:text="24" />
 
         <TextView
@@ -57,18 +57,21 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.3"
+            app:layout_constraintTop_toBottomOf="@+id/current_task_text"
+            app:layout_constraintVertical_bias="0.2"
             app:trackCornerRadius="@dimen/progress_bar_indicator_radius"
             app:trackThickness="@dimen/progress_bar_track_thickness" />
 
         <TextView
             android:id="@+id/current_task_text"
             style="@style/TextAppearance.Material3.HeadlineLarge"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_large"
             android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginEnd="@dimen/margin_large"
             android:text="@{viewModel.currentPhase.name}"
+            android:textAlignment="center"
             android:visibility="@{viewModel.isPhasesListCompleted == true ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -115,7 +118,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.3"
+            app:layout_constraintVertical_bias="0.5"
             tools:visibility="invisible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

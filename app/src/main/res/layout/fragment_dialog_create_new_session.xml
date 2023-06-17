@@ -25,7 +25,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/new_session_input_edit_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:maxLength="@integer/input_text_max_length" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button

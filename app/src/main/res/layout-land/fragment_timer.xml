@@ -56,8 +56,8 @@
             app:indicatorDirectionCircular="clockwise"
             app:indicatorSize="@dimen/circular_progress_indicator_size"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintEnd_toStartOf="@+id/toggle_start_play_pause"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:trackCornerRadius="@dimen/progress_bar_indicator_radius"
@@ -66,14 +66,14 @@
         <TextView
             android:id="@+id/current_task_text"
             style="@style/TextAppearance.Material3.HeadlineLarge"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{viewModel.currentPhase.name}"
+            android:textAlignment="center"
             android:visibility="@{viewModel.isPhasesListCompleted == true ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintBottom_toTopOf="@+id/toggle_start_play_pause"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.8"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/phase_progress_indicator"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
             tools:text="task 1" />
@@ -88,8 +88,9 @@
             android:src="@{viewModel.isPlaying == true ? @drawable/pause_fill1_wght400_grad0_opsz48 : @drawable/play_arrow_fill1_wght400_grad0_opsz48}"
             android:visibility="@{viewModel.isPhasesListCompleted == true ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintBottom_toTopOf="@+id/reset_button"
-            app:layout_constraintEnd_toEndOf="@+id/current_task_text"
-            app:layout_constraintStart_toStartOf="@+id/current_task_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/phase_progress_indicator"
             app:layout_constraintTop_toBottomOf="@+id/current_task_text" />
 
         <Button

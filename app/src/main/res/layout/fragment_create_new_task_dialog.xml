@@ -27,7 +27,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/new_task_input_name_edit_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:maxLength="@integer/input_text_max_length" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
