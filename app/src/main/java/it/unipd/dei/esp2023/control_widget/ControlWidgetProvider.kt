@@ -15,7 +15,6 @@ import com.google.assistant.appactions.widgets.AppActionsWidgetExtension
 import it.unipd.dei.esp2023.MainActivity
 import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.service.TimerService
-import kotlin.math.roundToInt
 
 
 class ControlWidgetProvider() : AppWidgetProvider() {
@@ -243,7 +242,7 @@ class ControlWidgetProvider() : AppWidgetProvider() {
                 else -> R.drawable.circle_stroke_small_pom
             }
         )
-        val totSec: Int = (remainingMs / 1000.0).roundToInt()
+        val totSec: Int = remainingMs / 1000
         val sec: Int = totSec % 60
         val min: Int = totSec / 60
         largeViews.setTextViewText(R.id.minTv, min.toString().padStart(2, '0'))

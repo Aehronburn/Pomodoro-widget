@@ -13,7 +13,6 @@ import it.unipd.dei.esp2023.R
 import it.unipd.dei.esp2023.control_widget.ControlWidgetProvider
 import it.unipd.dei.esp2023.settings.SettingsFragment
 import it.unipd.dei.esp2023.statistics_widget.StatisticsWidgetProvider
-import kotlin.math.roundToInt
 
 class TimerService : Service() {
 
@@ -128,8 +127,8 @@ class TimerService : Service() {
                 )) else (getString(
                     if (isPaused) R.string.service_notification_text_progress_paused else R.string.service_notification_text_progress_running,
                     getTimerTypeString(),
-                    remainingTimerMs / ONE_MINUTE_IN_MS,
-                    ((remainingTimerMs % ONE_MINUTE_IN_MS) / 1000.0).roundToInt()
+                    remainingTimerMs/ONE_MINUTE_IN_MS,
+                    (remainingTimerMs%ONE_MINUTE_IN_MS)/1000
                 ))
             )
             .setSmallIcon(R.mipmap.ic_launcher)
