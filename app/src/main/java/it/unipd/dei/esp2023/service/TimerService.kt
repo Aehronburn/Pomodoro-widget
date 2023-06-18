@@ -131,7 +131,7 @@ class TimerService : Service() {
                     (remainingTimerMs%ONE_MINUTE_IN_MS)/1000
                 ))
             )
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.ic_notification)
             .setOngoing(true)
             .setContentIntent(
                 PendingIntent.getActivity(
