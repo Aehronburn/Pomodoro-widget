@@ -213,21 +213,6 @@ class TimerService : Service() {
             ControlWidgetProvider.WIDGET_TYPE_CONTROL
         )
         sendBroadcast(brIntent)
-
-        /*
-        update statistics widgets
-         */
-        val ids = AppWidgetManager.getInstance(this)
-            .getAppWidgetIds(ComponentName(this, StatisticsWidgetProvider::class.java))
-        val statsUpdateIntent = Intent(this, StatisticsWidgetProvider::class.java).apply {
-            action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-            putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
-            putExtra(
-                StatisticsWidgetProvider.WIDGET_TYPE,
-                StatisticsWidgetProvider.WIDGET_TYPE_STATS
-            )
-        }
-        sendBroadcast(statsUpdateIntent)
     }
 
     private fun cancelTimer() {
@@ -259,6 +244,20 @@ class TimerService : Service() {
         remainingTimerMs = 0
         updateNotification()
         sendProgress(PROGRESS_STATUS_COMPLETED)
+        /*
+        update statistics widgets
+         */
+        val ids = AppWidgetManager.getInstance(this)
+            .getAppWidgetIds(ComponentName(this, StatisticsWidgetProvider::class.java))
+        val statsUpdateIntent = Intent(this, StatisticsWidgetProvider::class.java).apply {
+            action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+            putExtra(
+                StatisticsWidgetProvider.WIDGET_TYPE,
+                StatisticsWidgetProvider.WIDGET_TYPE_STATS
+            )
+        }
+        sendBroadcast(statsUpdateIntent)
     }
 
     private fun createNewTimer(
