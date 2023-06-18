@@ -5,11 +5,7 @@
     android:minWidth="110dp"
     android:minHeight="110dp"
     android:previewImage="@drawable/sessions_widget_preview_img"
-
-    android:maxResizeHeight="600dp"
-    android:maxResizeWidth="700dp"
     android:resizeMode="horizontal | vertical"
-
     android:previewLayout="@layout/sessions_widget_preview"
     android:targetCellWidth="2"
     android:targetCellHeight="2"
