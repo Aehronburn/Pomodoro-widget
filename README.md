@@ -20,7 +20,9 @@ L'enfasi è stata posta sui widget. L'app ne fornisce tre per:
 - controllare il timer: pausa, reset
 - visualizzare la lista dei gruppi di task
 
-Tutti i widget si adattano dinamicamente al tema di sistema e alla palette colori dello sfondo(Android 12+) e sono ridimensionabili responsivamente
+Tutti i widget si adattano dinamicamente al tema di sistema e alla palette colori dello sfondo(Android 12+) e sono ridimensionabili responsivamente.
+
+Un introduzione sui widget in Android e una presentazione più approfondita dell'app con relativi screenshot sono in [report](Report_progetto.pdf)
 
 ![widget dei controlli](img/control_widget.png)
 ![widget delle statistiche](img/statistics_widget.png)
